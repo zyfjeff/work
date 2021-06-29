@@ -1,0 +1,5744 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="canonical" href="https://zyfjeff.github.io/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class1/note/">
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Note - 程序员的Cookbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="程序员的Cookbook" class="md-header__button md-logo" aria-label="程序员的Cookbook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            程序员的Cookbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Note
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/zyfjeff/zyfjeff.github.io/" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    zyfjeff/zyfjeff.github.io
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../../.." class="md-tabs__link">
+      About
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/basic/linux-debugger/" class="md-tabs__link">
+        博客
+      </a>
+    </li>
+  
+
+  
+
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../blog/" class="md-tabs__link md-tabs__link--active">
+        学习笔记
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/bootstrap/" class="md-tabs__link">
+        开源项目
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/basic/" class="md-tabs__link">
+        编程语言
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/algorithm/" class="md-tabs__link">
+        计算机基础
+      </a>
+    </li>
+  
+
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="程序员的Cookbook" class="md-nav__button md-logo" aria-label="程序员的Cookbook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    程序员的Cookbook
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/zyfjeff/zyfjeff.github.io/" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    zyfjeff/zyfjeff.github.io
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        博客
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="博客" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          博客
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" >
+      
+      <label class="md-nav__link" for="__nav_2_1">
+        Doc
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Doc" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          Doc
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_1" type="checkbox" id="__nav_2_1_1" >
+      
+      <label class="md-nav__link" for="__nav_2_1_1">
+        Basic
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Basic" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Basic
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/basic/linux-debugger/" class="md-nav__link">
+        如何在Linux环境下实现一个调试器
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_2" type="checkbox" id="__nav_2_1_2" >
+      
+      <label class="md-nav__link" for="__nav_2_1_2">
+        Cpp
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cpp" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_2">
+          <span class="md-nav__icon md-icon"></span>
+          Cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/cpp/%E5%A6%82%E4%BD%95mock%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/" class="md-nav__link">
+        如何mock系统调用
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_2_2" type="checkbox" id="__nav_2_1_2_2" >
+      
+      <label class="md-nav__link" for="__nav_2_1_2_2">
+        Effective Model Cpp
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Effective Model Cpp" data-md-level="4">
+        <label class="md-nav__title" for="__nav_2_1_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Effective Model Cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/cpp/Effective-Model-Cpp/item1/" class="md-nav__link">
+        Item1
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/cpp/Effective-Model-Cpp/item38/" class="md-nav__link">
+        Item38 Be aware of varying thread handle destructor behavior
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/cpp/Effective-Model-Cpp/item39/" class="md-nav__link">
+        Item39 Consider void futures for one-shot event communication
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/cpp/Effective-Model-Cpp/item40/" class="md-nav__link">
+        Item40 Use std::atomic for concurrency, volatile for specific memory
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/cpp/Effective-Model-Cpp/item41/" class="md-nav__link">
+        Item41 Consider pass by value for copyable parameters that are cheap to move and always copied.
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/cpp/Effective-Model-Cpp/item42/" class="md-nav__link">
+        Item42 Consider emplacement instead of insertion
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_3" type="checkbox" id="__nav_2_1_3" >
+      
+      <label class="md-nav__link" for="__nav_2_1_3">
+        Envoy
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Envoy" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          Envoy
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/envoy/dispatcher/" class="md-nav__link">
+        Envoy源码分析之Dispatcher
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/envoy/thread_local/" class="md-nav__link">
+        Envoy源码分析之ThreadLocal
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_4" type="checkbox" id="__nav_2_1_4" >
+      
+      <label class="md-nav__link" for="__nav_2_1_4">
+        Linux
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Linux" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          Linux
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/linux/Linux%E4%B8%AD%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F%E6%9C%89%E4%BB%80%E4%B9%88%3F/" class="md-nav__link">
+        Linux中的可执行程序有什么?
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/linux/Linux%E4%BF%A1%E5%8F%B7%E4%B8%93%E9%A2%98FAQ/" class="md-nav__link">
+        Linux 信号FAQ
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/linux/%E5%85%B3%E4%BA%8E%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%E7%9A%84%E5%8E%9F%E5%AD%90%E6%80%A7%E8%AE%A8%E8%AE%BA/" class="md-nav__link">
+        关于文件写入的原子性讨论
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_5" type="checkbox" id="__nav_2_1_5" >
+      
+      <label class="md-nav__link" for="__nav_2_1_5">
+        Rust
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Rust" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_5">
+          <span class="md-nav__icon md-icon"></span>
+          Rust
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/rust/lifetime-error-cases/" class="md-nav__link">
+        常见的生命周期错误
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/rust/macros/" class="md-nav__link">
+        Macros
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/rust/match-pattern/" class="md-nav__link">
+        Match pattern
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/rust/rust-error-handle/" class="md-nav__link">
+        Rust错误处理指南
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/rust/rust-match/" class="md-nav__link">
+        Rust match
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/rust/rust-misconceptions/" class="md-nav__link">
+        常见的生命周期概念错误
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/rust/rust-module/" class="md-nav__link">
+        Rust module
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%8D%9A%E5%AE%A2/doc/rust/rust-variance/" class="md-nav__link">
+        Rust variance
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        学习笔记
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="学习笔记" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          学习笔记
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" >
+      
+      <label class="md-nav__link" for="__nav_3_1">
+        Blog
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Blog" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Blog
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/" class="md-nav__link">
+        Can Reordering of Release/Acquire Operations Introduce Deadlock?
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/readling_list/" class="md-nav__link">
+        待阅读列表
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" type="checkbox" id="__nav_3_2" >
+      
+      <label class="md-nav__link" for="__nav_3_2">
+        Book
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Book" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Book
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../book/%20PracticalSystemProgrammingForRust/" class="md-nav__link">
+        Practical System Programing For Rust
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../book/ConcurrencyModernCpp/" class="md-nav__link">
+        Concurrency Modern C++
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../book/CppTemplate/" class="md-nav__link">
+        C++ Templates
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../book/KubernetesPrograming/" class="md-nav__link">
+        Programming Kubernetes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../book/LuaPrograming/" class="md-nav__link">
+        Lua Programing
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../book/MathematicsForComputerScience/" class="md-nav__link">
+        Mathematics For Computer Science
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../book/MuduoCpp/" class="md-nav__link">
+        Linux C++ 服务端编程
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../book/OS/" class="md-nav__link">
+        操作系统导论
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../book/ebpf/" class="md-nav__link">
+        ebpf
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3" type="checkbox" id="__nav_3_3" >
+      
+      <label class="md-nav__link" for="__nav_3_3">
+        Course
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Course" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          Course
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_1" type="checkbox" id="__nav_3_3_1" >
+      
+      <label class="md-nav__link" for="__nav_3_3_1">
+        6.824
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="6.824" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          6.824
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_1_1" type="checkbox" id="__nav_3_3_1_1" >
+      
+      <label class="md-nav__link" for="__nav_3_3_1_1">
+        Lecture1
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Lecture1" data-md-level="4">
+        <label class="md-nav__title" for="__nav_3_3_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Lecture1
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../course/6.824/lecture1/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../course/6.824/lecture1/paper-note/" class="md-nav__link">
+        Paper note
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_2" type="checkbox" id="__nav_3_3_2" >
+      
+      <label class="md-nav__link" for="__nav_3_3_2">
+        Ultimate Go Programing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Ultimate Go Programing" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Ultimate Go Programing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../course/Ultimate_Go_Programing/" class="md-nav__link">
+        Ultimate Go Programing
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_3" type="checkbox" id="__nav_3_3_3" >
+      
+      <label class="md-nav__link" for="__nav_3_3_3">
+        信息论
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="信息论" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          信息论
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../course/%E4%BF%A1%E6%81%AF%E8%AE%BA/note/" class="md-nav__link">
+        Note
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4" type="checkbox" id="__nav_3_4" checked>
+      
+      <label class="md-nav__link" for="__nav_3_4">
+        English
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="English" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_4">
+          <span class="md-nav__icon md-icon"></span>
+          English
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_1" type="checkbox" id="__nav_3_4_1" checked>
+      
+      <label class="md-nav__link" for="__nav_3_4_1">
+        Class1
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Class1" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Class1
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../READMEN/" class="md-nav__link">
+        READMEN
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Note
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Note
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    介词
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    名词的数
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    可数/不可数
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    量词
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    形容性物主代词
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#be" class="md-nav__link">
+    be动词
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    代词
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    名词所有格
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    副词
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    定语
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    句子的种类
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    指示代词
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    双宾语动词
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    连读
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    句型
+  </a>
+  
+    <nav class="md-nav" aria-label="句型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#some-and-any" class="md-nav__link">
+    some and any
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    单词
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    短语
+  </a>
+  
+    <nav class="md-nav" aria-label="短语">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    时态
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    祈使句
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    写作
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#41-pennys-bag" class="md-nav__link">
+    41 Penny's bag
+  </a>
+  
+    <nav class="md-nav" aria-label="41 Penny's bag">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#43-hurry-up" class="md-nav__link">
+    43 Hurry up
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-the-bosss-letter" class="md-nav__link">
+    45 The boss's letter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-a-cup-of-coffee" class="md-nav__link">
+    47 A cup of coffee
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#49-at-the-butchers" class="md-nav__link">
+    49 At the butcher's
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#51-a-pleasant-climate" class="md-nav__link">
+    51 A pleasant climate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-an-interesting-climate" class="md-nav__link">
+    53 An interesting climate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-the-sawyer-family" class="md-nav__link">
+    55 The Sawyer family
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#57-an-unusual-day" class="md-nav__link">
+    57 An unusual day
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#59-is-that-all" class="md-nav__link">
+    59 Is that all?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#61-a-bad-cold" class="md-nav__link">
+    61 A bad cold
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-thank-you-doctor" class="md-nav__link">
+    63 Thank you, doctor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-dont-you-mustnt" class="md-nav__link">
+    64 Don't ...! You mustn't ...!
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-not-a-baby" class="md-nav__link">
+    65 Not a baby
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#66-whats-the-time" class="md-nav__link">
+    66 What's the time?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#67-the-weekend" class="md-nav__link">
+    67  The weekend
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#69-the-car-race" class="md-nav__link">
+    69 The car race
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#71-hes-awful" class="md-nav__link">
+    71 He's awful
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-the-way-to-king-street" class="md-nav__link">
+    73 The way to King Street
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75-uncomfortable-shoes" class="md-nav__link">
+    75 Uncomfortable shoes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#77-terrible-toothache" class="md-nav__link">
+    77 Terrible toothache
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#79-carols-shopping-list" class="md-nav__link">
+    79 Carol's shopping list
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#81-roast-beef-and-patatoes" class="md-nav__link">
+    81 Roast beef and patatoes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-going-to-holidy" class="md-nav__link">
+    83 Going to holidy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#85-paris-in-the-spring" class="md-nav__link">
+    85 Paris in the spring
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#87-a-car-crash" class="md-nav__link">
+    87 A car crash
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#89" class="md-nav__link">
+    89
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sentence/" class="md-nav__link">
+        Sentence
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_2" type="checkbox" id="__nav_3_4_2" >
+      
+      <label class="md-nav__link" for="__nav_3_4_2">
+        Class2
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Class2" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Class2
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../class2/kk/" class="md-nav__link">
+        Kk
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../class2/note/" class="md-nav__link">
+        Note
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../class2/sentence/" class="md-nav__link">
+        Sentence
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_3" type="checkbox" id="__nav_3_4_3" >
+      
+      <label class="md-nav__link" for="__nav_3_4_3">
+        Hearing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Hearing" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Hearing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hearing/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_4" type="checkbox" id="__nav_3_4_4" >
+      
+      <label class="md-nav__link" for="__nav_3_4_4">
+        Open lan
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Open lan" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_4">
+          <span class="md-nav__icon md-icon"></span>
+          Open lan
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../open-lan/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_5" type="checkbox" id="__nav_3_4_5" >
+      
+      <label class="md-nav__link" for="__nav_3_4_5">
+        Syntax
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Syntax" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_5">
+          <span class="md-nav__icon md-icon"></span>
+          Syntax
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../syntax/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_6" type="checkbox" id="__nav_3_4_6" >
+      
+      <label class="md-nav__link" for="__nav_3_4_6">
+        Walk for us
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Walk for us" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_6">
+          <span class="md-nav__icon md-icon"></span>
+          Walk for us
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../walk_for_us/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_7" type="checkbox" id="__nav_3_4_7" >
+      
+      <label class="md-nav__link" for="__nav_3_4_7">
+        Word list
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Word list" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_7">
+          <span class="md-nav__icon md-icon"></span>
+          Word list
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../word_list/word/" class="md-nav__link">
+        Word
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_5" type="checkbox" id="__nav_3_5" >
+      
+      <label class="md-nav__link" for="__nav_3_5">
+        Paper
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Paper" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Paper
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../paper/bitcask/" class="md-nav__link">
+        Bitcask
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        开源项目
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="开源项目" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          开源项目
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1" type="checkbox" id="__nav_4_1" >
+      
+      <label class="md-nav__link" for="__nav_4_1">
+        Envoy
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Envoy" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Envoy
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/bootstrap/" class="md-nav__link">
+        Bootstrap启动过程分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/cluster/" class="md-nav__link">
+        Cluster分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/cluster_manager/" class="md-nav__link">
+        Cluster Manager初始化
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/dpdk/" class="md-nav__link">
+        DPDK
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/drain_manager/" class="md-nav__link">
+        Drain manager分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/eds/" class="md-nav__link">
+        EDS更新过程分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/load_balancer/" class="md-nav__link">
+        Load Balancer分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/lua/" class="md-nav__link">
+        Lua filter实现分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/overload_manager/" class="md-nav__link">
+        Overload manager分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/proxy/" class="md-nav__link">
+        Envoy源码分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/stats_symbol/" class="md-nav__link">
+        Stats Symbol分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/subset_lb/" class="md-nav__link">
+        Subset Load Balancer分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/wasm/" class="md-nav__link">
+        Envoy Proxy Wasm分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89Cluster/" class="md-nav__link">
+        如何实现自定义Cluster
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+      
+      <label class="md-nav__link" for="__nav_4_2">
+        Kubernetes
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Kubernetes" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Kubernetes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/kubernetes/" class="md-nav__link">
+        Helm
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/kubernetes/basic/" class="md-nav__link">
+        Basic
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/kubernetes/tips/" class="md-nav__link">
+        Tips
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_3" type="checkbox" id="__nav_4_3" >
+      
+      <label class="md-nav__link" for="__nav_4_3">
+        Leveldb
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Leveldb" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Leveldb
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/leveldb/leveldb/" class="md-nav__link">
+        Leveldb源码分析
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_4" type="checkbox" id="__nav_4_4" >
+      
+      <label class="md-nav__link" for="__nav_4_4">
+        Pilot
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Pilot" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_4">
+          <span class="md-nav__icon md-icon"></span>
+          Pilot
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/" class="md-nav__link">
+        WIP
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/ConfigUpdate/" class="md-nav__link">
+        配置更新分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/EnvoyFilter/" class="md-nav__link">
+        EnvoyFilter分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/PushContext/" class="md-nav__link">
+        PushContext分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/concept/" class="md-nav__link">
+        基本概念和接口
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/xds-process/" class="md-nav__link">
+        XDS处理流程分析
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        编程语言
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="编程语言" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          编程语言
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1" type="checkbox" id="__nav_5_1" >
+      
+      <label class="md-nav__link" for="__nav_5_1">
+        Cpp
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cpp" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          Cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/basic/" class="md-nav__link">
+        C++基础
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/cpp17/" class="md-nav__link">
+        C++17 In Details
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/cpp20/" class="md-nav__link">
+        C++20
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/design/" class="md-nav__link">
+        Design
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/guidelines/" class="md-nav__link">
+        Guidelines
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/libevent/" class="md-nav__link">
+        Libevent
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/memory_order/" class="md-nav__link">
+        C++ Memory Order
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1_8" type="checkbox" id="__nav_5_1_8" >
+      
+      <label class="md-nav__link" for="__nav_5_1_8">
+        Tips
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Tips" data-md-level="3">
+        <label class="md-nav__title" for="__nav_5_1_8">
+          <span class="md-nav__icon md-icon"></span>
+          Tips
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-1/" class="md-nav__link">
+        Tip of the Week #1: string_view
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-10/" class="md-nav__link">
+        Tip of the Week #10: Splitting Strings, not Hairs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-101/" class="md-nav__link">
+        Tip of the Week #101: Return Values, References, and Lifetimes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-103/" class="md-nav__link">
+        Tip of the Week #103: Flags Are Globals
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-107/" class="md-nav__link">
+        Tip of the Week #107: Reference Lifetime Extension
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-108/" class="md-nav__link">
+        Tip of the Week #108: Avoid std::bind
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-109/" class="md-nav__link">
+        Tip of the Week #109: Meaningful `const` in Function Declarations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-11/" class="md-nav__link">
+        Tip of the Week #11: Return Policy
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-112/" class="md-nav__link">
+        Tip of the Week #112: emplace vs. push_back
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-117/" class="md-nav__link">
+        Tip of the Week #117: Copy Elision and Pass-by-value
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-119/" class="md-nav__link">
+        Tip of the Week #119: Using-declarations and namespace aliases
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-120/" class="md-nav__link">
+        Tip of the Week #120: Return Values are Untouchable
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-122/" class="md-nav__link">
+        Tip of the Week #122: Test Fixtures, Clarity, and Dataflow
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-123/" class="md-nav__link">
+        Tip of the Week #123: absl::optional and std::unique_ptr
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-126/" class="md-nav__link">
+        Tip of the Week #126: `make_unique` is the new `new`
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-24/" class="md-nav__link">
+        Tip of the Week #24: Copies, Abbrv
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-3/" class="md-nav__link">
+        Tip of the Week #3: String Concatenation and operator+ vs. StrCat()
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-36/" class="md-nav__link">
+        Tip of the Week #36: New Join API
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-42/" class="md-nav__link">
+        Tip of the Week #42: Prefer Factory Functions to Initializer Methods
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-45/" class="md-nav__link">
+        Tip of the Week #45: Avoid Flags, Especially in Library Code
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-49/" class="md-nav__link">
+        Tip of the Week #49: Argument-Dependent Lookup
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-55/" class="md-nav__link">
+        Tip of the Week #55: Name Counting and unique_ptr
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-59/" class="md-nav__link">
+        Tip of the Week #59: Joining Tuples
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-61/" class="md-nav__link">
+        Tip of the Week #61: Default Member Initializers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-64/" class="md-nav__link">
+        Tip of the Week #64: Raw String Literals
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-65/" class="md-nav__link">
+        Tip of the Week #65: Putting Things in their Place
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-74/" class="md-nav__link">
+        Tip of the Week #74: Delegating and Inheriting Constructors
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-77/" class="md-nav__link">
+        Tip of the Week #77: Temporaries, Moves, and Copies
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-86/" class="md-nav__link">
+        Tip of the Week #86: Enumerating with Class
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-88/" class="md-nav__link">
+        Tip of the Week #88: Initialization: =, (), and {}
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-90/" class="md-nav__link">
+        Tip of the Week #90: Retired Flags
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-93/" class="md-nav__link">
+        Tip of the Week #93: using absl::Span
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-94/" class="md-nav__link">
+        Tip of the Week #94: Callsite Readability and bool Parameters
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-99/" class="md-nav__link">
+        Tip of the Week #99: Nonmember Interface Etiquette
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_2" type="checkbox" id="__nav_5_2" >
+      
+      <label class="md-nav__link" for="__nav_5_2">
+        Golang
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Golang" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_2">
+          <span class="md-nav__icon md-icon"></span>
+          Golang
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/note/" class="md-nav__link">
+        Go Tips
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_3" type="checkbox" id="__nav_5_3" >
+      
+      <label class="md-nav__link" for="__nav_5_3">
+        Lua
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Lua" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Lua
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/lua/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_4" type="checkbox" id="__nav_5_4" >
+      
+      <label class="md-nav__link" for="__nav_5_4">
+        Python
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Python" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_4">
+          <span class="md-nav__icon md-icon"></span>
+          Python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_5" type="checkbox" id="__nav_5_5" >
+      
+      <label class="md-nav__link" for="__nav_5_5">
+        Rust
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Rust" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_5">
+          <span class="md-nav__icon md-icon"></span>
+          Rust
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/rust/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/rust/Note/" class="md-nav__link">
+        Rust学习笔记
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_5_3" type="checkbox" id="__nav_5_5_3" >
+      
+      <label class="md-nav__link" for="__nav_5_5_3">
+        Library
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Library" data-md-level="3">
+        <label class="md-nav__title" for="__nav_5_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Library
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/rust/library/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      <label class="md-nav__link" for="__nav_6">
+        计算机基础
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="计算机基础" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          计算机基础
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1" type="checkbox" id="__nav_6_1" >
+      
+      <label class="md-nav__link" for="__nav_6_1">
+        Algorithm
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Algorithm" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_1">
+          <span class="md-nav__icon md-icon"></span>
+          Algorithm
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/algorithm/" class="md-nav__link">
+        负载均衡算法
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/algorithm/skiplist/" class="md-nav__link">
+        跳表分析
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2" type="checkbox" id="__nav_6_2" >
+      
+      <label class="md-nav__link" for="__nav_6_2">
+        Basic
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Basic" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_2">
+          <span class="md-nav__icon md-icon"></span>
+          Basic
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/" class="md-nav__link">
+        OS基础
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/Reverse/" class="md-nav__link">
+        Reverse
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/compiler/" class="md-nav__link">
+        编译器
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/concurrency/" class="md-nav__link">
+        并发编程
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/gdb/" class="md-nav__link">
+        GDB Tips
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/review/" class="md-nav__link">
+        面试题
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/tls/" class="md-nav__link">
+        SSL
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2_8" type="checkbox" id="__nav_6_2_8" >
+      
+      <label class="md-nav__link" for="__nav_6_2_8">
+        Bazel
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Bazel" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_2_8">
+          <span class="md-nav__icon md-icon"></span>
+          Bazel
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/bazel/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3" type="checkbox" id="__nav_6_3" >
+      
+      <label class="md-nav__link" for="__nav_6_3">
+        Design
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Design" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_3">
+          <span class="md-nav__icon md-icon"></span>
+          Design
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/design/" class="md-nav__link">
+        设计模式
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4" type="checkbox" id="__nav_6_4" >
+      
+      <label class="md-nav__link" for="__nav_6_4">
+        Linux
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Linux" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_4">
+          <span class="md-nav__icon md-icon"></span>
+          Linux
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/asm_syscall/" class="md-nav__link">
+        Linux: x86-64 syscall
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/linux_socket_balancing/" class="md-nav__link">
+        三种常见的socket balancing模式
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/linux_syscall/" class="md-nav__link">
+        Linux syscall
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/shell/" class="md-nav__link">
+        Shell
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_6" type="checkbox" id="__nav_6_4_6" >
+      
+      <label class="md-nav__link" for="__nav_6_4_6">
+        Bpf
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Bpf" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_6">
+          <span class="md-nav__icon md-icon"></span>
+          Bpf
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/bpf/READMME/" class="md-nav__link">
+        READMME
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/bpf/seccomp-bpf/" class="md-nav__link">
+        Seccomp bpf
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_7" type="checkbox" id="__nav_6_4_7" >
+      
+      <label class="md-nav__link" for="__nav_6_4_7">
+        Ftrace
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Ftrace" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_7">
+          <span class="md-nav__icon md-icon"></span>
+          Ftrace
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/ftrace/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_8" type="checkbox" id="__nav_6_4_8" >
+      
+      <label class="md-nav__link" for="__nav_6_4_8">
+        Fuse
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Fuse" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_8">
+          <span class="md-nav__icon md-icon"></span>
+          Fuse
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/fuse/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_9" type="checkbox" id="__nav_6_4_9" >
+      
+      <label class="md-nav__link" for="__nav_6_4_9">
+        Io
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Io" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_9">
+          <span class="md-nav__icon md-icon"></span>
+          Io
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/io/io_uring/" class="md-nav__link">
+        Io uring
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_10" type="checkbox" id="__nav_6_4_10" >
+      
+      <label class="md-nav__link" for="__nav_6_4_10">
+        Network
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Network" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_10">
+          <span class="md-nav__icon md-icon"></span>
+          Network
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/epoll/" class="md-nav__link">
+        Epoll
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/ip_transparent/" class="md-nav__link">
+        Ip transparent
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp-ip-program/" class="md-nav__link">
+        Tcp ip program
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp_back_log/" class="md-nav__link">
+        Tcp back log
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp_fast_open/" class="md-nav__link">
+        Tcp fast open
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp_splicing/" class="md-nav__link">
+        SOCKMAP - TCP splicing of the future
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/time_wait/" class="md-nav__link">
+        Time wait
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/virtual-network/" class="md-nav__link">
+        Virtual network
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_11" type="checkbox" id="__nav_6_4_11" >
+      
+      <label class="md-nav__link" for="__nav_6_4_11">
+        Perf
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Perf" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_11">
+          <span class="md-nav__icon md-icon"></span>
+          Perf
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/perf/" class="md-nav__link">
+        性能优化基础
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_12" type="checkbox" id="__nav_6_4_12" >
+      
+      <label class="md-nav__link" for="__nav_6_4_12">
+        Synchronization
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Synchronization" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_12">
+          <span class="md-nav__icon md-icon"></span>
+          Synchronization
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/synchronization/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/synchronization/memory_order/" class="md-nav__link">
+        Memory order
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_13" type="checkbox" id="__nav_6_4_13" >
+      
+      <label class="md-nav__link" for="__nav_6_4_13">
+        System interface
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="System interface" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_13">
+          <span class="md-nav__icon md-icon"></span>
+          System interface
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/system_interface/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5" type="checkbox" id="__nav_6_5" >
+      
+      <label class="md-nav__link" for="__nav_6_5">
+        Why
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Why" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_5">
+          <span class="md-nav__icon md-icon"></span>
+          Why
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/why/" class="md-nav__link">
+        计算机基础百科
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/zyfjeff/zyfjeff.github.io/edit/master/docs/学习笔记/english/class1/note.md" title="编辑此页" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h2 id="_1">介词</h2>
+<ul>
+<li>in 在...里面</li>
+<li>on 在...上面、在...旁边；靠近，在左/右、put on(穿上)、trun on(打开)</li>
+<li>under</li>
+<li>over 在..上方，不接触、翻越</li>
+<li>across 从...的一边到另一边</li>
+</ul>
+<p>in the sun
+under the tree
+on the tree 长在树上
+in the tree 在树上
+on the board 在甲板上
+There is a window in the wall 墙上有副画
+The desk near the window 是不正确的，The desk is near the window
+She with her friends不正确，She is with her friends</p>
+<p>for:</p>
+<ol>
+<li>为了...某人而.. It's for you</li>
+<li>对于某人来说... Math is so difficult for me</li>
+<li>表原因... What are you sorry for?</li>
+<li>长达...  I study Yoga for two years</li>
+</ol>
+<h2 id="_2">名词的数</h2>
+<ul>
+<li>可数名词(C)</li>
+<li>不可数名词(U)</li>
+<li>可数&amp;不可数</li>
+</ul>
+<p>一般可数名词 + s
+清辅音 + s -&gt; /s/ books、bikes、cups、truths
+浊辅音&amp;元音 + s -&gt; /z/ pens、girls、teachers、door
+/t/ + s -&gt; /ts/ cats、hats、shirts
+/d/ + s -&gt; /dz/ beds、hands、friends、birds</p>
+<p>box -&gt; boxes
+buzz -&gt; buzzes
+dish -&gt; dishes
+garage -&gt; garages
+watch -&gt; watches
+bridge -&gt; bridges</p>
+<ol>
+<li>一般情况在词尾直接加<code>-s</code></li>
+<li>以<code>-s</code>, <code>-x</code>, <code>-ch</code>, <code>-sh</code> 结尾的名词, 在词尾加<code>-es</code></li>
+</ol>
+<p>glass -&gt; glasses
+box -&gt; boxes
+watch -&gt; watches
+brush -&gt; brushes
+bench -&gt; benches</p>
+<ol>
+<li>以辅音字母加-y 结尾的名词, 把-y 改为-i, 再加-es</li>
+</ol>
+<p>story -&gt; stories
+country -&gt; countries</p>
+<ol>
+<li>以-o 结尾的名词变为复数时, 常在词尾加-s，但有些名词要加-es</li>
+</ol>
+<p>元音字母 + o结尾加es
+辅音字母 + o结尾加s</p>
+<p>Negro -&gt; Negroes
+hero -&gt; heroes
+potato -&gt; potatoes
+tomato -&gt; tomatoes
+radio -&gt; radios</p>
+<p>缩写一般 + s
+photo -&gt; photos  (photograph)
+kilo -&gt; kilos  (kilogram)</p>
+<ol>
+<li>以 <code>-f</code> 或 <code>-fe</code> 结尾的名词变为复数时, 一般直接加<code>-s</code>, 但有些以 <code>-f</code> 或 <code>-fe</code> 结尾的名词需把 <code>f</code> 或 <code>fe</code> 去掉, 加<code>-ves</code></li>
+</ol>
+<p>self —&gt; selves
+life -&gt; lives
+thief —&gt; thieves
+wife -&gt; wives
+knife -&gt; knives
+loaf -&gt; loaves
+leaf —&gt; leaves
+shelf -&gt; shelves
+wolf -&gt; wolves
+half -&gt; halves</p>
+<ol>
+<li>合成名词变复数时, 通常只将里面所含的主体名词变为复数, 如果没有主体名词, 则将最后一部分变为复数</li>
+</ol>
+<p>son-in-law—sons-in-law
+storyteller—storytellers</p>
+<ol>
+<li>"man/woman+n."变复数时, 作定语的 man/woman 和中心词都要变复数</li>
+</ol>
+<p>man teacher -&gt; men teachers
+woman engineer -&gt; women engineers</p>
+<ol>
+<li>变内部元音</li>
+</ol>
+<p>man -&gt; men
+woman -&gt; women
+foot -&gt; feet
+tooth -&gt; teeth</p>
+<ol>
+<li>特殊
+child -&gt; children</li>
+</ol>
+<p>单数名词 + is ...
+复数名词 + are ...</p>
+<p>Her passport is green
+The men are keyboard operations
+This assistant is busy
+Our classroom is large</p>
+<h2 id="_3">可数/不可数</h2>
+<p>不可以数的、不可以计算的名词</p>
+<p>不可数名词:</p>
+<ol>
+<li>所有液体的东西</li>
+<li>物质名词 soap\bread\chocolate\rice\tobacco</li>
+<li>抽象名词 love\friendship\work\homework</li>
+</ol>
+<p>不可数名词的特点:</p>
+<ol>
+<li>前面不能加one、two、three</li>
+<li>前面不可以加a\an</li>
+<li>后面不可以加s、永远都是单数</li>
+</ol>
+<p>于量词搭配:</p>
+<p>a piece of bread
+a loaf of bread
+a bar of soap
+a bottle of cola
+a tin of cola</p>
+<h2 id="_4">量词</h2>
+<p>a piece of 一片
+a loaf of 一条
+a bar of 一块
+a bottle of 一瓶
+a pound of 一磅
+a tin of 一听
+a cup of 一杯
+a box of 一盒
+a spoon of 一勺</p>
+<h2 id="_5">形容性物主代词</h2>
+<p>后面必须加名词
+my、your、his、her、its、our、your、their</p>
+<h2 id="be">be动词</h2>
+<p>am: I am a doctor 固定搭配，这是动词现在时第一人称单数
+are: be动词现在时复数 于第二人称或复数人称搭配  Your are....、we are...、They are...、
+is: 主语时第三人称单数、He is...、She is....、It is.....、The book is....</p>
+<h2 id="_6">代词</h2>
+<p>代词，用来代替名词。
+人称代词(你、我、他)</p>
+<ol>
+<li>第一人称 I(单数形式)、we(复数形式) 主格形式| me、us 宾格形式</li>
+<li>第二人称 you(单复数同型) 宾格和主格同型</li>
+<li>第三人称 he、she、it、They(复数形式) 主格形式| him、her、them 宾格形式</li>
+</ol>
+<blockquote>
+<p>除了第一人称、第二人称外其他都是第三人称、不仅仅时上面提到</p>
+</blockquote>
+<p>陈述句中，动词前面用人称代词用主格、后面用宾格</p>
+<p>Example:</p>
+<ul>
+<li>I like you</li>
+<li>I like them</li>
+<li>You love me</li>
+<li>They love her</li>
+</ul>
+<p>英语人称顺序:
+  1. 单数人称遵循第二人称、第三人称、第一人称的顺序 You, he and I must clan up the classroom
+  2. 复数人称遵循第一人称、第二人称、第三人称的顺序 We，you and they must clean up the classroom
+  3. 当承认错误的时候，无论单复数一律 123的顺序 I he and you are sorry for being late</p>
+<h2 id="_7">名词所有格</h2>
+<p>一种所属关系</p>
+<ol>
+<li>
+<p>名词's + 名词
+This is Mike's car
+That is Tom's watch
+This is the boy's father
+That is Mary's dress
+That is the bird's song</p>
+</li>
+<li>
+<p>名词(s) 发音/z/</p>
+</li>
+<li>名词(s)'s + 名词</li>
+<li>名词(s)'s book</li>
+</ol>
+<p>Tomas's book or Tomas' book
+Jones's car or Jones' car
+Hopkins's bike or Hopkins' bike</p>
+<ol>
+<li>名词(s) 复数
+名词(s)'s + 名词</li>
+</ol>
+<p>The teachers' reading-room</p>
+<ol>
+<li>名词's + 名词(可省略)
+名词's</li>
+</ol>
+<p>This shirt is Tim's shirt.
+This shirt is Tim's
+Is this shirt Tim's?</p>
+<h2 id="_8">副词</h2>
+<p>修饰形容词(形容词前)</p>
+<ul>
+<li>I am tired</li>
+<li>I am very tired</li>
+<li>I am so tired</li>
+<li>I am too tired</li>
+<li>I am awfully tired</li>
+</ul>
+<p>very、so、too、awfully 都是副词</p>
+<p>修饰动词 (放在动词后面)</p>
+<ul>
+<li>I love you very much</li>
+<li>I love you awfully</li>
+</ul>
+<p>修饰副词</p>
+<ul>
+<li>I swim well</li>
+<li>I know him well</li>
+</ul>
+<h2 id="_9">定语</h2>
+<p>限定、说明名词或者代词的品质与特征的。比如: Mike's car，其中Mike's是定语，修饰car</p>
+<ol>
+<li>I want a red(定语) shirt</li>
+<li>The Tall(定语) boy is my friend</li>
+<li>His(定语) father is a doctor</li>
+</ol>
+<p>定语前置的这种形式和我们的思维方式是一致的。</p>
+<p>定语:
+  1. 被定语限定的词 of 定语
+  2. 定语's 被限定的词</p>
+<p>作定语的名词是有生命的时候，往往采用名词所有格's的形式
+作定语的名词是无生命的时候，往往采用of的形式</p>
+<h2 id="_10">句子的种类</h2>
+<ol>
+<li>肯定句     主语 + 动词 + 其它成份</li>
+<li>否定句     主语 + 动词 + not + 其它成份</li>
+<li>一般疑问  yes/no question，一般以yes/no来回答</li>
+<li>特殊疑问句 特殊疑问词开头、都是以wh开头，不能直接用yes/no来回答</li>
+</ol>
+<p>This is Miss Sophie Dupont?
+改成一般疑问句(动词换到主语之前): Is this Miss Sophie Dupont?</p>
+<p>特殊疑问句 不等于 特殊疑问词 + 一般疑问句(动词 + 主语) ?
+Who is climbing the tree ?
+What is in it ? 里面是什么东西
+What is on ?
+Who served you ?
+I don't know what you are talking about?</p>
+<p>Example:
+Your name is Bob
+Is your name Bob? 一般疑问句
+你的名字是什么? 不能用yes/no来回答</p>
+<p>如何转换为特殊疑问句?</p>
+<ol>
+<li>找到肯定句中被提问的部分</li>
+<li>根据句意选择最合适的特殊疑问词</li>
+<li>将特殊疑问词置于句首</li>
+<li>该特殊疑问句不针对肯定句的主语提问时，动词放在主语前。
+   改特殊疑问句是针对主语提问时，动词不用提前、原位不动</li>
+</ol>
+<p>What is your name?
+Who is Bob?</p>
+<p>He is my teacher
+他是谁: Who is he?
+谁是我的老师: Who is my teacher?</p>
+<p>My book is on the table?
+我的书在哪里? Where is my book?
+什么在桌子上面? What is on the table?</p>
+<p>You are French?
+谁是法国人: Who is French? (who是第三人称单数)</p>
+<p>Hey、Hi、Hello 问好</p>
+<p>How is your mother?
+How is the weather?
+How are you?</p>
+<p>回答: very well、Thank you and you、not bad、very bad、terrible</p>
+<p>well 身体好
+Thanks a lot 非常感谢
+Thankyou very much</p>
+<p>Look at... 看...
+I see him in the street
+A fat cat 暴发户
+The girl is very hot 这个女孩非常性感</p>
+<h2 id="_11">指示代词</h2>
+<p>this、these、that、those</p>
+<h2 id="_12">双宾语动词</h2>
+<p>give、teach、write、send、offer、post、read</p>
+<p>teach you English
+write him a letter
+send her an e-mail
+offer you a job
+read me this lettle
+post him a letter
+shell her a new car</p>
+<p>给她带来一些花吧
+Bring her some flower</p>
+<p>给我讲个英语故事吧
+Tell me an English story</p>
+<p>把那本书递给我
+Hand me that book</p>
+<p>把那本书给我拿过来瞧一瞧、看一看
+Show me that book</p>
+<p>给我买一朵花吧
+Buy me a flower</p>
+<p>动词+代词+名词
+英文中一个句子一般最多只会出现一个句子</p>
+<h2 id="_13">连读</h2>
+<p>一辅一元、前辅后元可以一起连读 An empty</p>
+<h1 id="_14">句型</h1>
+<ol>
+<li>What colour's your....?</li>
+<li>Is this your shirt?</li>
+<li>Look at...</li>
+<li>Are you a teacher?</li>
+<li>How are you today?</li>
+<li>Nice to meet you</li>
+<li>What make is it?</li>
+<li>What's your job? -&gt; What is your job?</li>
+<li>what are their jobs? 复数形式</li>
+<li>Tied and thirsty</li>
+<li>There be(存在) + 主语</li>
+<li>Where is it?</li>
+<li>Are these your....? 这些是你的....嘛?</li>
+<li>What colour are your...? 你的...是什么颜色? 复数形式</li>
+<li>What must I do? // 我该做点啥呢?</li>
+<li>What is he doing? // 他正在做什么</li>
+<li>I beg your pardon?</li>
+<li>What about this dress?  // 这件衣服怎么样?</li>
+<li>It is + adj + 时间  // It is fine day today</li>
+<li>I am off today 我今天不上班</li>
+<li>What are you going to do ? 你准备做什么?</li>
+<li>What are you doing now? 你现在正在做什么?</li>
+<li>It is not very heavy 不是非常...</li>
+<li>what's in it? 里面有什么</li>
+</ol>
+<p>do with 处理
+What are you going to do with there empty bottles?</p>
+<p>某地存在某人或某物
+There is a book on the table.
+There is a pen in my bag
+There is a student in the classroom
+There is a teacher in the office
+There is a traffic jam on the road
+There is no power in my cell phone.
+There is truth in wine 酒中有真情
+There is no place like home 天涯无处似归所
+There is a witness(目击者) everywhere 若要人不知除非己莫为
+There is no royal way to learning 学问无捷径
+Where there is a will，there is a way 有志者事竟成
+There is no smoke without fire 无风不起浪
+There is no best but better
+There are spots in the sun 人无完人</p>
+<p>所在位置、颜色、具体位置、状态
+There is a bed in the bedroom
+The bed is green
+It is in the middle of the room
+And it is very clean</p>
+<ol>
+<li>我有很多钱  拥有的关系，用have</li>
+<li>街上有很多车 存在的关系，用There be</li>
+<li>There are + 复数名词 / There is + 单数名词</li>
+<li>There is a cooker in the kitchen =&gt; A cooker is in the kitchen there</li>
+</ol>
+<p>主谓宾+宾补
+I find the room is dark -&gt; I find the room dark(宾语补足语)
+We must keep the classroom clean
+Histories make mem wise
+Poems make mem witty
+Math make mem subtle</p>
+<h3 id="some-and-any">some and any</h3>
+<ol>
+<li>some\any + 复数名词或不可数名词时时一些的意思，some用在肯定句中，any用在否定、疑问句中。</li>
+</ol>
+<p>Is there a + 可数名词
+Is there any + 不可数名词</p>
+<ol>
+<li>但是在表请求、建议的疑问句中用some</li>
+<li>any + 单数名词， some翻译为某一，any翻译为任一</li>
+</ol>
+<p>Some day, he can be some one
+You can buy it in any supermarket</p>
+<h1 id="_15">单词</h1>
+<ul>
+<li>
+<p>customs n 海关
+custom 习惯、customer 顾客</p>
+</li>
+<li>
+<p>officer 官员
+CEO Chief Executive Officer
+police officer</p>
+</li>
+<li>
+<p>nationality 国籍
+nation 国家、民族
+national 国家的</p>
+</li>
+<li>
+<p>girl 女孩、菇凉
+ex-前缀，表示前...
+ex-wife 前妻</p>
+</li>
+<li>
+<p>passport n 护照
+pass v 通过、port 港口、seaport、airport 飞机场、visa n 签证</p>
+</li>
+<li>
+<p>brown adj 棕色的
+brown sugar 红色
+You look brown afetr this summer 暑假过后晒黑了</p>
+</li>
+<li>
+<p>tourist n 旅游者
+terrorist 恐怖者</p>
+</li>
+<li>
+<p>grey 灰色的
+grey、gray(美式拼写)</p>
+</li>
+<li>
+<p>yellow adj
+yellow race 黄种人
+I am Asian 不能说 I am yellow race</p>
+</li>
+<li>
+<p>black adj
+black tea 红茶</p>
+</li>
+<li>
+<p>orange adj 橘黄色</p>
+</li>
+<li>
+<p>emplyee 雇员
+employ 雇佣
+employer 雇佣者
+trainer 培训者
+trainee 被培训者</p>
+</li>
+<li>hard-working
+good-looking 好看的
+easy-going 好相处的</li>
+<li>sales rep 推销员</li>
+<li>light 轻的</li>
+<li>thirsty 渴
+thirty 30
+thirteen 13</li>
+<li>jam 果酱、堵塞</li>
+<li>boy
+cowboy 牛仔
+busboy  餐馆服务生</li>
+<li>sit down
+sit down please
+have a seat, please</li>
+<li>carpet 地毯</li>
+<li>empty
+An empty 可以连读 empty的首字母是原因、An最后一个字母是辅音，辅音和元音可以连读</li>
+<li>glass、box、cup、bottle、tin</li>
+<li>knife、fork、spoon
+k和n在一起的时候，k不发音，例如:know</li>
+<li>shelf 架子 复数shelves
+bookshelf、shelf life 保质期</li>
+<li>desk、table
+tea table、office desk、school desk</li>
+<li>plate 盘子</li>
+<li>cupboard</li>
+<li>cigarette 香烟
+cigar 雪茄</li>
+<li>television 电视机</li>
+<li>floor 地板</li>
+<li>dressing 梳妆台</li>
+<li>magazine 杂志</li>
+<li>newspaper</li>
+<li>stereo 立体声音响</li>
+<li>refrigerator/fridge 电冰箱</li>
+<li>electric 带电的，可通电的</li>
+<li>bottle 瓶子</li>
+<li>trousers 长裤</li>
+<li>shelf 架子</li>
+<li>take off/put on 脱掉/穿上</li>
+<li>sharpen 削尖
+en 后缀，使形容词变成动词</li>
+<li>turn on/turn off (带电的设备)</li>
+<li>shut/open (非带电设备)</li>
+<li>untidy 乱，不整齐</li>
+<li>air 使...通风，换换空气</li>
+<li>sweep 扫</li>
+<li>dust 扫描灰尘</li>
+<li>wardrobe 衣柜
+put yours clothes on the wardrobe</li>
+<li>bathroom/restroom/washroom/toilet 洗手间</li>
+<li>sunhat、sunglasss、sunblock</li>
+<li>shine 照耀</li>
+<li>shave 刮脸、shaver刮胡刀</li>
+<li>village</li>
+<li>valley</li>
+<li>hill 丘陵、山</li>
+<li>along、bank(河岸)</li>
+<li>off 离开</li>
+<li>vase</li>
+<li>take (带走)vs bring(带来)</li>
+<li>sugar 白砂糖 candy 糖果</li>
+<li>tabacco 烟草，cigarette 香烟</li>
+<li>cent 美分</li>
+</ul>
+<h1 id="_16">短语</h1>
+<ul>
+<li>big mouth 大嘴巴</li>
+<li>small change 零钱</li>
+<li>small talk 闲聊</li>
+<li>light rain 小雨</li>
+<li>light snow 小雪</li>
+<li>long time no see 好久不见</li>
+<li>grandfather clock 老座钟</li>
+<li>Great-grandfather 曾祖父</li>
+<li>a full stop 句号</li>
+<li>legwork 跑腿工作</li>
+<li>boil the ocean 好高骛远</li>
+<li>make the bed 整理床铺</li>
+<li>over the bridge 过桥</li>
+<li>dream boat 梦中情人</li>
+<li>20% OFF 8折优惠</li>
+<li>do with</li>
+<li>There we are 就放在那吧，放好了</li>
+<li>in front of 在...之前(两个相对独立的个体之间的关系)，in the front of(一个物体的前端)</li>
+<li>sugar coat 委婉</li>
+</ul>
+<h2 id="_17">时态</h2>
+<p>时态 = 时间 + 状态</p>
+<p>时间: 过去、现在、将来
+时态: 一般、进行、完成</p>
+<p>动作发生的时间
+主语 + 动词 + 其它成份
+一共16种时态</p>
+<ul>
+<li>现在进行时(目前正在发生的动作)</li>
+</ul>
+<p>主语 + am/is/are + 动词-ing(动词的现在分词)</p>
+<ol>
+<li>动词直接加ing walking、reading、seeing、going</li>
+<li>动词以不发音的字母e结尾，去掉e加ing coming、making、smoking</li>
+<li>动词的拼写是，辅音 + 1元音 + 1辅音 结尾，同时该元音字母在单词中处于重读音节，此事时双写辅音字母加ing sitting、running、swimming、regretting</li>
+</ol>
+<p>I am sleeping(不正确的，正在睡觉的情况下，怎么会和别人交谈呢)
+I am watching TV
+We are cleaning the room
+She is playing the guita
+He is typing a letter
+They are swimming in the river</p>
+<p>变成一般疑问句:
+She is watching TV -&gt; Is she watching TV?
+They are swimming in the river -&gt; Are they swimming in the river?</p>
+<p>变成否定句
+She is watching TV -&gt; She isn't watching TV</p>
+<p>变成特殊疑问句
+She is watching TV -&gt; Who is watching TV?
+She is watching TV -&gt; What is she doing?</p>
+<ul>
+<li>一般将来时 (现在对于未来的打算) bo going to</li>
+</ul>
+<p>预先计划和打算要做的事
+主 + is/am/are + going to + 后面接动词原行 / be going to be + (adj n prep)等</p>
+<p>I am going to shopping this weekend
+He is going to sell the car</p>
+<p>口语中 be going to = be gonna</p>
+<h2 id="_18">祈使句</h2>
+<p>Don't + 动词圆形
+Don't Speak
+Don't enter
+Don't kiss me
+Don't smoke</p>
+<h2 id="_19">写作</h2>
+<p>今天的天气真好。天空中飘着几朵白云，但是阳关灿烂。Lucy和她的男朋友在一块儿。他们正在开车。Lucy正在看一只漂亮的小鸟。小鸟正从天上飞过。
+一些人正从天桥上走过。他们很忙。</p>
+<p>It is fine today，There are some clouds in the sky, But the sun is shining.
+Lucy is with her boyfriend. They are driving. Lucy is looking at a beautiful bird.
+The bird is flying in the sky. Some people are walking over the brideg. They are busy</p>
+<p>It's vs its的区别</p>
+<h2 id="41-pennys-bag">41 Penny's bag</h2>
+<p>a loaf of
+a bar of
+a pound of
+tobacco
+cheese
+it's certaintly not for me! 当然不会是给你的
+What's in it? 里面是什么东西</p>
+<h3 id="43-hurry-up">43 Hurry up</h3>
+<p>electric up 通电
+teapot 茶壶
+pot 锅、罐，容器
+flow pot 花盆
+hot pot火锅
+boil 沸腾开(不及物动词)
+The kettle is boiling (水壶开了，现在进行时)
+boil 煮(及物东西，可以接双宾语)
+Please boil me an egg
+Please boil an egg for me
+oil 油(汽油、食用油)
+pil painting 油画
+housewife -&gt; housewives(复数)</p>
+<p>some(用在肯定句) vs any(否定句) + 可数名次复数或不可数名次，不能接可数名次的单数形式
+any 若干、任何
+Is there any(任何) beer in the bolle? -&gt; No, there isn't any(代词)</p>
+<p>There are some books on the table?
+Are there any books on the table?
+There aren't any book on the table?</p>
+<p>如果是一个表示请求、建议、反问的疑问句，或希望得到对方肯定答案才提出的疑问句可以用some
+Shall I have some coffee?
+What about some tea?
+Why don't we have some beer?
+Are these some students in the classroom?</p>
+<p>在一个表示部分否定的否定句中可以用some
+Some of them are not Chinese</p>
+<p>over there 在那边
+hurry up  赶快 =&gt; quickly
+get up 起床
+eat up 吃光、吃完
+speed up 快一点
+speak up 大点声(speak loudly)
+shut up 闭嘴
+wait up 等一等</p>
+<p>slow down 慢点
+calm down 冷静
+sit down 坐下
+put that down 放下</p>
+<p>calm:
+  adj. 静的，平静的；沉着的
+  vt. 使平静；使镇定
+  vi. 平静下来；镇定下来
+  n. 风平浪静</p>
+<p>in the front of vs in the front of
+in front of 在...之前(两个相对独立的个体之间的关系)，in the front of(一个物体的前端)</p>
+<p>情态动词: can(能力，允许、请求，要求)、must、必须放在动词的前面、此时改动词必须采用动词原型
+He must go no
+We must study English
+She must be in the office</p>
+<p>转变为一般疑问句，需要将情态动词放在居首或者主语前面
+Must he go now?
+转变为否定句，将must变成needn't、mustn't
+转变为特殊疑问句，针对主语提问，就是选好疑问词，剩下不变，否则就需要将情态动词放在主语前面，然后加疑问词
+What must we do?</p>
+<p>She must be in the office
+1. Must she be in the office?
+2. She mustn't be in the office
+3. Where must she be?</p>
+<p>英语中习惯以第一人称为主体，中文则不是</p>
+<p>Can you bring me some water, please? -&gt; Can I have some water, please?</p>
+<p>Can I have your name?
+Can I help you?
+Can I have your e-mail address?
+Can I use your bike?
+Can I have your order?
+Can I speak to Tom please?
+Can I have a look at your cell phone?</p>
+<p>Can you speak English(你会英语吗，侧重询问对方有没有这个能力，具有挑战的意味)? Do you speak English? 更礼貌</p>
+<h2 id="45-the-bosss-letter">45 The boss's letter</h2>
+<p>wait a minute 等一会
+ask the way 问路
+his handwriteing is very nice 他的字写的很好
+lift 举起、拿起、电梯(直梯)
+Can you lift this heavy case?
+a minute 一会
+Can you come here a minute please?
+next door 在隔壁
+next-door 隔壁的 adj
+She is next door 她在隔壁
+There is a shcool next door to the park
+和什么相邻 next door to ...
+The next door girl is very beautiful 放在名词的前面做修饰</p>
+<ul>
+<li>情态动词 表示情感和态度的词(can、must、may....)
+  用法: +动词，且原型
+  没有单复数和人称之分
+  You must go out
+  Can you please stand up?
+  疑问句:
+    can 直接提前变成疑问句
+    Tom can swim well -&gt; Can tom swim well
+  否定句:
+    can-&gt;can't、cannot
+    must-&gt;mustn't(禁止，语气极端强)
+    may-&gt;may not
+    don't need 没必要</li>
+<li>连系动词</li>
+<li>实义动词</li>
+<li>助动词</li>
+</ul>
+<h2 id="47-a-cup-of-coffee">47 A cup of coffee</h2>
+<p>dislike 不喜欢
+I dislike coffee very much</p>
+<p>like 喜欢(v)、像(prep)
+You look like your father
+Like father, like son 有其父必有其子
+Love me, love my dog 爱屋及屋</p>
+<p>butter 黄油
+butterfly 蝴蝶
+bread and buttle 饭碗、生计
+Teaching is my bread and buttle 教书是我的饭碗
+pure 纯净的
+honey 蜂蜜
+ripe 成熟的
+choice 上等的、精选的</p>
+<p>Do you like books? 并不是Do you like book?</p>
+<ul>
+<li>肯定句</li>
+<li>否定句</li>
+<li>一般疑问句</li>
+<li>特殊疑问句</li>
+</ul>
+<p>肯定句 -&gt; 一般疑问句 (需要将动词(be动词、情态动词，如果同时出现，左侧动词提前)放在主语之前)
+He must be in the office -&gt; Must he be in the office
+既没有be动词、也没有情态动词、也没有助动词的时候需要用do(助动词)来辅助完成转换为疑问句
+I like coffee -&gt; Do you like coffee?
+I must do my homework 这里的do是做的意义，不是助动词</p>
+<p>肯定句 -&gt; 否定句 (否定词not、有be动词时放在其后，有情态动词放在其后，助动词放在其后，同时出现，放在最左侧动词后)
+He is a teacher -&gt; He isn't a teacher
+He must go now -&gt; He nneedn't go now
+He must be in the office -&gt;  He needn't be in the office</p>
+<p>没有be、情态、助动词的时候，需要引入do，然后not放在后面
+I like coffee -&gt; I don't like coffee</p>
+<p>肯定句 -&gt; 特殊疑问句 (不针对主语提问的时候，需要把动词提到主语之前，含有be动词就提前、情态动词提前、助动词提前，都没有的情况使用do放在主语前)
+He is a teacher -&gt; who is he?
+He must go now -&gt; When must he go?
+I can swim -&gt; What can you do?</p>
+<h2 id="49-at-the-butchers">49 At the butcher's</h2>
+<p>mutton 羊肉
+teak 牛排 a piece of steak
+pork
+tell sb.sth 告诉某人某事
+I don't know either</p>
+<p>either vs too 前者用于否定句、后者用在肯定句</p>
+<p>at the butcher's
+at the doctor's
+at the hairdresser's</p>
+<p>Are you ....? vs Do you ...?</p>
+<p>Are you + 非动词? Is she/he/it....?
+Do you + 动词? Does she/he/it....?</p>
+<p>Are you busy?
+Are you a techaer?
+Are you at home?</p>
+<p>Do you sleep well?
+Do you make the bed?
+Do you have breakfast?</p>
+<p>三单: 第三人称单数(she、he、it，人的名字、人的称呼、单个物体、不可数名词)</p>
+<p>礼貌回复:</p>
+<ol>
+<li>Yes please</li>
+<li>No, thank you</li>
+</ol>
+<p>一般现在时:
+1. 何时用</p>
+<ul>
+<li>经常的状态</li>
+<li>习惯的动作</li>
+<li>
+<p>真理(客观事实)</p>
+</li>
+<li>
+<p>结构</p>
+</li>
+</ul>
+<p>经常的状态 主语 + is/am/are
+  习惯的动作 主语 + 动词
+  真理 主语 + is/am/are or 主语 + 动词</p>
+<p>They are very bad
+  They often cheat in the exams
+  They earth is round
+  The sun rises in the east</p>
+<p>后面接的动词:
+    * 主语为非三单 + 动词原型
+    * 主语为三单 + 动词s\es</p>
+<p>变疑问句:
+They drink beer every night
+Do they drink beer every night?</p>
+<p>He loves his girlfriend very much
+Does he love his girlfriend very much?</p>
+<h2 id="51-a-pleasant-climate">51 A pleasant climate</h2>
+<p>名词 + y =&gt; 形容词
+rain -&gt; rainy
+cloud -&gt; cloudy
+snow -&gt; snowy
+luck -&gt; lucky
+sun -&gt; sunny</p>
+<p>What is the climate like?
+What is the weather like?
+What is your new boss like?</p>
+<p>How are you?
+How is the climate?
+Hos is the wealther?
+How is your new job?
+How is your English?</p>
+<p>in(在...里面，在一个较大的地方) vs on(在...上面，在...旁边，靠近) vs at(用于较小且具体的地点或门牌号前)</p>
+<p>和时间搭配
+1. in 通常和大段时间， in Jan、in Feb、in Mar、in spring、in summer、in autumn、in the monring(固定搭配)
+2. on 和某一天搭配， on Monday
+3. 与分钟和小时搭配 at noon(固定搭配) at night(固定搭配)</p>
+<p>this开头的时间不使用介词 this moring、this week
+last开头的时间不使用介词 last night、last week、last month
+next开头的时间不使用介词 next time、next week</p>
+<p>副词: 在句子中专门修饰、忽悠形容词、动词以及其他副词(形容词、动词后)</p>
+<p>I am very tired (修饰形容词)
+I like English best (修饰动词)
+I work very hard (修饰副词)</p>
+<p>Beijing is my favorite city -&gt; I like Beijing best
+Spring is my favorite city -&gt; He likes spring best</p>
+<blockquote>
+<p>修饰动词的词是副词</p>
+</blockquote>
+<p>频度副词  主要是用来修饰动词的，放在动词前、情态动词和be动词后、sometimes例外都可以，还可以放在居首表强调
+always (100%)
+usually (90%)
+often (60%)
+sometimes (30%)
+seldom (5%)
+never (0%)</p>
+<h2 id="53-an-interesting-climate">53 An interesting climate</h2>
+<p>mild food 清淡的食物
+East,west,home is beast 金窝银窝不如自己的草窝
+wet 潮湿
+water - wash - wine - wave - well - weep - woman</p>
+<p>The neights are short, and days are long</p>
+<h2 id="55-the-sawyer-family">55 The Sawyer family</h2>
+<p>supper 晚餐
+dinner 正餐
+Good evening 晚上好
+Good night 晚安
+eventing dress 晚礼服</p>
+<p>arrive in Beijing(大地点)
+arrive at school (小地点)
+arrive at the airport (小地点)
+arrive at bus station(小地点)</p>
+<p>可数名词复数 vs 动词三单</p>
+<ol>
+<li>
+<p>+s
+books teachers dogs vs walks answers begs</p>
+</li>
+<li>
+<p>+es
+boes watches dishes vs passes washes teaches</p>
+</li>
+<li>
+<p>辅音+y，去y变i + es
+city cities、lady、ladies vs study、studies、try tryes</p>
+</li>
+</ol>
+<p>the 姓名s 表示一家人，特指夫妇两</p>
+<p>I am going to work vs I go to work
+I usually finish my work at 5
+Let's go shopping after work</p>
+<h2 id="57-an-unusual-day">57 An unusual day</h2>
+<p>A: 一般现在时 vs B: 现在进行时</p>
+<ol>
+<li>使用情况不同</li>
+<li>一般现在时: 习惯的状态、经常的动作、真理</li>
+<li>
+<p>现在进行时: 此时此刻正在做，一段时间内一直</p>
+</li>
+<li>
+<p>结构不同</p>
+</li>
+<li>一般现在: 主语 + is\am\are, 主语 + v.</li>
+<li>
+<p>现在进行时: 主语 + is\am\are + doing</p>
+</li>
+<li>
+<p>时间状语不同</p>
+</li>
+<li>一般现在: every...、always, usually， often，sometimes...</li>
+<li>现在进行: now、at the monment</li>
+</ol>
+<p>I usually have launch at 12:00.
+But I am having lauch now at 2:00</p>
+<h2 id="59-is-that-all">59 Is that all?</h2>
+<p>Is that all? 就这些吗?</p>
+<ol>
+<li>基数词</li>
+</ol>
+<p>teen 十几岁、青少年
+thirteen、fourteen、fifteen、sixteen、seventeen、eighteen、nighteen
+twenty twenty-one
+thirty thirty-one
+forty forty-one
+fifty fifty-one
+seventy seventy-one
+eighty eighty-one
+ninety
+hundred one hundred two hundred  hundred and + 十/个(999 -&gt; nine hundred and ninety-nine)
+thousand one thousand two thousand thouand and + 百/十／个
+ten thousand 一万
+one million 一百万
+millionaire 百万富翁</p>
+<ol>
+<li>序数词
+first、second、third、fourth、fifth、sixth、seventh、eighth、ninth、tenth、eleventh、twelfth
+thirteenth、fourteenth、fifteenth、sizteenth、....
+twentieth 第二十</li>
+</ol>
+<h2 id="61-a-bad-cold">61 A bad cold</h2>
+<ul>
+<li>tongue</li>
+</ul>
+<p>感官动词 -&gt; 半系动词(有三单复数、过去式...和实义动词有相同的性质，用形容词修饰，实义动词用副词修饰)</p>
+<ol>
+<li>taste</li>
+<li>feel</li>
+<li>sound</li>
+<li>smell</li>
+<li>look</li>
+<li>listen</li>
+</ol>
+<p>in bed 生病卧床
+in the bed 躺在床上</p>
+<p>打电话给某人:</p>
+<ol>
+<li>call sb</li>
+<li>phonse sb</li>
+<li>give sb a call</li>
+<li>give sb a phone</li>
+</ol>
+<p>headcache 头疼
+earache 耳朵疼
+backache 背疼</p>
+<p>flu 流行性感冒
+temperature 温度
+medicine 药
+measles 麻疹</p>
+<h2 id="63-thank-you-doctor">63 Thank you, doctor</h2>
+<ul>
+<li>certainly 当然</li>
+<li>remain 继续、保持</li>
+<li>yet 还、仍</li>
+<li>come upstairs 上楼 or  go upstairs</li>
+<li>rich 油腻的</li>
+<li>have(has)</li>
+<li>拥有</li>
+<li>吃喝</li>
+<li>患、生、得、有</li>
+<li>have + a + 名(动作，行为) 从事进行... (have a rest、have a talk)</li>
+<li>经历 have a party、have a class</li>
+</ul>
+<p>情be后定词前、句首句尾表强调</p>
+<h2 id="64-dont-you-mustnt">64 Don't ...! You mustn't ...!</h2>
+<ul>
+<li>match 火柴</li>
+<li>so 如此地</li>
+<li>lean out of 身体探出</li>
+<li>lean 倾斜、依靠、倾向</li>
+<li>noise 喧闹声</li>
+<li>play with matches 玩火柴</li>
+<li>make a noise 发出响声</li>
+</ul>
+<p>动词的形式:</p>
+<ol>
+<li>动词原型 walk</li>
+<li>第三人称单数 walks</li>
+<li>
+<p>现在分词 walking</p>
+</li>
+<li>
+<p>祈使句中的动词要用原型 Don't drop it</p>
+</li>
+<li>be going to + 动词原型 一般将来时</li>
+<li>情态动词后接动词原型</li>
+</ol>
+<h2 id="65-not-a-baby">65 Not a baby</h2>
+<ul>
+<li>反身代词的目的是强调主语，代词是用来代替主语的词</li>
+<li>He himself sent me a gift(强调是他亲自送给我的礼物)</li>
+<li>介词 + 反身代词</li>
+<li>the key to the front door 前门钥匙</li>
+<li>enjoy后面往往接一个反身代词</li>
+<li>by oneself 独自</li>
+<li>learn sth by himself 自学</li>
+<li>help oneself 随意</li>
+<li>enjoy oneself 玩的开心</li>
+<li>must/can + be + 非动词</li>
+<li>He can be here for a long time</li>
+<li>They must be here at 9:00</li>
+</ul>
+<p>反身代词:</p>
+<p>单数: myself、yourself、(himself、herself、itself)
+复数: ourselves、yourselves、themselves</p>
+<h2 id="66-whats-the-time">66 What's the time?</h2>
+<ul>
+<li>7:30</li>
+</ul>
+<p>half past seven
+half to eight</p>
+<ul>
+<li>4:20</li>
+</ul>
+<p>four twenty
+twenty past four</p>
+<ul>
+<li>10:15</li>
+</ul>
+<p>ten fifteen 10:15
+fifteen past ten
+a quarter past ten</p>
+<ul>
+<li>2:45</li>
+</ul>
+<p>three quarter past two</p>
+<ul>
+<li>2:55</li>
+</ul>
+<p>two fifty-five
+five to three
+fifty-five past two</p>
+<ul>
+<li>7:30</li>
+</ul>
+<p>seven thirty
+thirty past seven
+half past seven
+half to eight
+two quarters past seven</p>
+<h2 id="67-the-weekend">67  The weekend</h2>
+<p>主语 + 动词(时态) + 其他成份</p>
+<p>主语 + am/is/are + 动词ing 现在进行时
+主语 + am/is/are + going to + 动词原型 一般将来时
+主语 + was/was/were + 动词过去式 一般过去时</p>
+<p>动词的过去式形式，分为两大类：</p>
+<ul>
+<li>规则动词</li>
+<li>
+<p>动词 =&gt; ed
+    walk -&gt; walked
+    stay -&gt; stayed
+    rain -&gt; rained</p>
+</li>
+<li>
+<p>不发音的动词e结尾 =&gt; d
+    arrive -&gt; arrived
+    move -&gt; moved
+    smoke -&gt; smoked</p>
+</li>
+<li>
+<p>辅音结尾 =&gt; i + ed
+    study -&gt; studied
+    try -&gt; tryied
+    cry -&gt;cryied</p>
+</li>
+<li>
+<p>辅音 + 1元音(重度音节) + 辅音() =&gt; 双写辅音 + ed
+    open(重音在o，不在e) -&gt; opened
+    stop -&gt; stopped
+    slip -&gt; slipped
+    regret -&gt; regretted</p>
+</li>
+<li>
+<p>不规则动词</p>
+</li>
+</ul>
+<p>go -&gt; went
+say -&gt; siad
+read -&gt; read
+put -&gt; put
+make -&gt; made
+see -&gt; saw</p>
+<p>过去式的发音问题:</p>
+<ol>
+<li>
+<p>清辅音(声带不震动) + ed /t/
+  walk -&gt; walked
+  watch -&gt; watched
+  help -&gt; helped</p>
+</li>
+<li>
+<p>浊辅音 &amp; 元音 + ed /d/
+  open -&gt; opened
+  play -&gt; played</p>
+</li>
+<li>
+<p>/t/ &amp; /d/ + ed /id/
+  want -&gt; wanted
+  need -&gt; needed</p>
+</li>
+<li>
+<p>aren't you lucky! =&gt; 否定疑问句形式的感叹句，为的是加强语气，表示强有力的肯定 你们真幸运</p>
+</li>
+<li>
+<p>absent from 缺席</p>
+</li>
+</ol>
+<p>absent from school
+absent from work</p>
+<ul>
+<li>
+<p>How are you all keeping? =&gt; How are you?</p>
+</li>
+<li>
+<p>for the weekend 是指周末这几天的时间、at the weekend是强调时间的某一点。</p>
+</li>
+</ul>
+<h2 id="69-the-car-race">69 The car race</h2>
+<ul>
+<li>hundreds of ....数以百计的....</li>
+<li>the year of the snake</li>
+<li>It is the year of the snake and it was the year of the dragon</li>
+<li>on the way to school(名词需要介词来连接)</li>
+<li>on the way home(副词，直接修饰)</li>
+<li>by the way</li>
+<li>No way</li>
+<li>stationer 文具商</li>
+<li>in the race 参加比赛</li>
+<li>at the race 观看比赛</li>
+</ul>
+<p>数字在后面</p>
+<ul>
+<li>Line 10</li>
+<li>Room 61</li>
+<li>Platform 19</li>
+</ul>
+<p>five other(通常直接接名词) cars 其他五辆车</p>
+<p>My wife and I(自己放在后面) were at the race</p>
+<ul>
+<li>at vs on vs in</li>
+</ul>
+<p>at + 点
+on + 天
+in + 月、季、年</p>
+<p>There be 句型的过去式</p>
+<p>There be + (was, were) + 地点</p>
+<p>疑问句将 was/were提到最前面</p>
+<p>分类:
+  1. There was + 单数名词
+  2. There were + 复数名词</p>
+<ul>
+<li>有</li>
+<li>拥有 have</li>
+<li>存在 there be</li>
+</ul>
+<h2 id="71-hes-awful">71 He's awful</h2>
+<ul>
+<li>awful 让人讨厌的、坏的</li>
+<li>once、twice、three times (一次、二次、三次....)</li>
+</ul>
+<p>says(三单) 发音是 /sez/</p>
+<p>very nice to see you again</p>
+<p>say 强调说话的内容
+speak 突出说话的方式或动作本身  speak loudly、speak slowly、speak English</p>
+<p>she said sorry to me</p>
+<p>The day before yeasterday 前天
+The night after next</p>
+<p>at six o'clock yesterday eventing (小时间在前)</p>
+<p>He was in the office</p>
+<ol>
+<li>Was he in the office?  一般疑问句，be动词提前即可</li>
+<li>He wasn't in the office 否定词</li>
+<li>Where was he? 不是针对主语提问的，动词提前 特殊疑问句</li>
+<li>Who was in the office 针对主语提问，动词不提前 特殊疑问句</li>
+</ol>
+<p>There was a car race in our town in 1998</p>
+<ol>
+<li>Was there a car race in our town in 1998?</li>
+<li>There wasn't a car race in our town in 1998</li>
+<li>What was there in our town in 1998?</li>
+</ol>
+<p>He went to school yesterday</p>
+<ol>
+<li>Did he go to school yesterday (Do会将原先的动词语法成分吸收过来)</li>
+<li>He did't go to shcool yesterday</li>
+<li>When did he go to shcool?</li>
+<li>Where did he go yesterday?</li>
+<li>What did he do yesterday?</li>
+<li>Who went to school yesterday?</li>
+</ol>
+<p>He likes coffee? -&gt; Does he like coffee?</p>
+<p>情态动词没有数和人称的变化</p>
+<h2 id="73-the-way-to-king-street">73 The way to King Street</h2>
+<ul>
+<li>suddently</li>
+<li>bus stop</li>
+<li>a green hand 新手</li>
+<li>hurriedly 匆忙地</li>
+<li>thirstily 口渴地</li>
+<li>greet 问候，打招呼  greet to sb 向某人打招呼</li>
+</ul>
+<p>smile(微笑) vs laugh(大笑)</p>
+<p>He said and smiled
+She is telling me a story with a smile
+They are talking and laughing</p>
+<p>speak vs say</p>
+<ul>
+<li>say 强调说话的内容</li>
+<li>speak 突出说话的方式或动作本身</li>
+</ul>
+<p>过去式</p>
+<ul>
+<li>go to -&gt; went to</li>
+<li>lose her way -&gt; lost her way</li>
+<li>see -&gt; saw</li>
+<li>say -&gt; said</li>
+<li>smile -&gt; smiled</li>
+<li>do not -&gt; did not</li>
+<li>speak -&gt; spoke</li>
+<li>is -&gt; was</li>
+<li>put -&gt; put</li>
+<li>take -&gt; took</li>
+<li>open -&gt; opened</li>
+<li>find -&gt; found</li>
+<li>read -&gt; read</li>
+</ul>
+<p>she does not know ... very well</p>
+<p>He does not know Beijing very well
+I know xxx very well</p>
+<ul>
+<li>take out 拿出 take sth out of 从...拿出来</li>
+</ul>
+<p>I do not speak English
+I cannot speak English</p>
+<p>副词变化:</p>
+<ol>
+<li>一般直接 + ly quickly</li>
+<li>辅 + y结尾 -&gt; 变y为i + ly lazy-&gt;lazily, happy-&gt;happily</li>
+<li>以ll结尾，直接+y fully</li>
+<li>辅音 + le，e变为y : able-&gt;ably，single-&gt;singly</li>
+<li>元音 + e结尾 ，去e + ly : true-&gt;truly</li>
+</ol>
+<p>ly结尾，不是副词，是形容词
+lovely 可爱的
+deadly 救命的
+friendly 友好的</p>
+<p>句子组织的五个步骤:</p>
+<p>谁、干了什么、如何干的、在哪干的、何时干的</p>
+<ol>
+<li>
+<p>他每天开心地在家等她
+He waits for he happily at home every day</p>
+</li>
+<li>
+<p>我突然在教室发现一个不认识的人
+I find a stranger suddenly in the classroom</p>
+</li>
+<li>
+<p>他上周匆忙地离开
+He left hurriedly last week</p>
+</li>
+<li>
+<p>我昨天忙碌地在商场买了很多鞋
+I bought many shoes busily  in the mall yesterday</p>
+</li>
+</ol>
+<h2 id="75-uncomfortable-shoes">75 Uncomfortable shoes</h2>
+<ul>
+<li>ago 以前，常和过去式搭配</li>
+<li>pair a pair of</li>
+<li>scissors 剪刀</li>
+<li>trousers 裤子</li>
+<li>
+<p>fashion
+  out of fashion 过时
+  in fashion now 留行</p>
+</li>
+<li>
+<p>uncomfortable
+  untidy
+  unhappy
+  unwell</p>
+</li>
+<li>wear 穿着 (强调状态)
+  put on 穿上 (强调动作)</li>
+</ul>
+<p>第三人称单数、又称一般现在时三单，仅在一般现在时有效，过去式没有三单的概念</p>
+<p>She put the book in the bag yesterday
+put 是过去式(yesterday)、所有不用写成puts、
+情态动词后面接动词原型</p>
+<p>She drinks some tea every day
+They drink some tea every day
+He can drink some coffee
+He drank a cup of coffee yesterday</p>
+<p>介词 + 名词/代词 -&gt; 介词短语，通常作为地点状语、定语(对人和事物进行限定和描述) 作为定语时要放在修饰的词之后</p>
+<p>名词所有格就是定语</p>
+<p>Mary's room
+Tom's bike
+of our village</p>
+<ul>
+<li>on the table</li>
+<li>in the room</li>
+<li>in our town</li>
+</ul>
+<p>A friend in need is a friend indeed 在需要的时候出现的朋友，才真的是朋友</p>
+<h2 id="77-terrible-toothache">77 Terrible toothache</h2>
+<ul>
+<li>appointment 约会、预约</li>
+<li>urgent 紧急的、紧迫的  urgent to do</li>
+</ul>
+<p>否定疑问句: 一般疑问句的问词 + not的缩略式</p>
+<p>Are you ok? -&gt; Aren't you ok?
+Do you know that? -&gt; Don't you know that?
+Can you wait? -&gt; Can't you wait?</p>
+<p>何时用?</p>
+<ol>
+<li>
+<p>表达强调 Aren't you lucky!</p>
+</li>
+<li>
+<p>表达情绪 Don't you love me?</p>
+</li>
+</ol>
+<p>组织步骤:</p>
+<p>一般疑问句(先看词性 + 再看人称) + not</p>
+<ul>
+<li>难道她不漂亮(形容词，需要使用系动词)吗？</li>
+</ul>
+<p>Is she beautiful?
+Isn't she beautiful?</p>
+<ul>
+<li>
+<p>难道她(第三人称单数，三单形式)没有(动词，需要使用助动词Do)男朋友吗?
+Does she have a boyfriend?
+Doesn't she have a boyfriend?</p>
+</li>
+<li>
+<p>难道你昨天没去约会(动词)吗?</p>
+</li>
+</ul>
+<p>Did you have a date yesterday?
+Didn't you have a date yesterday?</p>
+<ul>
+<li>难道你就不能(情态动词)温柔一点吗?</li>
+</ul>
+<p>Can you be tender?
+Can't you be tender?</p>
+<h2 id="79-carols-shopping-list">79 Carol's shopping list</h2>
+<ul>
+<li>make</li>
+<li>制造</li>
+<li>制作 make a film</li>
+<li>产生、引起 make a noise</li>
+<li>写</li>
+<li>
+<p>挣</p>
+</li>
+<li>
+<p>have got、has got (固定结构，英式英语) 拥有 == have or has (美式英语)</p>
+</li>
+<li>
+<p>He has got a new bike =&gt; He's got a new bike has也缩写成 He's了</p>
+</li>
+<li>
+<p>many vs much vs a lot of
+  many 主要用于疑问句和否定句中、放在可数名词前
+  much 用于疑问句和否定句中，放在不可数名词前
+  a lot of 许多，用在肯定句中，既可用于不可数名词，也可以用于可数名词</p>
+</li>
+<li>
+<p>I have got a new bike (have 视为助动词，美式英语中的have不能视为助动词)</p>
+</li>
+</ul>
+<p>Have i got a new bike?、 Yes I have
+I haven't got a new bike
+What have you got?</p>
+<ul>
+<li>
+<p>过去时态下，一般只用had、不用got，无论英式英语还是美式英语</p>
+</li>
+<li>
+<p>用not或no构成的否定句中，要用or连接对等的词</p>
+</li>
+<li>
+<p>部分否定 (much和many 在否定句中表示部分否定)，完全否定(any，无论可数还是不可数)</p>
+</li>
+<li>我们的牛奶不多 We haven't got much milk</li>
+<li>他们的苹果不多了 They don't haven many apple</li>
+<li>她的巧克力不多了 She hasn't got much chocolate</li>
+<li>他的鸡蛋不多了 He hasn't got many eggs</li>
+</ul>
+<h2 id="81-roast-beef-and-patatoes">81 Roast beef and patatoes</h2>
+<ul>
+<li>Sam's here sam来了，表示xxx来了</li>
+<li>Have a cigarette 抽根烟</li>
+<li>I nearly die</li>
+<li>Then no 那就算了吧</li>
+<li>breakfast早餐、lunch午餐、dinner晚餐、正餐</li>
+<li>roast 烤的、roast duck烤鸭</li>
+<li>have a haircut 去理发</li>
+<li>dinner party 宴会</li>
+<li>holiday(英式)、vocation(美式)</li>
+<li>biscuit 小点心、饼干</li>
+</ul>
+<p>have:
+  1. 实义动词 has、had
+    * 拥有  I have a close friend in Beijing
+    * 生病
+    * 吃、喝、玩、乐、做  洗澡(have a bath)、have a swim、have a haircut、have a party
+  2. 现在完成式(主语 + have(has) + done)，无意义，只能用来做现在完成时</p>
+<h2 id="83-going-to-holidy">83 Going to holidy</h2>
+<ul>
+<li>mess 杂乱、凌乱</li>
+<li>untidy</li>
+<li>suitcase 手提箱</li>
+</ul>
+<p>现在完成时:</p>
+<p>主语 + have/has + 动词的过去分词 + 其他成分</p>
+<ol>
+<li>表示在过去不确定的时间里发生的，并与现在有着某种联系的动作</li>
+<li>表示开始与过去并持续到现在的动作</li>
+</ol>
+<p>I have(助动词) finished my work</p>
+<ul>
+<li>Have you finished my work? Yes I have、No, I haven't</li>
+<li>I haven't finished my work</li>
+<li>What have you finished?</li>
+<li>Who has finished the work?</li>
+</ul>
+<p>动词原型 -&gt; 过去分词:</p>
+<p>不规则动词:
+go、went、gone
+read、read、read
+put、put、put
+is been</p>
+<p>规则动词: 和如何变成过去式一致
+* 动词 + ed worked
+* 动词 + d  arrived
+* 辅音 + ied  -&gt; study studied
+* 辅音 + 1元音 + 1辅音</p>
+<ol>
+<li>说话人主观上强调过去的动作或状态的延续性，其持续到现在</li>
+</ol>
+<p>我学过英语 一般过去式
+我学英语十年了。 现在完成时</p>
+<ol>
+<li>
+<p>言之过去、意在当下</p>
+</li>
+<li>
+<p>要不要和我们一起吃晚饭?
+不、谢谢，我已经吃过了，现在</p>
+</li>
+<li>
+<p>具体的、表过去的时间状语往往不能用在现在完成时的句子</p>
+</li>
+<li>
+<p>yesterday</p>
+</li>
+<li>the day before yesterday</li>
+<li>ago</li>
+<li>at 4:00/6:30...
+  .....</li>
+</ol>
+<h2 id="85-paris-in-the-spring">85 Paris in the spring</h2>
+<ul>
+<li>cinema 电影院</li>
+<li>just now 刚刚(一般过去)</li>
+<li>just (现在完成时)</li>
+<li>夹着，在英文中表示的是介词，并不是动词，用between表示</li>
+<li>have been to ... 到过...</li>
+<li>He has been there 到过那里</li>
+<li>What's on? 上演了什么电影</li>
+</ul>
+<p>主语 + have/has + been + 非动词</p>
+<ol>
+<li>been to 去过</li>
+<li>gone to 去了</li>
+</ol>
+<p>副词可以直接跟在动词后面修饰动词，名词则需要集合介词来修饰动词</p>
+<ol>
+<li>Have you ever been there(地点副词，可以直接修饰动词there)?</li>
+<li>Have you just been to the cinema</li>
+</ol>
+<p>漂亮:
+1. nice
+2. smart
+3. lovely
+4. good-looking
+5. gorgeous</p>
+<p>never:</p>
+<ul>
+<li>一般现在时</li>
+</ul>
+<p>He never(实义动词前) gets up early
+She is never(系动词后) late
+实前系后</p>
+<ul>
+<li>现在完成时</li>
+</ul>
+<p>I have never left 我从未离开
+I have never... 现在完成的否定形式</p>
+<ul>
+<li>一些短语中</li>
+</ul>
+<p>Never give up!
+Never fear!
+Never mind! 完全没关系</p>
+<p>ever:</p>
+<ol>
+<li>
+<p>等同于always
+Honesty ever pays 诚实永远有回报</p>
+</li>
+<li>
+<p>一般过去(疑问句中)
+Did you ever see such a man?</p>
+</li>
+<li>
+<p>现在完成(疑问句中)
+Have you ever....?</p>
+</li>
+<li>
+<p>口语中
+Don't ever do it! = Never do it!</p>
+</li>
+</ol>
+<p>一般过去时 vs 现在完成时</p>
+<ol>
+<li>
+<p>结构
+现在完成: 主语 + have/has + done
+一般过去: 主语 + was/were/did</p>
+</li>
+<li>
+<p>用法
+现在完成: 过去发生、影响现在
+一般过去: 过去发生、与现在无关</p>
+</li>
+<li>
+<p>时间状语
+现在完成时: just、already、before、never、ever、yet
+一般过式: yesterday、last..、...ago、just now</p>
+</li>
+<li>
+<p>口语功能
+现在完成时: 引起话题
+一般过去: 具体谈论</p>
+</li>
+</ol>
+<p>Have you ever...?</p>
+<h2 id="87-a-car-crash">87 A car crash</h2>
+<p>yet: 副词、疑问句尾表示 "已经"、否定句尾表示 "还"</p>
+<p>Example:
+  Is my car ready yet? 我的车已经准备好了吗?</p>
+<p>yet vs already</p>
+<p>Has he arrived already?
+Have you read this book already?</p>
+<p>licence plate number 车牌号</p>
+<p>attendant 接待员
+lamp 灯
+post 邮政、柱、杆</p>
+<h2 id="89">89</h2>
+<ul>
+<li>I believe that this house is for sale</li>
+<li>May I have a look at it, please?</li>
+<li>I've lived here for twenty years</li>
+<li>I have been here since 1976</li>
+<li>How much does this house cose?</li>
+<li>It's worth every penny of it</li>
+<li>Women always have the last word</li>
+</ul>
+<p>have the last word 说了算</p>
+<p>believe 相信、认为
+think
+feel 感觉、认为
+hold 握住、坚持认为
+consider 考虑、认为</p>
+<p>轮换不同的词来写作，而不是从头到尾就一个词。
+I think .....
+I also believe
+I still feel ...
+Do you consider so?</p>
+<p>May I ...?
+How long 多久
+since 自从
+  1. since + 时间点 She has been in Beijing since 2004
+  2. since + n She hasn't been out since the accident</p>
+<p>sale 卖(名词) big sale
+because:
+  1. because + of + n
+  2. because + 句子</p>
+                
+              
+              
+                
+<script src="https://utteranc.es/client.js"
+        repo="zyfjeff/zyfjeff.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../READMEN/" class="md-footer__link md-footer__link--prev" aria-label="上一页: READMEN" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              READMEN
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../sentence/" class="md-footer__link md-footer__link--next" aria-label="下一页: Sentence" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              Sentence
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2020 - 2021 程序员的Cookbook
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/zyfjeff" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.tabs", "navigation.instant", "toc.integrate"], "translations": {"clipboard.copy": "\u590d\u5236", "clipboard.copied": "\u5df2\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+      
+        <script src="../../../../javascripts/config.js"></script>
+      
+    
+  </body>
+</html>

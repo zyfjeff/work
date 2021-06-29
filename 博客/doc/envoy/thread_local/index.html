@@ -1,0 +1,4302 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="canonical" href="https://zyfjeff.github.io/%E5%8D%9A%E5%AE%A2/doc/envoy/thread_local/">
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Envoy源码分析之ThreadLocal - 程序员的Cookbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#envoythreadlocal" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="程序员的Cookbook" class="md-header__button md-logo" aria-label="程序员的Cookbook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            程序员的Cookbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Envoy源码分析之ThreadLocal
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/zyfjeff/zyfjeff.github.io/" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    zyfjeff/zyfjeff.github.io
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../../.." class="md-tabs__link">
+      About
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../basic/linux-debugger/" class="md-tabs__link md-tabs__link--active">
+        博客
+      </a>
+    </li>
+  
+
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/blog/" class="md-tabs__link">
+        学习笔记
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/bootstrap/" class="md-tabs__link">
+        开源项目
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/basic/" class="md-tabs__link">
+        编程语言
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/algorithm/" class="md-tabs__link">
+        计算机基础
+      </a>
+    </li>
+  
+
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="程序员的Cookbook" class="md-nav__button md-logo" aria-label="程序员的Cookbook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    程序员的Cookbook
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/zyfjeff/zyfjeff.github.io/" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    zyfjeff/zyfjeff.github.io
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2">
+        博客
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="博客" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          博客
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" checked>
+      
+      <label class="md-nav__link" for="__nav_2_1">
+        Doc
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Doc" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          Doc
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_1" type="checkbox" id="__nav_2_1_1" >
+      
+      <label class="md-nav__link" for="__nav_2_1_1">
+        Basic
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Basic" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Basic
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../basic/linux-debugger/" class="md-nav__link">
+        如何在Linux环境下实现一个调试器
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_2" type="checkbox" id="__nav_2_1_2" >
+      
+      <label class="md-nav__link" for="__nav_2_1_2">
+        Cpp
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cpp" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_2">
+          <span class="md-nav__icon md-icon"></span>
+          Cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cpp/%E5%A6%82%E4%BD%95mock%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/" class="md-nav__link">
+        如何mock系统调用
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_2_2" type="checkbox" id="__nav_2_1_2_2" >
+      
+      <label class="md-nav__link" for="__nav_2_1_2_2">
+        Effective Model Cpp
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Effective Model Cpp" data-md-level="4">
+        <label class="md-nav__title" for="__nav_2_1_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Effective Model Cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cpp/Effective-Model-Cpp/item1/" class="md-nav__link">
+        Item1
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cpp/Effective-Model-Cpp/item38/" class="md-nav__link">
+        Item38 Be aware of varying thread handle destructor behavior
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cpp/Effective-Model-Cpp/item39/" class="md-nav__link">
+        Item39 Consider void futures for one-shot event communication
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cpp/Effective-Model-Cpp/item40/" class="md-nav__link">
+        Item40 Use std::atomic for concurrency, volatile for specific memory
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cpp/Effective-Model-Cpp/item41/" class="md-nav__link">
+        Item41 Consider pass by value for copyable parameters that are cheap to move and always copied.
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cpp/Effective-Model-Cpp/item42/" class="md-nav__link">
+        Item42 Consider emplacement instead of insertion
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_3" type="checkbox" id="__nav_2_1_3" checked>
+      
+      <label class="md-nav__link" for="__nav_2_1_3">
+        Envoy
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Envoy" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          Envoy
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dispatcher/" class="md-nav__link">
+        Envoy源码分析之Dispatcher
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Envoy源码分析之ThreadLocal
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Envoy源码分析之ThreadLocal
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#threadlocal" class="md-nav__link">
+    ThreadLocal整体结构
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#threadlocal_1" class="md-nav__link">
+    ThreadLocal实现
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    总结
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_4" type="checkbox" id="__nav_2_1_4" >
+      
+      <label class="md-nav__link" for="__nav_2_1_4">
+        Linux
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Linux" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          Linux
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/Linux%E4%B8%AD%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F%E6%9C%89%E4%BB%80%E4%B9%88%3F/" class="md-nav__link">
+        Linux中的可执行程序有什么?
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/Linux%E4%BF%A1%E5%8F%B7%E4%B8%93%E9%A2%98FAQ/" class="md-nav__link">
+        Linux 信号FAQ
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/%E5%85%B3%E4%BA%8E%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%E7%9A%84%E5%8E%9F%E5%AD%90%E6%80%A7%E8%AE%A8%E8%AE%BA/" class="md-nav__link">
+        关于文件写入的原子性讨论
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_5" type="checkbox" id="__nav_2_1_5" >
+      
+      <label class="md-nav__link" for="__nav_2_1_5">
+        Rust
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Rust" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_5">
+          <span class="md-nav__icon md-icon"></span>
+          Rust
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/lifetime-error-cases/" class="md-nav__link">
+        常见的生命周期错误
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/macros/" class="md-nav__link">
+        Macros
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/match-pattern/" class="md-nav__link">
+        Match pattern
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/rust-error-handle/" class="md-nav__link">
+        Rust错误处理指南
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/rust-match/" class="md-nav__link">
+        Rust match
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/rust-misconceptions/" class="md-nav__link">
+        常见的生命周期概念错误
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/rust-module/" class="md-nav__link">
+        Rust module
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/rust-variance/" class="md-nav__link">
+        Rust variance
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        学习笔记
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="学习笔记" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          学习笔记
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" >
+      
+      <label class="md-nav__link" for="__nav_3_1">
+        Blog
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Blog" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Blog
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/blog/" class="md-nav__link">
+        Can Reordering of Release/Acquire Operations Introduce Deadlock?
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/blog/readling_list/" class="md-nav__link">
+        待阅读列表
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" type="checkbox" id="__nav_3_2" >
+      
+      <label class="md-nav__link" for="__nav_3_2">
+        Book
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Book" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Book
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/%20PracticalSystemProgrammingForRust/" class="md-nav__link">
+        Practical System Programing For Rust
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/ConcurrencyModernCpp/" class="md-nav__link">
+        Concurrency Modern C++
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/CppTemplate/" class="md-nav__link">
+        C++ Templates
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/KubernetesPrograming/" class="md-nav__link">
+        Programming Kubernetes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/LuaPrograming/" class="md-nav__link">
+        Lua Programing
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/MathematicsForComputerScience/" class="md-nav__link">
+        Mathematics For Computer Science
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/MuduoCpp/" class="md-nav__link">
+        Linux C++ 服务端编程
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/OS/" class="md-nav__link">
+        操作系统导论
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/ebpf/" class="md-nav__link">
+        ebpf
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3" type="checkbox" id="__nav_3_3" >
+      
+      <label class="md-nav__link" for="__nav_3_3">
+        Course
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Course" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          Course
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_1" type="checkbox" id="__nav_3_3_1" >
+      
+      <label class="md-nav__link" for="__nav_3_3_1">
+        6.824
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="6.824" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          6.824
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_1_1" type="checkbox" id="__nav_3_3_1_1" >
+      
+      <label class="md-nav__link" for="__nav_3_3_1_1">
+        Lecture1
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Lecture1" data-md-level="4">
+        <label class="md-nav__title" for="__nav_3_3_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Lecture1
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/course/6.824/lecture1/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/course/6.824/lecture1/paper-note/" class="md-nav__link">
+        Paper note
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_2" type="checkbox" id="__nav_3_3_2" >
+      
+      <label class="md-nav__link" for="__nav_3_3_2">
+        Ultimate Go Programing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Ultimate Go Programing" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Ultimate Go Programing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/course/Ultimate_Go_Programing/" class="md-nav__link">
+        Ultimate Go Programing
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_3" type="checkbox" id="__nav_3_3_3" >
+      
+      <label class="md-nav__link" for="__nav_3_3_3">
+        信息论
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="信息论" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          信息论
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/course/%E4%BF%A1%E6%81%AF%E8%AE%BA/note/" class="md-nav__link">
+        Note
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4" type="checkbox" id="__nav_3_4" >
+      
+      <label class="md-nav__link" for="__nav_3_4">
+        English
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="English" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_4">
+          <span class="md-nav__icon md-icon"></span>
+          English
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_1" type="checkbox" id="__nav_3_4_1" >
+      
+      <label class="md-nav__link" for="__nav_3_4_1">
+        Class1
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Class1" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Class1
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class1/READMEN/" class="md-nav__link">
+        READMEN
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class1/note/" class="md-nav__link">
+        Note
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class1/sentence/" class="md-nav__link">
+        Sentence
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_2" type="checkbox" id="__nav_3_4_2" >
+      
+      <label class="md-nav__link" for="__nav_3_4_2">
+        Class2
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Class2" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Class2
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class2/kk/" class="md-nav__link">
+        Kk
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class2/note/" class="md-nav__link">
+        Note
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class2/sentence/" class="md-nav__link">
+        Sentence
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_3" type="checkbox" id="__nav_3_4_3" >
+      
+      <label class="md-nav__link" for="__nav_3_4_3">
+        Hearing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Hearing" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Hearing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/hearing/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_4" type="checkbox" id="__nav_3_4_4" >
+      
+      <label class="md-nav__link" for="__nav_3_4_4">
+        Open lan
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Open lan" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_4">
+          <span class="md-nav__icon md-icon"></span>
+          Open lan
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/open-lan/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_5" type="checkbox" id="__nav_3_4_5" >
+      
+      <label class="md-nav__link" for="__nav_3_4_5">
+        Syntax
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Syntax" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_5">
+          <span class="md-nav__icon md-icon"></span>
+          Syntax
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/syntax/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_6" type="checkbox" id="__nav_3_4_6" >
+      
+      <label class="md-nav__link" for="__nav_3_4_6">
+        Walk for us
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Walk for us" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_6">
+          <span class="md-nav__icon md-icon"></span>
+          Walk for us
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/walk_for_us/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_7" type="checkbox" id="__nav_3_4_7" >
+      
+      <label class="md-nav__link" for="__nav_3_4_7">
+        Word list
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Word list" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_7">
+          <span class="md-nav__icon md-icon"></span>
+          Word list
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/word_list/word/" class="md-nav__link">
+        Word
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_5" type="checkbox" id="__nav_3_5" >
+      
+      <label class="md-nav__link" for="__nav_3_5">
+        Paper
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Paper" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Paper
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/paper/bitcask/" class="md-nav__link">
+        Bitcask
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        开源项目
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="开源项目" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          开源项目
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1" type="checkbox" id="__nav_4_1" >
+      
+      <label class="md-nav__link" for="__nav_4_1">
+        Envoy
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Envoy" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Envoy
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/bootstrap/" class="md-nav__link">
+        Bootstrap启动过程分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/cluster/" class="md-nav__link">
+        Cluster分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/cluster_manager/" class="md-nav__link">
+        Cluster Manager初始化
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/dpdk/" class="md-nav__link">
+        DPDK
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/drain_manager/" class="md-nav__link">
+        Drain manager分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/eds/" class="md-nav__link">
+        EDS更新过程分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/load_balancer/" class="md-nav__link">
+        Load Balancer分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/lua/" class="md-nav__link">
+        Lua filter实现分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/overload_manager/" class="md-nav__link">
+        Overload manager分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/proxy/" class="md-nav__link">
+        Envoy源码分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/stats_symbol/" class="md-nav__link">
+        Stats Symbol分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/subset_lb/" class="md-nav__link">
+        Subset Load Balancer分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/wasm/" class="md-nav__link">
+        Envoy Proxy Wasm分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89Cluster/" class="md-nav__link">
+        如何实现自定义Cluster
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+      
+      <label class="md-nav__link" for="__nav_4_2">
+        Kubernetes
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Kubernetes" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Kubernetes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/kubernetes/" class="md-nav__link">
+        Helm
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/kubernetes/basic/" class="md-nav__link">
+        Basic
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/kubernetes/tips/" class="md-nav__link">
+        Tips
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_3" type="checkbox" id="__nav_4_3" >
+      
+      <label class="md-nav__link" for="__nav_4_3">
+        Leveldb
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Leveldb" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Leveldb
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/leveldb/leveldb/" class="md-nav__link">
+        Leveldb源码分析
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_4" type="checkbox" id="__nav_4_4" >
+      
+      <label class="md-nav__link" for="__nav_4_4">
+        Pilot
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Pilot" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_4">
+          <span class="md-nav__icon md-icon"></span>
+          Pilot
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/" class="md-nav__link">
+        WIP
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/ConfigUpdate/" class="md-nav__link">
+        配置更新分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/EnvoyFilter/" class="md-nav__link">
+        EnvoyFilter分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/PushContext/" class="md-nav__link">
+        PushContext分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/concept/" class="md-nav__link">
+        基本概念和接口
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/xds-process/" class="md-nav__link">
+        XDS处理流程分析
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        编程语言
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="编程语言" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          编程语言
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1" type="checkbox" id="__nav_5_1" >
+      
+      <label class="md-nav__link" for="__nav_5_1">
+        Cpp
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cpp" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          Cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/basic/" class="md-nav__link">
+        C++基础
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/cpp17/" class="md-nav__link">
+        C++17 In Details
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/cpp20/" class="md-nav__link">
+        C++20
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/design/" class="md-nav__link">
+        Design
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/guidelines/" class="md-nav__link">
+        Guidelines
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/libevent/" class="md-nav__link">
+        Libevent
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/memory_order/" class="md-nav__link">
+        C++ Memory Order
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1_8" type="checkbox" id="__nav_5_1_8" >
+      
+      <label class="md-nav__link" for="__nav_5_1_8">
+        Tips
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Tips" data-md-level="3">
+        <label class="md-nav__title" for="__nav_5_1_8">
+          <span class="md-nav__icon md-icon"></span>
+          Tips
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-1/" class="md-nav__link">
+        Tip of the Week #1: string_view
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-10/" class="md-nav__link">
+        Tip of the Week #10: Splitting Strings, not Hairs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-101/" class="md-nav__link">
+        Tip of the Week #101: Return Values, References, and Lifetimes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-103/" class="md-nav__link">
+        Tip of the Week #103: Flags Are Globals
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-107/" class="md-nav__link">
+        Tip of the Week #107: Reference Lifetime Extension
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-108/" class="md-nav__link">
+        Tip of the Week #108: Avoid std::bind
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-109/" class="md-nav__link">
+        Tip of the Week #109: Meaningful `const` in Function Declarations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-11/" class="md-nav__link">
+        Tip of the Week #11: Return Policy
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-112/" class="md-nav__link">
+        Tip of the Week #112: emplace vs. push_back
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-117/" class="md-nav__link">
+        Tip of the Week #117: Copy Elision and Pass-by-value
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-119/" class="md-nav__link">
+        Tip of the Week #119: Using-declarations and namespace aliases
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-120/" class="md-nav__link">
+        Tip of the Week #120: Return Values are Untouchable
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-122/" class="md-nav__link">
+        Tip of the Week #122: Test Fixtures, Clarity, and Dataflow
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-123/" class="md-nav__link">
+        Tip of the Week #123: absl::optional and std::unique_ptr
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-126/" class="md-nav__link">
+        Tip of the Week #126: `make_unique` is the new `new`
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-24/" class="md-nav__link">
+        Tip of the Week #24: Copies, Abbrv
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-3/" class="md-nav__link">
+        Tip of the Week #3: String Concatenation and operator+ vs. StrCat()
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-36/" class="md-nav__link">
+        Tip of the Week #36: New Join API
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-42/" class="md-nav__link">
+        Tip of the Week #42: Prefer Factory Functions to Initializer Methods
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-45/" class="md-nav__link">
+        Tip of the Week #45: Avoid Flags, Especially in Library Code
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-49/" class="md-nav__link">
+        Tip of the Week #49: Argument-Dependent Lookup
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-55/" class="md-nav__link">
+        Tip of the Week #55: Name Counting and unique_ptr
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-59/" class="md-nav__link">
+        Tip of the Week #59: Joining Tuples
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-61/" class="md-nav__link">
+        Tip of the Week #61: Default Member Initializers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-64/" class="md-nav__link">
+        Tip of the Week #64: Raw String Literals
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-65/" class="md-nav__link">
+        Tip of the Week #65: Putting Things in their Place
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-74/" class="md-nav__link">
+        Tip of the Week #74: Delegating and Inheriting Constructors
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-77/" class="md-nav__link">
+        Tip of the Week #77: Temporaries, Moves, and Copies
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-86/" class="md-nav__link">
+        Tip of the Week #86: Enumerating with Class
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-88/" class="md-nav__link">
+        Tip of the Week #88: Initialization: =, (), and {}
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-90/" class="md-nav__link">
+        Tip of the Week #90: Retired Flags
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-93/" class="md-nav__link">
+        Tip of the Week #93: using absl::Span
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-94/" class="md-nav__link">
+        Tip of the Week #94: Callsite Readability and bool Parameters
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-99/" class="md-nav__link">
+        Tip of the Week #99: Nonmember Interface Etiquette
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_2" type="checkbox" id="__nav_5_2" >
+      
+      <label class="md-nav__link" for="__nav_5_2">
+        Golang
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Golang" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_2">
+          <span class="md-nav__icon md-icon"></span>
+          Golang
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/note/" class="md-nav__link">
+        Go Tips
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_3" type="checkbox" id="__nav_5_3" >
+      
+      <label class="md-nav__link" for="__nav_5_3">
+        Lua
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Lua" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Lua
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/lua/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_4" type="checkbox" id="__nav_5_4" >
+      
+      <label class="md-nav__link" for="__nav_5_4">
+        Python
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Python" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_4">
+          <span class="md-nav__icon md-icon"></span>
+          Python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_5" type="checkbox" id="__nav_5_5" >
+      
+      <label class="md-nav__link" for="__nav_5_5">
+        Rust
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Rust" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_5">
+          <span class="md-nav__icon md-icon"></span>
+          Rust
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/rust/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/rust/Note/" class="md-nav__link">
+        Rust学习笔记
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_5_3" type="checkbox" id="__nav_5_5_3" >
+      
+      <label class="md-nav__link" for="__nav_5_5_3">
+        Library
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Library" data-md-level="3">
+        <label class="md-nav__title" for="__nav_5_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Library
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/rust/library/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      <label class="md-nav__link" for="__nav_6">
+        计算机基础
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="计算机基础" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          计算机基础
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1" type="checkbox" id="__nav_6_1" >
+      
+      <label class="md-nav__link" for="__nav_6_1">
+        Algorithm
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Algorithm" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_1">
+          <span class="md-nav__icon md-icon"></span>
+          Algorithm
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/algorithm/" class="md-nav__link">
+        负载均衡算法
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/algorithm/skiplist/" class="md-nav__link">
+        跳表分析
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2" type="checkbox" id="__nav_6_2" >
+      
+      <label class="md-nav__link" for="__nav_6_2">
+        Basic
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Basic" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_2">
+          <span class="md-nav__icon md-icon"></span>
+          Basic
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/" class="md-nav__link">
+        OS基础
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/Reverse/" class="md-nav__link">
+        Reverse
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/compiler/" class="md-nav__link">
+        编译器
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/concurrency/" class="md-nav__link">
+        并发编程
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/gdb/" class="md-nav__link">
+        GDB Tips
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/review/" class="md-nav__link">
+        面试题
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/tls/" class="md-nav__link">
+        SSL
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2_8" type="checkbox" id="__nav_6_2_8" >
+      
+      <label class="md-nav__link" for="__nav_6_2_8">
+        Bazel
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Bazel" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_2_8">
+          <span class="md-nav__icon md-icon"></span>
+          Bazel
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/bazel/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3" type="checkbox" id="__nav_6_3" >
+      
+      <label class="md-nav__link" for="__nav_6_3">
+        Design
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Design" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_3">
+          <span class="md-nav__icon md-icon"></span>
+          Design
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/design/" class="md-nav__link">
+        设计模式
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4" type="checkbox" id="__nav_6_4" >
+      
+      <label class="md-nav__link" for="__nav_6_4">
+        Linux
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Linux" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_4">
+          <span class="md-nav__icon md-icon"></span>
+          Linux
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/asm_syscall/" class="md-nav__link">
+        Linux: x86-64 syscall
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/linux_socket_balancing/" class="md-nav__link">
+        三种常见的socket balancing模式
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/linux_syscall/" class="md-nav__link">
+        Linux syscall
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/shell/" class="md-nav__link">
+        Shell
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_6" type="checkbox" id="__nav_6_4_6" >
+      
+      <label class="md-nav__link" for="__nav_6_4_6">
+        Bpf
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Bpf" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_6">
+          <span class="md-nav__icon md-icon"></span>
+          Bpf
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/bpf/READMME/" class="md-nav__link">
+        READMME
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/bpf/seccomp-bpf/" class="md-nav__link">
+        Seccomp bpf
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_7" type="checkbox" id="__nav_6_4_7" >
+      
+      <label class="md-nav__link" for="__nav_6_4_7">
+        Ftrace
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Ftrace" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_7">
+          <span class="md-nav__icon md-icon"></span>
+          Ftrace
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/ftrace/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_8" type="checkbox" id="__nav_6_4_8" >
+      
+      <label class="md-nav__link" for="__nav_6_4_8">
+        Fuse
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Fuse" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_8">
+          <span class="md-nav__icon md-icon"></span>
+          Fuse
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/fuse/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_9" type="checkbox" id="__nav_6_4_9" >
+      
+      <label class="md-nav__link" for="__nav_6_4_9">
+        Io
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Io" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_9">
+          <span class="md-nav__icon md-icon"></span>
+          Io
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/io/io_uring/" class="md-nav__link">
+        Io uring
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_10" type="checkbox" id="__nav_6_4_10" >
+      
+      <label class="md-nav__link" for="__nav_6_4_10">
+        Network
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Network" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_10">
+          <span class="md-nav__icon md-icon"></span>
+          Network
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/epoll/" class="md-nav__link">
+        Epoll
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/ip_transparent/" class="md-nav__link">
+        Ip transparent
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp-ip-program/" class="md-nav__link">
+        Tcp ip program
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp_back_log/" class="md-nav__link">
+        Tcp back log
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp_fast_open/" class="md-nav__link">
+        Tcp fast open
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp_splicing/" class="md-nav__link">
+        SOCKMAP - TCP splicing of the future
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/time_wait/" class="md-nav__link">
+        Time wait
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/virtual-network/" class="md-nav__link">
+        Virtual network
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_11" type="checkbox" id="__nav_6_4_11" >
+      
+      <label class="md-nav__link" for="__nav_6_4_11">
+        Perf
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Perf" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_11">
+          <span class="md-nav__icon md-icon"></span>
+          Perf
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/perf/" class="md-nav__link">
+        性能优化基础
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_12" type="checkbox" id="__nav_6_4_12" >
+      
+      <label class="md-nav__link" for="__nav_6_4_12">
+        Synchronization
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Synchronization" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_12">
+          <span class="md-nav__icon md-icon"></span>
+          Synchronization
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/synchronization/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/synchronization/memory_order/" class="md-nav__link">
+        Memory order
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_13" type="checkbox" id="__nav_6_4_13" >
+      
+      <label class="md-nav__link" for="__nav_6_4_13">
+        System interface
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="System interface" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_13">
+          <span class="md-nav__icon md-icon"></span>
+          System interface
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/system_interface/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5" type="checkbox" id="__nav_6_5" >
+      
+      <label class="md-nav__link" for="__nav_6_5">
+        Why
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Why" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_5">
+          <span class="md-nav__icon md-icon"></span>
+          Why
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/why/" class="md-nav__link">
+        计算机基础百科
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/zyfjeff/zyfjeff.github.io/edit/master/docs/博客/doc/envoy/thread_local.md" title="编辑此页" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="envoythreadlocal">Envoy源码分析之ThreadLocal</h1>
+<h2 id="threadlocal">ThreadLocal整体结构</h2>
+<p>Envoy中严重依赖<code>ThreadLocal</code>，为了避免加锁Envoy会尽可能在单一线程中完成所有的事件，但是多个线程之间难免会有一些数据需要共享，还有可能需要读写，为了避免加锁Envoy将一些需要在线程之间共享的数据放在<code>ThreadLocal</code>中，当<code>ThreadLocal</code>中的数据需要更新的时候则会通过主线程将更新后的数据Post到各个线程中，交由各个线程来更新自己的<code>ThreadLocal</code>。Envoy在C++11的<code>thread_local</code>的基础上结合<code>Dispatcher</code>实现了一个<code>ThreadLocal</code>对象。本文则会重点分析下<code>ThreadLocal</code>的设计与实现。先来看下<code>ThreadLocal</code>的整体结构，下文会逐一进行分析。
+<img alt="ThrealLocal" src="../img/thread_local.png" /></p>
+<h2 id="threadlocal_1">ThreadLocal实现</h2>
+<p><code>ThreadLocalObject</code>是一个空的接口类，要求所有的<code>ThreadLocal</code>数据对象都要继承自这个空接口，比如下面这个<code>ThreadLocal</code>对象。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ThreadLocalObject</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+  <span class="k">virtual</span> <span class="o">~</span><span class="n">ThreadLocalObject</span><span class="p">()</span> <span class="p">{}</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nc">ThreadLocalCachedDate</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ThreadLocal</span><span class="o">::</span><span class="n">ThreadLocalObject</span> <span class="p">{</span>
+   <span class="n">ThreadLocalCachedDate</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">date_string</span><span class="p">)</span> <span class="o">:</span> 
+   <span class="n">date_string_</span><span class="p">(</span><span class="n">date_string</span><span class="p">)</span> <span class="p">{}</span>
+  <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">date_string_</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+</td></tr></table>
+<p>所有的<code>ThreadLocalObject</code>对象会保存在<code>ThreadLocalData</code>中，这是一个使用C++11的<code>thread_local</code>关键字声明的变量，是真正的线程局部存储。这个对象包含了两个成员，其中一个是vector，保存了所有的<code>ThreadLocalObject</code>，另外一个保存的是<code>Dispatcher</code>，指向当前线程的<code>Dispatcher</code>对象。相关代码如下:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">struct</span> <span class="nc">ThreadLocalData</span> <span class="p">{</span>
+  <span class="n">Event</span><span class="o">::</span><span class="n">Dispatcher</span><span class="o">*</span> <span class="n">dispatcher_</span><span class="p">{};</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ThreadLocalObjectSharedPtr</span><span class="o">&gt;</span> <span class="n">data_</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+</td></tr></table>
+<p>当你要使用<code>ThreadLocal</code>对象的功能时，你需要一个<code>SlotAllocator</code>分配器，从这个分配器可以分配一个<code>Slot</code>，一个<code>Slot</code>包含了一个<code>ThreadLocalObject</code>，从这个<code>Slot</code>中就可以获取到保存在线程局部存储中的<code>ThreadLocalObject</code>对象。下面是<code>Slot</code>对象的结构。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Slot</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+  <span class="k">virtual</span> <span class="o">~</span><span class="n">Slot</span><span class="p">()</span> <span class="p">{}</span>
+  <span class="k">virtual</span> <span class="n">ThreadLocalObjectSharedPtr</span> <span class="n">get</span><span class="p">()</span> <span class="n">PURE</span><span class="p">;</span>
+  <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">getTyped</span><span class="p">()</span> <span class="p">{</span> 
+    <span class="k">return</span> <span class="o">*</span><span class="n">std</span><span class="o">::</span><span class="n">dynamic_pointer_cast</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">get</span><span class="p">());</span> 
+  <span class="p">}</span>
+  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">runOnAllThreads</span><span class="p">(</span><span class="n">Event</span><span class="o">::</span><span class="n">PostCb</span> <span class="n">cb</span><span class="p">)</span> <span class="n">PURE</span><span class="p">;</span>
+  <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">runOnAllThreads</span><span class="p">(</span><span class="n">Event</span><span class="o">::</span><span class="n">PostCb</span> <span class="n">cb</span><span class="p">,</span> <span class="n">Event</span><span class="o">::</span><span class="n">PostCb</span> <span class="n">all_threads_complete_cb</span><span class="p">)</span> <span class="n">PURE</span><span class="p">;</span>
+  <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span>
+    <span class="n">ThreadLocalObjectSharedPtr</span><span class="p">(</span><span class="n">Event</span><span class="o">::</span><span class="n">Dispatcher</span><span class="o">&amp;</span> <span class="n">dispatcher</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">InitializeCb</span><span class="p">;</span>
+  <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">set</span><span class="p">(</span><span class="n">InitializeCb</span> <span class="n">cb</span><span class="p">)</span> <span class="n">PURE</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+</td></tr></table>
+<p><code>Slot</code>是一个接口类，这个接口提供了几个关键功能，一个就是获取到对应的<code>ThreadLocalObjec</code>对象，另外一个就是在所有注册的线程中执行<code>PostCb</code>类型的回调方法。<code>Slot</code>对应的实现类是<code>SlotImpl</code>。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">struct</span> <span class="nc">SlotImpl</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Slot</span> <span class="p">{</span>
+  <span class="n">SlotImpl</span><span class="p">(</span><span class="n">InstanceImpl</span><span class="o">&amp;</span> <span class="n">parent</span><span class="p">,</span> <span class="kt">uint64_t</span> <span class="n">index</span><span class="p">)</span> <span class="o">:</span> 
+           <span class="n">parent_</span><span class="p">(</span><span class="n">parent</span><span class="p">),</span> <span class="n">index_</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="p">{}</span>
+  <span class="o">~</span><span class="n">SlotImpl</span><span class="p">()</span> <span class="p">{</span> <span class="n">parent_</span><span class="p">.</span><span class="n">removeSlot</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span> <span class="p">}</span>
+  <span class="p">.......</span>
+  <span class="n">InstanceImpl</span><span class="o">&amp;</span> <span class="n">parent_</span><span class="p">;</span>
+  <span class="k">const</span> <span class="kt">uint64_t</span> <span class="n">index_</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+</td></tr></table>
+<p><code>SlotImpl</code>保存了对<code>InstanceImpl</code>的引用，还有一个索引值，这个值是<code>SlotImpl</code>对应的<code>ThreadLocalObject</code>对象在<code>ThreadLocalData</code>中的索引(上文中说到了，所有的<code>ThreadLocalObject</code>对象都存在<code>ThreadLocalData</code>中的一个vector成员中。)通过这个索引就可以快速找到该<code>SlotImpl</code>对应的<code>ThreadLocalObject</code>对象了。接下来再看下<code>SlotAllocator</code>， <code>SlotImpl</code>并不是直接构造来使用的，而是通过<code>SlotAllocator</code>分配的。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SlotAllocator</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+  <span class="k">virtual</span> <span class="o">~</span><span class="n">SlotAllocator</span><span class="p">()</span> <span class="p">{}</span>
+  <span class="k">virtual</span> <span class="n">SlotPtr</span> <span class="n">allocateSlot</span><span class="p">()</span> <span class="n">PURE</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+</td></tr></table>
+<p><code>SlotAllocator</code>是一个接口，只有一个方法就是<code>allocateSlot</code>，这个方法用于分配一个<code>Slot</code>，<code>Instance</code>接口继承自<code>SlotAllocator</code>，对其进行了扩展，是整个<code>ThreadLocal</code>的基础接口，直接暴露给用户使用的。其接口如下。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Instance</span> <span class="o">:</span> <span class="k">public</span> <span class="n">SlotAllocator</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">registerThread</span><span class="p">(</span><span class="n">Event</span><span class="o">::</span><span class="n">Dispatcher</span><span class="o">&amp;</span> <span class="n">dispatcher</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">main_thread</span><span class="p">)</span> <span class="n">PURE</span><span class="p">;</span>
+  <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">shutdownGlobalThreading</span><span class="p">()</span> <span class="n">PURE</span><span class="p">;</span>
+  <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">shutdownThread</span><span class="p">()</span> <span class="n">PURE</span><span class="p">;</span>
+  <span class="k">virtual</span> <span class="n">Event</span><span class="o">::</span><span class="n">Dispatcher</span><span class="o">&amp;</span> <span class="nf">dispatcher</span><span class="p">()</span> <span class="n">PURE</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+</td></tr></table>
+<p>所有要进行数据共享的线程都需要通过<code>registerThread</code>接口进行注册，<code>dispatcher</code>接口则是用来返回当前线程对应的<code>Dispatcher</code>对象。<code>InstanceImpl</code>实现了<code>Instance</code>接口。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">InstanceImpl</span> <span class="o">:</span> <span class="n">Logger</span><span class="o">::</span><span class="n">Loggable</span><span class="o">&lt;</span><span class="n">Logger</span><span class="o">::</span><span class="n">Id</span><span class="o">::</span><span class="n">main</span><span class="o">&gt;</span><span class="p">,</span> <span class="k">public</span> <span class="n">Instance</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+  <span class="n">InstanceImpl</span><span class="p">()</span> <span class="o">:</span> <span class="n">main_thread_id_</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">get_id</span><span class="p">())</span> <span class="p">{}</span>
+  <span class="o">~</span><span class="n">InstanceImpl</span><span class="p">();</span>
+
+  <span class="c1">// ThreadLocal::Instance</span>
+  <span class="p">........</span>
+<span class="k">private</span><span class="o">:</span>
+  <span class="k">static</span> <span class="kt">void</span> <span class="n">setThreadLocal</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">index</span><span class="p">,</span> <span class="n">ThreadLocalObjectSharedPtr</span> <span class="n">object</span><span class="p">);</span>
+  <span class="k">static</span> <span class="k">thread_local</span> <span class="n">ThreadLocalData</span> <span class="n">thread_local_data_</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">SlotImpl</span><span class="o">*&gt;</span> <span class="n">slots_</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">reference_wrapper</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">::</span><span class="n">Dispatcher</span><span class="o">&gt;&gt;</span> <span class="n">registered_threads_</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="o">::</span><span class="n">id</span> <span class="n">main_thread_id_</span><span class="p">;</span>
+  <span class="n">Event</span><span class="o">::</span><span class="n">Dispatcher</span><span class="o">*</span> <span class="n">main_thread_dispatcher_</span><span class="p">{};</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">shutdown_</span><span class="p">{};</span>
+<span class="p">};</span>
+</code></pre></div>
+</td></tr></table>
+<p><code>main_thread_dispatcher_</code>用来保存主线程的<code>Dispatcher</code>对象，<code>registered_threads_</code>用来保存所有注册到<code>ThreadLocal</code>中的<code>Dispatcher</code>对象。<code>slots_</code>则保存了所有分配出去的<code>Slot</code>，每分配出一个<code>Slot</code>就会new一个<code>SlotImpl</code>对象，然后保存在<code>slots_</code>中，使用者通过分配的<code>Slot</code>，拿到其对应的索引值，然后通过<code>setThreadLocal</code>静态方法就可以把要共享的数据放到线程存储中了。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kt">void</span> <span class="nf">InstanceImpl::setThreadLocal</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">index</span><span class="p">,</span> <span class="n">ThreadLocalObjectSharedPtr</span> <span class="n">object</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">thread_local_data_</span><span class="p">.</span><span class="n">data_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">index</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">thread_local_data_</span><span class="p">.</span><span class="n">data_</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="n">thread_local_data_</span><span class="p">.</span><span class="n">data_</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">object</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>线程注册的过程也很简单，就是把传递进来的<code>Dispatcher</code>对象放到<code>registered_threads_</code>中，需要注意的是这里用的是<code>std::reference_wrapper&lt;Event::Dispatcher&gt;</code>，保存的是<code>Dispatcher</code>的引用。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kt">void</span> <span class="nf">InstanceImpl::registerThread</span><span class="p">(</span><span class="n">Event</span><span class="o">::</span><span class="n">Dispatcher</span><span class="o">&amp;</span> <span class="n">dispatcher</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">main_thread</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">ASSERT</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">get_id</span><span class="p">()</span> <span class="o">==</span> <span class="n">main_thread_id_</span><span class="p">);</span>
+  <span class="n">ASSERT</span><span class="p">(</span><span class="o">!</span><span class="n">shutdown_</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">main_thread</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">main_thread_dispatcher_</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dispatcher</span><span class="p">;</span>
+    <span class="n">thread_local_data_</span><span class="p">.</span><span class="n">dispatcher_</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dispatcher</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">ASSERT</span><span class="p">(</span><span class="o">!</span><span class="n">containsReference</span><span class="p">(</span><span class="n">registered_threads_</span><span class="p">,</span> <span class="n">dispatcher</span><span class="p">));</span>
+    <span class="n">registered_threads_</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">dispatcher</span><span class="p">);</span>
+    <span class="n">dispatcher</span><span class="p">.</span><span class="n">post</span><span class="p">([</span><span class="o">&amp;</span><span class="n">dispatcher</span><span class="p">]</span> <span class="p">{</span> 
+        <span class="n">thread_local_data_</span><span class="p">.</span><span class="n">dispatcher_</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dispatcher</span><span class="p">;</span> 
+    <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>如果是主线程的话，还会额外设置下<code>main_thread_dispatcher_</code>，让其指向主线程的<code>Dispatcher</code>。将<code>Dispatcher</code>对象放到<code>registered_threads_</code>中后，需要更新对应线程的<code>thread_local_data_</code>局部存储中的<code>dispatcher_</code>指针，使其指向线程自己的<code>Dispatcher</code>对象。所以这里是通过<code>Dispatcher</code>的post方法来执行这个callback的，因为post保证callback会和<code>Dispatcher</code>对象所在线程中执行。线程注册完成后就可以通过<code>allocateSlot</code>接口来分配<code>Slot</code>了，这里对于<code>Slot</code>的分配其实是惰性的，只有在需要的时候才会分配。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">SlotPtr</span> <span class="nf">InstanceImpl::allocateSlot</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">ASSERT</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">get_id</span><span class="p">()</span> <span class="o">==</span> <span class="n">main_thread_id_</span><span class="p">);</span>
+  <span class="n">ASSERT</span><span class="p">(</span><span class="o">!</span><span class="n">shutdown_</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="kt">uint64_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">slots_</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">slots_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">SlotImpl</span><span class="o">&gt;</span> <span class="n">slot</span><span class="p">(</span><span class="k">new</span> <span class="n">SlotImpl</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">,</span> <span class="n">i</span><span class="p">));</span>
+      <span class="n">slots_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+      <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">slot</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">SlotImpl</span><span class="o">&gt;</span> <span class="n">slot</span><span class="p">(</span><span class="k">new</span> <span class="n">SlotImpl</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">,</span> <span class="n">slots_</span><span class="p">.</span><span class="n">size</span><span class="p">()));</span>
+  <span class="n">slots_</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">slot</span><span class="p">.</span><span class="n">get</span><span class="p">());</span>
+  <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">slot</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>遍历所有的<code>Slot</code>，如果发现是<code>Slot</code>是空的就会进行分配，如果都没有找到就直接重新分配一个<code>Slot</code>，然后插入到<code>slots_</code>中，有了<code>Slot</code>后需要通过其<code>set</code>方法将要存储的<code>ThreadLocalObject</code>对象放到线程局部存储中。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span>
+  <span class="n">ThreadLocalObjectSharedPtr</span><span class="p">(</span><span class="n">Event</span><span class="o">::</span><span class="n">Dispatcher</span><span class="o">&amp;</span> <span class="n">dispatcher</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">InitializeCb</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">InstanceImpl::SlotImpl::set</span><span class="p">(</span><span class="n">InitializeCb</span> <span class="n">cb</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">ASSERT</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">get_id</span><span class="p">()</span> <span class="o">==</span> <span class="n">parent_</span><span class="p">.</span><span class="n">main_thread_id_</span><span class="p">);</span>
+  <span class="n">ASSERT</span><span class="p">(</span><span class="o">!</span><span class="n">parent_</span><span class="p">.</span><span class="n">shutdown_</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">Event</span><span class="o">::</span><span class="n">Dispatcher</span><span class="o">&amp;</span> <span class="nl">dispatcher</span> <span class="p">:</span> <span class="n">parent_</span><span class="p">.</span><span class="n">registered_threads_</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="kt">uint32_t</span> <span class="n">index</span> <span class="o">=</span> <span class="n">index_</span><span class="p">;</span>
+    <span class="n">dispatcher</span><span class="p">.</span><span class="n">post</span><span class="p">([</span><span class="n">index</span><span class="p">,</span> <span class="n">cb</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dispatcher</span><span class="p">]()</span> <span class="o">-&gt;</span> <span class="kt">void</span> <span class="p">{</span> 
+        <span class="n">setThreadLocal</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">cb</span><span class="p">(</span><span class="n">dispatcher</span><span class="p">));</span> 
+    <span class="p">});</span>
+  <span class="p">}</span>
+
+  <span class="c1">// Handle main thread.</span>
+  <span class="n">setThreadLocal</span><span class="p">(</span><span class="n">index_</span><span class="p">,</span> <span class="n">cb</span><span class="p">(</span><span class="o">*</span><span class="n">parent_</span><span class="p">.</span><span class="n">main_thread_dispatcher_</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>首先通过<code>InitializeCb</code>拿到要存储的<code>ThreadLocalObject</code>，然后到所有线程中调用<code>setThreadLocal</code>方法来更新<code>ThreadLocalObject</code>对象到对应线程的局部存储中。这个方法只能在主线程中调用。调用完成后，所有的线程通过<code>Slot</code>就可以访问到存储的<code>ThreadLocalObject</code>对象了。除了存储数据外，<code>SlotImpl</code>还提供了二个用于在所有线程中执行任务的接口。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kt">void</span> <span class="nf">InstanceImpl::runOnAllThreads</span><span class="p">(</span><span class="n">Event</span><span class="o">::</span><span class="n">PostCb</span> <span class="n">cb</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">ASSERT</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">get_id</span><span class="p">()</span> <span class="o">==</span> <span class="n">main_thread_id_</span><span class="p">);</span>
+  <span class="n">ASSERT</span><span class="p">(</span><span class="o">!</span><span class="n">shutdown_</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">Event</span><span class="o">::</span><span class="n">Dispatcher</span><span class="o">&amp;</span> <span class="nl">dispatcher</span> <span class="p">:</span> <span class="n">registered_threads_</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">dispatcher</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">cb</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="n">cb</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">InstanceImpl::runOnAllThreads</span><span class="p">(</span><span class="n">Event</span><span class="o">::</span><span class="n">PostCb</span> <span class="n">cb</span><span class="p">,</span> <span class="n">Event</span><span class="o">::</span><span class="n">PostCb</span> <span class="n">all_threads_complete_cb</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">ASSERT</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">get_id</span><span class="p">()</span> <span class="o">==</span> <span class="n">main_thread_id_</span><span class="p">);</span>
+  <span class="n">ASSERT</span><span class="p">(</span><span class="o">!</span><span class="n">shutdown_</span><span class="p">);</span>
+  <span class="n">cb</span><span class="p">();</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;&gt;</span> <span class="n">worker_count</span> <span class="o">=</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">registered_threads_</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">Event</span><span class="o">::</span><span class="n">Dispatcher</span><span class="o">&amp;</span> <span class="nl">dispatcher</span> <span class="p">:</span> <span class="n">registered_threads_</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">dispatcher</span><span class="p">.</span><span class="n">post</span><span class="p">([</span><span class="k">this</span><span class="p">,</span> <span class="n">worker_count</span><span class="p">,</span> <span class="n">cb</span><span class="p">,</span> 
+                     <span class="n">all_threads_complete_cb</span><span class="p">]()</span> <span class="o">-&gt;</span> <span class="kt">void</span> <span class="p">{</span>
+      <span class="n">cb</span><span class="p">();</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">--*</span><span class="n">worker_count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">main_thread_dispatcher_</span><span class="o">-&gt;</span><span class="n">post</span><span class="p">(</span><span class="n">all_threads_complete_cb</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>因为<code>ThreadLocal</code>保存了所有注册进来的<code>Dispatcher</code>对象，通过<code>Dispatcher</code>的<code>post</code>方法就可以向对应线程投递任务来执行，<code>runOnAllThreads</code>的第二个重载实现可以在所有线程都执行完毕后，回调主线程的<code>all_threads_complete_cb</code>方法，实现方式也是比较简单易懂的，就是通过将一个<code>std::shared_ptr</code> 的原子计数器拷贝到要执行的任务中，任务执行完就递减计数器，等到计数器为0就回调<code>all_threads_complete_cb</code>。到此为止<code>ThreadLocal</code>的两大核心功能就分析完毕了，一个是通过<code>set</code>方法更新所有线程的局部存储，另外一个就是通过<code>runOnAllThreads</code>往所有的线程投递任务。 最后我们来分析下<code>ThreadLocal</code>的<code>shutdown</code>过程，这个过程比较难理解，<code>InstanceImpl</code>提供了两个方法用于shutdown。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kt">void</span> <span class="nf">InstanceImpl::shutdownGlobalThreading</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">ASSERT</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">get_id</span><span class="p">()</span> <span class="o">==</span> <span class="n">main_thread_id_</span><span class="p">);</span>
+  <span class="n">ASSERT</span><span class="p">(</span><span class="o">!</span><span class="n">shutdown_</span><span class="p">);</span>
+  <span class="n">shutdown_</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p><code>shutdownGlobalThreading</code>方法只是设置了一个<code>shutdown_</code>的<code>flag</code>，只能在主线程中调用，这个<code>flag</code>的作用只是用于在<code>Slot</code>析构的时候不通知所有线程将对应<code>Slot</code>从其线程存储中去除，正常情况下一个<code>Slot</code>析构需要更新所有线程的局部存储，从中去掉<code>Slot</code>对应的<code>ThreadLocalObject</code>对象。而在Shutdown的过程则不需要，因为主线程进行shutdown的时候表明其他线程已经shutdown了，其关联的<code>Dispatcher</code>对象已经不存活。所以这种情况下<code>Slot</code>析构什么也不做。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="o">~</span><span class="n">SlotImpl</span><span class="p">()</span> <span class="p">{</span> <span class="n">parent_</span><span class="p">.</span><span class="n">removeSlot</span><span class="p">(</span><span class="o">*</span><span class="k">this</span><span class="p">);</span> <span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">InstanceImpl</span><span class="o">::</span><span class="n">removeSlot</span><span class="p">(</span><span class="n">SlotImpl</span><span class="o">&amp;</span> <span class="n">slot</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">ASSERT</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">get_id</span><span class="p">()</span> <span class="o">==</span> <span class="n">main_thread_id_</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">shutdown_</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">const</span> <span class="kt">uint64_t</span> <span class="n">index</span> <span class="o">=</span> <span class="n">slot</span><span class="p">.</span><span class="n">index_</span><span class="p">;</span>
+  <span class="n">slots_</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+  <span class="n">runOnAllThreads</span><span class="p">([</span><span class="n">index</span><span class="p">]()</span> <span class="o">-&gt;</span> <span class="kt">void</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="n">thread_local_data_</span><span class="p">.</span><span class="n">data_</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+      <span class="n">thread_local_data_</span><span class="p">.</span><span class="n">data_</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>还有另外一个shutdown函数就是<code>shutdownThread</code>，这个函数会遍历所有的线程存储的数据，然后进行reset操作，最后把整个<code>vector</code>进行clear()。每一个worker都持有<code>InstanceImpl</code>实例的引用，在析构的时候会调用<code>shutdownThread</code>。这个函数的实现如下:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kt">void</span> <span class="nf">InstanceImpl::shutdownThread</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">ASSERT</span><span class="p">(</span><span class="n">shutdown_</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">thread_local_data_</span><span class="p">.</span><span class="n">data_</span><span class="p">.</span><span class="n">rbegin</span><span class="p">();</span> 
+       <span class="n">it</span> <span class="o">!=</span> <span class="n">thread_local_data_</span><span class="p">.</span><span class="n">data_</span><span class="p">.</span><span class="n">rend</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">it</span><span class="o">-&gt;</span><span class="n">reset</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="n">thread_local_data_</span><span class="p">.</span><span class="n">data_</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>很奇怪的是这里是逆序来遍历所有的<code>ThreadLocalObject</code>对象来进行reset的，这是因为一些"持久"(活的比较长)的对象如<code>cluster manager</code>很早就会创建<code>ThreadLocalObject</code>对象，但是直到shutdown的时候也不析构，而在此基础上依赖<code>cluster manager</code>的对象的如<code>grpc client</code>等，则是后创建<code>ThreadLocalObject</code>对象，如果<code>cluster manager</code>创建的<code>ThreadLocalObject</code>对象先析构，而grpc client相关的<code>ThreadLocalObject</code>对象后析构就会导致shutdown问题。为此这里选择逆序来进行<code>reset</code>，先从一个高层的对象开始，最后才开始对一些基础的对象所关联的<code>ThreadLocalObject</code>进行<code>reset</code>。例如下面这个例子:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">struct</span> <span class="nc">ThreadLocalPool</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ThreadLocal</span><span class="o">::</span><span class="n">ThreadLocalObject</span> <span class="p">{</span>
+    <span class="n">ThreadLocalPool</span><span class="p">(</span><span class="n">InstanceImpl</span><span class="o">&amp;</span> <span class="n">parent</span><span class="p">,</span> <span class="n">Event</span><span class="o">::</span><span class="n">Dispatcher</span><span class="o">&amp;</span> <span class="n">dispatcher</span><span class="p">,</span>
+                    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">cluster_name</span><span class="p">);</span>
+    <span class="o">~</span><span class="n">ThreadLocalPool</span><span class="p">();</span>
+    <span class="n">PoolRequest</span><span class="o">*</span> <span class="nf">makeRequest</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">hash_key</span><span class="p">,</span> <span class="k">const</span> <span class="n">RespValue</span><span class="o">&amp;</span> <span class="n">request</span><span class="p">,</span> <span class="n">PoolCallbacks</span><span class="o">&amp;</span> <span class="n">callbacks</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="nf">onHostsRemoved</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Upstream</span><span class="o">::</span><span class="n">HostSharedPtr</span><span class="o">&gt;&amp;</span> <span class="n">hosts_removed</span><span class="p">);</span>
+
+    <span class="n">InstanceImpl</span><span class="o">&amp;</span> <span class="n">parent_</span><span class="p">;</span>
+    <span class="n">Event</span><span class="o">::</span><span class="n">Dispatcher</span><span class="o">&amp;</span> <span class="n">dispatcher_</span><span class="p">;</span>
+    <span class="n">Upstream</span><span class="o">::</span><span class="n">ThreadLocalCluster</span><span class="o">*</span> <span class="n">cluster_</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">Upstream</span><span class="o">::</span><span class="n">HostConstSharedPtr</span><span class="p">,</span> 
+        <span class="n">ThreadLocalActiveClientPtr</span><span class="o">&gt;</span> <span class="n">client_map_</span><span class="p">;</span>
+    <span class="n">Envoy</span><span class="o">::</span><span class="n">Common</span><span class="o">::</span><span class="n">CallbackHandle</span><span class="o">*</span> <span class="n">local_host_set_member_update_cb_handle_</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+</td></tr></table>
+<p><code>redis_proxy</code>中定义了一个<code>ThreadLocalPool</code>，这个<code>ThreadLocalPool</code>又依赖较为基础的<code>ThreadLocalCluster</code>(是<code>ThreadLocalClusterManagerImpl</code>的数据成员，也就是<code>Cluster manager</code>所对应的<code>ThreadLocalObject</code>对象)，如果<code>shutdownThread</code>按照顺序的方式析构的话，那么<code>ThreadLocalPool</code>中使用的<code>ThreadLocalCluster</code>(其实是<code>ThreadLocalClusterManagerImpl</code>会先析构)会先被析构，然后才是<code>ThreadLocalPool</code>的析构，而<code>ThreadLocalPool</code>析构的时候又会使用到<code>ThreadLocalCluster</code>，但是<code>ThreadLocalCluster</code>已经析构了，这个时候就会出现野指针的问题了。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">InstanceImpl</span><span class="o">::</span><span class="n">ThreadLocalPool</span><span class="o">::</span><span class="n">ThreadLocalPool</span><span class="p">(</span><span class="n">InstanceImpl</span><span class="o">&amp;</span> <span class="n">parent</span><span class="p">,</span> <span class="n">Event</span><span class="o">::</span><span class="n">Dispatcher</span><span class="o">&amp;</span> <span class="n">dispatcher</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">cluster_name</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">parent_</span><span class="p">(</span><span class="n">parent</span><span class="p">),</span> <span class="n">dispatcher_</span><span class="p">(</span><span class="n">dispatcher</span><span class="p">),</span> 
+<span class="n">cluster_</span><span class="p">(</span><span class="n">parent_</span><span class="p">.</span><span class="n">cm_</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">cluster_name</span><span class="p">))</span> <span class="p">{</span>
+  <span class="p">.....</span>
+  <span class="n">local_host_set_member_update_cb_handle_</span> <span class="o">=</span> 
+  <span class="n">cluster_</span><span class="o">-&gt;</span><span class="n">prioritySet</span><span class="p">().</span><span class="n">addMemberUpdateCb</span><span class="p">(</span>
+      <span class="p">[</span><span class="k">this</span><span class="p">](</span><span class="kt">uint32_t</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Upstream</span><span class="o">::</span><span class="n">HostSharedPtr</span><span class="o">&gt;&amp;</span><span class="p">,</span>
+             <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Upstream</span><span class="o">::</span><span class="n">HostSharedPtr</span><span class="o">&gt;&amp;</span> <span class="n">hosts_removed</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span> <span class="p">{</span>
+        <span class="n">onHostsRemoved</span><span class="p">(</span><span class="n">hosts_removed</span><span class="p">);</span>
+      <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="n">InstanceImpl</span><span class="o">::</span><span class="n">ThreadLocalPool</span><span class="o">::~</span><span class="n">ThreadLocalPool</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// local_host_set_member_update_cb_handle_是ThreadLocalCluster的一部分</span>
+  <span class="c1">// ThreadLocalCluster析构会导致local_host_set_member_update_cb_handle_变成野指针</span>
+  <span class="n">local_host_set_member_update_cb_handle_</span><span class="o">-&gt;</span><span class="n">remove</span><span class="p">();</span>
+  <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">client_map_</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+    <span class="n">client_map_</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">redis_client_</span><span class="o">-&gt;</span><span class="n">close</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="_1">总结</h2>
+<p>通过上文我相信我们应该足以驾驭Envoy中的<code>ThreadLocal</code>，从其设计可以看出有其巧妙之处，也有其不足的地方，比如其抽象出一个<code>Slot</code>和对应的线程存储进行了关联，<code>Slot</code>可以任意传递，因为不包含实际的数据，拷贝的开销很低，只包含了一个索引值，具体关联的线程存储数据是不知道的，避免直接暴露给用户背后的数据。而<code>InstanceImpl</code>对象则管理着所有<code>Slot</code>的分配和移除以及整个<code>ThreadLocal</code>对象的<code>shutdown</code>。不足的地方我觉得主要有两点， 其中一个就是<code>Slot</code>的分配机制效率不太高，如果<code>Slot</code>在大量进行了分配和释放后，整个<code>vector</code>中的空闲的<code>Slot</code>其实很稀疏，这个时候如果从头开始遍历来找下一个可用的<code>Slot</code>则效率不高，而且根据<code>Slot</code>分配的特点来看，越靠前的<code>Slot</code>越有可能没释放(越基础的对象，越早创建<code>Slot</code>，但是最后才释放)，这样的话，每次遍历找空闲的<code>Slot</code>的时候，其实前N个很大概率都是在做无用功，影响查找的效率。另外一个我觉得不太好的地方就是<code>shutdownThread</code>的实现，这个其实比较难理解，对使用者也没有太多的约束，如果两个<code>ThreadLocalObject</code>产生了依赖(比如A依赖B)，但是A是先分配<code>Slot</code>的，B是后分配的，那么这种情况下逆序进行析构的时候会先把B析构，等到析构A的时候，如果在其析构函数中又使用了B就会产生野指针的问题，而且这种情况也没有检查机制很难被发现。</p>
+                
+              
+              
+                
+<script src="https://utteranc.es/client.js"
+        repo="zyfjeff/zyfjeff.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../dispatcher/" class="md-footer__link md-footer__link--prev" aria-label="上一页: Envoy源码分析之Dispatcher" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              Envoy源码分析之Dispatcher
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../linux/Linux%E4%B8%AD%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F%E6%9C%89%E4%BB%80%E4%B9%88%3F/" class="md-footer__link md-footer__link--next" aria-label="下一页: Linux中的可执行程序有什么?" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              Linux中的可执行程序有什么?
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2020 - 2021 程序员的Cookbook
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/zyfjeff" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.tabs", "navigation.instant", "toc.integrate"], "translations": {"clipboard.copy": "\u590d\u5236", "clipboard.copied": "\u5df2\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+      
+        <script src="../../../../javascripts/config.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,4076 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="canonical" href="https://zyfjeff.github.io/%E5%8D%9A%E5%AE%A2/doc/cpp/Effective-Model-Cpp/item41/">
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Item41 Consider pass by value for copyable parameters that are cheap to move and always copied. - 程序员的Cookbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../../../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#item41-consider-pass-by-value-for-copyable-parameters-that-are-cheap-to-move-and-always-copied" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="程序员的Cookbook" class="md-header__button md-logo" aria-label="程序员的Cookbook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            程序员的Cookbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Item41 Consider pass by value for copyable parameters that are cheap to move and always copied.
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/zyfjeff/zyfjeff.github.io/" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    zyfjeff/zyfjeff.github.io
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../../../.." class="md-tabs__link">
+      About
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../basic/linux-debugger/" class="md-tabs__link md-tabs__link--active">
+        博客
+      </a>
+    </li>
+  
+
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/blog/" class="md-tabs__link">
+        学习笔记
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/bootstrap/" class="md-tabs__link">
+        开源项目
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/basic/" class="md-tabs__link">
+        编程语言
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/algorithm/" class="md-tabs__link">
+        计算机基础
+      </a>
+    </li>
+  
+
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="程序员的Cookbook" class="md-nav__button md-logo" aria-label="程序员的Cookbook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    程序员的Cookbook
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/zyfjeff/zyfjeff.github.io/" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    zyfjeff/zyfjeff.github.io
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2">
+        博客
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="博客" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          博客
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" checked>
+      
+      <label class="md-nav__link" for="__nav_2_1">
+        Doc
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Doc" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          Doc
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_1" type="checkbox" id="__nav_2_1_1" >
+      
+      <label class="md-nav__link" for="__nav_2_1_1">
+        Basic
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Basic" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Basic
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../basic/linux-debugger/" class="md-nav__link">
+        如何在Linux环境下实现一个调试器
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_2" type="checkbox" id="__nav_2_1_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2_1_2">
+        Cpp
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cpp" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_2">
+          <span class="md-nav__icon md-icon"></span>
+          Cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%A6%82%E4%BD%95mock%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/" class="md-nav__link">
+        如何mock系统调用
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_2_2" type="checkbox" id="__nav_2_1_2_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2_1_2_2">
+        Effective Model Cpp
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Effective Model Cpp" data-md-level="4">
+        <label class="md-nav__title" for="__nav_2_1_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Effective Model Cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../item1/" class="md-nav__link">
+        Item1
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../item38/" class="md-nav__link">
+        Item38 Be aware of varying thread handle destructor behavior
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../item39/" class="md-nav__link">
+        Item39 Consider void futures for one-shot event communication
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../item40/" class="md-nav__link">
+        Item40 Use std::atomic for concurrency, volatile for specific memory
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Item41 Consider pass by value for copyable parameters that are cheap to move and always copied.
+      </a>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../item42/" class="md-nav__link">
+        Item42 Consider emplacement instead of insertion
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_3" type="checkbox" id="__nav_2_1_3" >
+      
+      <label class="md-nav__link" for="__nav_2_1_3">
+        Envoy
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Envoy" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          Envoy
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../envoy/dispatcher/" class="md-nav__link">
+        Envoy源码分析之Dispatcher
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../envoy/thread_local/" class="md-nav__link">
+        Envoy源码分析之ThreadLocal
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_4" type="checkbox" id="__nav_2_1_4" >
+      
+      <label class="md-nav__link" for="__nav_2_1_4">
+        Linux
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Linux" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          Linux
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/Linux%E4%B8%AD%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F%E6%9C%89%E4%BB%80%E4%B9%88%3F/" class="md-nav__link">
+        Linux中的可执行程序有什么?
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/Linux%E4%BF%A1%E5%8F%B7%E4%B8%93%E9%A2%98FAQ/" class="md-nav__link">
+        Linux 信号FAQ
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/%E5%85%B3%E4%BA%8E%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%E7%9A%84%E5%8E%9F%E5%AD%90%E6%80%A7%E8%AE%A8%E8%AE%BA/" class="md-nav__link">
+        关于文件写入的原子性讨论
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_5" type="checkbox" id="__nav_2_1_5" >
+      
+      <label class="md-nav__link" for="__nav_2_1_5">
+        Rust
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Rust" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_5">
+          <span class="md-nav__icon md-icon"></span>
+          Rust
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rust/lifetime-error-cases/" class="md-nav__link">
+        常见的生命周期错误
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rust/macros/" class="md-nav__link">
+        Macros
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rust/match-pattern/" class="md-nav__link">
+        Match pattern
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rust/rust-error-handle/" class="md-nav__link">
+        Rust错误处理指南
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rust/rust-match/" class="md-nav__link">
+        Rust match
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rust/rust-misconceptions/" class="md-nav__link">
+        常见的生命周期概念错误
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rust/rust-module/" class="md-nav__link">
+        Rust module
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../rust/rust-variance/" class="md-nav__link">
+        Rust variance
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        学习笔记
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="学习笔记" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          学习笔记
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" >
+      
+      <label class="md-nav__link" for="__nav_3_1">
+        Blog
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Blog" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Blog
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/blog/" class="md-nav__link">
+        Can Reordering of Release/Acquire Operations Introduce Deadlock?
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/blog/readling_list/" class="md-nav__link">
+        待阅读列表
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" type="checkbox" id="__nav_3_2" >
+      
+      <label class="md-nav__link" for="__nav_3_2">
+        Book
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Book" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Book
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/%20PracticalSystemProgrammingForRust/" class="md-nav__link">
+        Practical System Programing For Rust
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/ConcurrencyModernCpp/" class="md-nav__link">
+        Concurrency Modern C++
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/CppTemplate/" class="md-nav__link">
+        C++ Templates
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/KubernetesPrograming/" class="md-nav__link">
+        Programming Kubernetes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/LuaPrograming/" class="md-nav__link">
+        Lua Programing
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/MathematicsForComputerScience/" class="md-nav__link">
+        Mathematics For Computer Science
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/MuduoCpp/" class="md-nav__link">
+        Linux C++ 服务端编程
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/OS/" class="md-nav__link">
+        操作系统导论
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/ebpf/" class="md-nav__link">
+        ebpf
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3" type="checkbox" id="__nav_3_3" >
+      
+      <label class="md-nav__link" for="__nav_3_3">
+        Course
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Course" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          Course
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_1" type="checkbox" id="__nav_3_3_1" >
+      
+      <label class="md-nav__link" for="__nav_3_3_1">
+        6.824
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="6.824" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          6.824
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_1_1" type="checkbox" id="__nav_3_3_1_1" >
+      
+      <label class="md-nav__link" for="__nav_3_3_1_1">
+        Lecture1
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Lecture1" data-md-level="4">
+        <label class="md-nav__title" for="__nav_3_3_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Lecture1
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/course/6.824/lecture1/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/course/6.824/lecture1/paper-note/" class="md-nav__link">
+        Paper note
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_2" type="checkbox" id="__nav_3_3_2" >
+      
+      <label class="md-nav__link" for="__nav_3_3_2">
+        Ultimate Go Programing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Ultimate Go Programing" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Ultimate Go Programing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/course/Ultimate_Go_Programing/" class="md-nav__link">
+        Ultimate Go Programing
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_3" type="checkbox" id="__nav_3_3_3" >
+      
+      <label class="md-nav__link" for="__nav_3_3_3">
+        信息论
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="信息论" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          信息论
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/course/%E4%BF%A1%E6%81%AF%E8%AE%BA/note/" class="md-nav__link">
+        Note
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4" type="checkbox" id="__nav_3_4" >
+      
+      <label class="md-nav__link" for="__nav_3_4">
+        English
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="English" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_4">
+          <span class="md-nav__icon md-icon"></span>
+          English
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_1" type="checkbox" id="__nav_3_4_1" >
+      
+      <label class="md-nav__link" for="__nav_3_4_1">
+        Class1
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Class1" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Class1
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class1/READMEN/" class="md-nav__link">
+        READMEN
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class1/note/" class="md-nav__link">
+        Note
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class1/sentence/" class="md-nav__link">
+        Sentence
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_2" type="checkbox" id="__nav_3_4_2" >
+      
+      <label class="md-nav__link" for="__nav_3_4_2">
+        Class2
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Class2" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Class2
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class2/kk/" class="md-nav__link">
+        Kk
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class2/note/" class="md-nav__link">
+        Note
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class2/sentence/" class="md-nav__link">
+        Sentence
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_3" type="checkbox" id="__nav_3_4_3" >
+      
+      <label class="md-nav__link" for="__nav_3_4_3">
+        Hearing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Hearing" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Hearing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/hearing/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_4" type="checkbox" id="__nav_3_4_4" >
+      
+      <label class="md-nav__link" for="__nav_3_4_4">
+        Open lan
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Open lan" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_4">
+          <span class="md-nav__icon md-icon"></span>
+          Open lan
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/open-lan/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_5" type="checkbox" id="__nav_3_4_5" >
+      
+      <label class="md-nav__link" for="__nav_3_4_5">
+        Syntax
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Syntax" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_5">
+          <span class="md-nav__icon md-icon"></span>
+          Syntax
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/syntax/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_6" type="checkbox" id="__nav_3_4_6" >
+      
+      <label class="md-nav__link" for="__nav_3_4_6">
+        Walk for us
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Walk for us" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_6">
+          <span class="md-nav__icon md-icon"></span>
+          Walk for us
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/walk_for_us/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_7" type="checkbox" id="__nav_3_4_7" >
+      
+      <label class="md-nav__link" for="__nav_3_4_7">
+        Word list
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Word list" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_7">
+          <span class="md-nav__icon md-icon"></span>
+          Word list
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/word_list/word/" class="md-nav__link">
+        Word
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_5" type="checkbox" id="__nav_3_5" >
+      
+      <label class="md-nav__link" for="__nav_3_5">
+        Paper
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Paper" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Paper
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/paper/bitcask/" class="md-nav__link">
+        Bitcask
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        开源项目
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="开源项目" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          开源项目
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1" type="checkbox" id="__nav_4_1" >
+      
+      <label class="md-nav__link" for="__nav_4_1">
+        Envoy
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Envoy" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Envoy
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/bootstrap/" class="md-nav__link">
+        Bootstrap启动过程分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/cluster/" class="md-nav__link">
+        Cluster分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/cluster_manager/" class="md-nav__link">
+        Cluster Manager初始化
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/dpdk/" class="md-nav__link">
+        DPDK
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/drain_manager/" class="md-nav__link">
+        Drain manager分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/eds/" class="md-nav__link">
+        EDS更新过程分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/load_balancer/" class="md-nav__link">
+        Load Balancer分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/lua/" class="md-nav__link">
+        Lua filter实现分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/overload_manager/" class="md-nav__link">
+        Overload manager分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/proxy/" class="md-nav__link">
+        Envoy源码分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/stats_symbol/" class="md-nav__link">
+        Stats Symbol分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/subset_lb/" class="md-nav__link">
+        Subset Load Balancer分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/wasm/" class="md-nav__link">
+        Envoy Proxy Wasm分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89Cluster/" class="md-nav__link">
+        如何实现自定义Cluster
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+      
+      <label class="md-nav__link" for="__nav_4_2">
+        Kubernetes
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Kubernetes" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Kubernetes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/kubernetes/" class="md-nav__link">
+        Helm
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/kubernetes/basic/" class="md-nav__link">
+        Basic
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/kubernetes/tips/" class="md-nav__link">
+        Tips
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_3" type="checkbox" id="__nav_4_3" >
+      
+      <label class="md-nav__link" for="__nav_4_3">
+        Leveldb
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Leveldb" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Leveldb
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/leveldb/leveldb/" class="md-nav__link">
+        Leveldb源码分析
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_4" type="checkbox" id="__nav_4_4" >
+      
+      <label class="md-nav__link" for="__nav_4_4">
+        Pilot
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Pilot" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_4">
+          <span class="md-nav__icon md-icon"></span>
+          Pilot
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/" class="md-nav__link">
+        WIP
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/ConfigUpdate/" class="md-nav__link">
+        配置更新分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/EnvoyFilter/" class="md-nav__link">
+        EnvoyFilter分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/PushContext/" class="md-nav__link">
+        PushContext分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/concept/" class="md-nav__link">
+        基本概念和接口
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/xds-process/" class="md-nav__link">
+        XDS处理流程分析
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        编程语言
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="编程语言" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          编程语言
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1" type="checkbox" id="__nav_5_1" >
+      
+      <label class="md-nav__link" for="__nav_5_1">
+        Cpp
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cpp" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          Cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/basic/" class="md-nav__link">
+        C++基础
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/cpp17/" class="md-nav__link">
+        C++17 In Details
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/cpp20/" class="md-nav__link">
+        C++20
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/design/" class="md-nav__link">
+        Design
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/guidelines/" class="md-nav__link">
+        Guidelines
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/libevent/" class="md-nav__link">
+        Libevent
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/memory_order/" class="md-nav__link">
+        C++ Memory Order
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1_8" type="checkbox" id="__nav_5_1_8" >
+      
+      <label class="md-nav__link" for="__nav_5_1_8">
+        Tips
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Tips" data-md-level="3">
+        <label class="md-nav__title" for="__nav_5_1_8">
+          <span class="md-nav__icon md-icon"></span>
+          Tips
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-1/" class="md-nav__link">
+        Tip of the Week #1: string_view
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-10/" class="md-nav__link">
+        Tip of the Week #10: Splitting Strings, not Hairs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-101/" class="md-nav__link">
+        Tip of the Week #101: Return Values, References, and Lifetimes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-103/" class="md-nav__link">
+        Tip of the Week #103: Flags Are Globals
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-107/" class="md-nav__link">
+        Tip of the Week #107: Reference Lifetime Extension
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-108/" class="md-nav__link">
+        Tip of the Week #108: Avoid std::bind
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-109/" class="md-nav__link">
+        Tip of the Week #109: Meaningful `const` in Function Declarations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-11/" class="md-nav__link">
+        Tip of the Week #11: Return Policy
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-112/" class="md-nav__link">
+        Tip of the Week #112: emplace vs. push_back
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-117/" class="md-nav__link">
+        Tip of the Week #117: Copy Elision and Pass-by-value
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-119/" class="md-nav__link">
+        Tip of the Week #119: Using-declarations and namespace aliases
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-120/" class="md-nav__link">
+        Tip of the Week #120: Return Values are Untouchable
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-122/" class="md-nav__link">
+        Tip of the Week #122: Test Fixtures, Clarity, and Dataflow
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-123/" class="md-nav__link">
+        Tip of the Week #123: absl::optional and std::unique_ptr
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-126/" class="md-nav__link">
+        Tip of the Week #126: `make_unique` is the new `new`
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-24/" class="md-nav__link">
+        Tip of the Week #24: Copies, Abbrv
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-3/" class="md-nav__link">
+        Tip of the Week #3: String Concatenation and operator+ vs. StrCat()
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-36/" class="md-nav__link">
+        Tip of the Week #36: New Join API
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-42/" class="md-nav__link">
+        Tip of the Week #42: Prefer Factory Functions to Initializer Methods
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-45/" class="md-nav__link">
+        Tip of the Week #45: Avoid Flags, Especially in Library Code
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-49/" class="md-nav__link">
+        Tip of the Week #49: Argument-Dependent Lookup
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-55/" class="md-nav__link">
+        Tip of the Week #55: Name Counting and unique_ptr
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-59/" class="md-nav__link">
+        Tip of the Week #59: Joining Tuples
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-61/" class="md-nav__link">
+        Tip of the Week #61: Default Member Initializers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-64/" class="md-nav__link">
+        Tip of the Week #64: Raw String Literals
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-65/" class="md-nav__link">
+        Tip of the Week #65: Putting Things in their Place
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-74/" class="md-nav__link">
+        Tip of the Week #74: Delegating and Inheriting Constructors
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-77/" class="md-nav__link">
+        Tip of the Week #77: Temporaries, Moves, and Copies
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-86/" class="md-nav__link">
+        Tip of the Week #86: Enumerating with Class
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-88/" class="md-nav__link">
+        Tip of the Week #88: Initialization: =, (), and {}
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-90/" class="md-nav__link">
+        Tip of the Week #90: Retired Flags
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-93/" class="md-nav__link">
+        Tip of the Week #93: using absl::Span
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-94/" class="md-nav__link">
+        Tip of the Week #94: Callsite Readability and bool Parameters
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-99/" class="md-nav__link">
+        Tip of the Week #99: Nonmember Interface Etiquette
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_2" type="checkbox" id="__nav_5_2" >
+      
+      <label class="md-nav__link" for="__nav_5_2">
+        Golang
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Golang" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_2">
+          <span class="md-nav__icon md-icon"></span>
+          Golang
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/note/" class="md-nav__link">
+        Go Tips
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_3" type="checkbox" id="__nav_5_3" >
+      
+      <label class="md-nav__link" for="__nav_5_3">
+        Lua
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Lua" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Lua
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/lua/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_4" type="checkbox" id="__nav_5_4" >
+      
+      <label class="md-nav__link" for="__nav_5_4">
+        Python
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Python" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_4">
+          <span class="md-nav__icon md-icon"></span>
+          Python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_5" type="checkbox" id="__nav_5_5" >
+      
+      <label class="md-nav__link" for="__nav_5_5">
+        Rust
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Rust" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_5">
+          <span class="md-nav__icon md-icon"></span>
+          Rust
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/rust/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/rust/Note/" class="md-nav__link">
+        Rust学习笔记
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_5_3" type="checkbox" id="__nav_5_5_3" >
+      
+      <label class="md-nav__link" for="__nav_5_5_3">
+        Library
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Library" data-md-level="3">
+        <label class="md-nav__title" for="__nav_5_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Library
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/rust/library/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      <label class="md-nav__link" for="__nav_6">
+        计算机基础
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="计算机基础" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          计算机基础
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1" type="checkbox" id="__nav_6_1" >
+      
+      <label class="md-nav__link" for="__nav_6_1">
+        Algorithm
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Algorithm" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_1">
+          <span class="md-nav__icon md-icon"></span>
+          Algorithm
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/algorithm/" class="md-nav__link">
+        负载均衡算法
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/algorithm/skiplist/" class="md-nav__link">
+        跳表分析
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2" type="checkbox" id="__nav_6_2" >
+      
+      <label class="md-nav__link" for="__nav_6_2">
+        Basic
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Basic" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_2">
+          <span class="md-nav__icon md-icon"></span>
+          Basic
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/" class="md-nav__link">
+        OS基础
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/Reverse/" class="md-nav__link">
+        Reverse
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/compiler/" class="md-nav__link">
+        编译器
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/concurrency/" class="md-nav__link">
+        并发编程
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/gdb/" class="md-nav__link">
+        GDB Tips
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/review/" class="md-nav__link">
+        面试题
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/tls/" class="md-nav__link">
+        SSL
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2_8" type="checkbox" id="__nav_6_2_8" >
+      
+      <label class="md-nav__link" for="__nav_6_2_8">
+        Bazel
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Bazel" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_2_8">
+          <span class="md-nav__icon md-icon"></span>
+          Bazel
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/bazel/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3" type="checkbox" id="__nav_6_3" >
+      
+      <label class="md-nav__link" for="__nav_6_3">
+        Design
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Design" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_3">
+          <span class="md-nav__icon md-icon"></span>
+          Design
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/design/" class="md-nav__link">
+        设计模式
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4" type="checkbox" id="__nav_6_4" >
+      
+      <label class="md-nav__link" for="__nav_6_4">
+        Linux
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Linux" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_4">
+          <span class="md-nav__icon md-icon"></span>
+          Linux
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/asm_syscall/" class="md-nav__link">
+        Linux: x86-64 syscall
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/linux_socket_balancing/" class="md-nav__link">
+        三种常见的socket balancing模式
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/linux_syscall/" class="md-nav__link">
+        Linux syscall
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/shell/" class="md-nav__link">
+        Shell
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_6" type="checkbox" id="__nav_6_4_6" >
+      
+      <label class="md-nav__link" for="__nav_6_4_6">
+        Bpf
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Bpf" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_6">
+          <span class="md-nav__icon md-icon"></span>
+          Bpf
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/bpf/READMME/" class="md-nav__link">
+        READMME
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/bpf/seccomp-bpf/" class="md-nav__link">
+        Seccomp bpf
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_7" type="checkbox" id="__nav_6_4_7" >
+      
+      <label class="md-nav__link" for="__nav_6_4_7">
+        Ftrace
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Ftrace" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_7">
+          <span class="md-nav__icon md-icon"></span>
+          Ftrace
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/ftrace/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_8" type="checkbox" id="__nav_6_4_8" >
+      
+      <label class="md-nav__link" for="__nav_6_4_8">
+        Fuse
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Fuse" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_8">
+          <span class="md-nav__icon md-icon"></span>
+          Fuse
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/fuse/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_9" type="checkbox" id="__nav_6_4_9" >
+      
+      <label class="md-nav__link" for="__nav_6_4_9">
+        Io
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Io" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_9">
+          <span class="md-nav__icon md-icon"></span>
+          Io
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/io/io_uring/" class="md-nav__link">
+        Io uring
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_10" type="checkbox" id="__nav_6_4_10" >
+      
+      <label class="md-nav__link" for="__nav_6_4_10">
+        Network
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Network" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_10">
+          <span class="md-nav__icon md-icon"></span>
+          Network
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/epoll/" class="md-nav__link">
+        Epoll
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/ip_transparent/" class="md-nav__link">
+        Ip transparent
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp-ip-program/" class="md-nav__link">
+        Tcp ip program
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp_back_log/" class="md-nav__link">
+        Tcp back log
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp_fast_open/" class="md-nav__link">
+        Tcp fast open
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp_splicing/" class="md-nav__link">
+        SOCKMAP - TCP splicing of the future
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/time_wait/" class="md-nav__link">
+        Time wait
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/virtual-network/" class="md-nav__link">
+        Virtual network
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_11" type="checkbox" id="__nav_6_4_11" >
+      
+      <label class="md-nav__link" for="__nav_6_4_11">
+        Perf
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Perf" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_11">
+          <span class="md-nav__icon md-icon"></span>
+          Perf
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/perf/" class="md-nav__link">
+        性能优化基础
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_12" type="checkbox" id="__nav_6_4_12" >
+      
+      <label class="md-nav__link" for="__nav_6_4_12">
+        Synchronization
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Synchronization" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_12">
+          <span class="md-nav__icon md-icon"></span>
+          Synchronization
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/synchronization/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/synchronization/memory_order/" class="md-nav__link">
+        Memory order
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_13" type="checkbox" id="__nav_6_4_13" >
+      
+      <label class="md-nav__link" for="__nav_6_4_13">
+        System interface
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="System interface" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_13">
+          <span class="md-nav__icon md-icon"></span>
+          System interface
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/system_interface/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5" type="checkbox" id="__nav_6_5" >
+      
+      <label class="md-nav__link" for="__nav_6_5">
+        Why
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Why" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_5">
+          <span class="md-nav__icon md-icon"></span>
+          Why
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/why/" class="md-nav__link">
+        计算机基础百科
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/zyfjeff/zyfjeff.github.io/edit/master/docs/博客/doc/cpp/Effective-Model-Cpp/item41.md" title="编辑此页" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="item41-consider-pass-by-value-for-copyable-parameters-that-are-cheap-to-move-and-always-copied">Item41 Consider pass by value for copyable parameters that are cheap to move and always copied.</h1>
+<p>&emsp; &emsp;函数的参数传递方式有很多种，可以是值拷贝、传指针、传引用、甚至是移动。下面这个addName函数就是将外部传入的值存放到其内部的一个私有的容器中，为了让传递的过程更加高效，addName同时支持引用传递和移动两种方式。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+   <span class="kt">void</span> <span class="n">addName</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">newName</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">names</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">newName</span><span class="p">);</span>
+   <span class="p">}</span>
+   <span class="kt">void</span> <span class="n">addName</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;&amp;</span> <span class="n">newName</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">names</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">newName</span><span class="p">));</span>
+   <span class="p">}</span>
+  <span class="k">private</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">names</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>&emsp; &emsp;同样的一个功能但是却有两份代码，需要写两份函数文档，存在一定的冗余。为此可以通过C++的模版将上面两个函数进行合并，代码如下：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+   <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="o">&gt;</span>
+   <span class="kt">void</span> <span class="n">addName</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">newName</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">names</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">newNames</span><span class="p">));</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>&emsp; &emsp;虽然通过上面的代码减少了代码的冗余，但是通用引用会带来一些其它的问题，作为一个模版，<strong>addName</strong>的实现必需放在头文件中，于此同时它也会实例化出不同的类型。在<a href="http://blog.csdn.net/zhangyifei216/article/details/54897406">item30</a>中就提到了很多关于通用引用失效的问题，还有在<a href="http://blog.csdn.net/zhangyifei216/article/details/53899914">Item26</a>中提到的的函数重载问题。因此通用引用的这个方案并没有想象中那么好用。那是否意味着我们要放弃这个方案呢，也不尽然，凡事都是要分情况讨论的，没办法一概而论。上文中的<strong>addName</strong>更适合传值，可以是下面这种写法：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+   <span class="kt">void</span> <span class="n">addName</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">newName</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">names</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">newName</span><span class="p">));</span>   <span class="c1">// 避免一次拷贝，直接move过来</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>&emsp; &emsp;上面的代码中，在内部通过<strong>std::move</strong>避免了一次拷贝，因为我们知道行参<strong>newName</strong>其实是一个临时的值，不会被其它代码访问到，这也是最后一次对<strong>newName</strong>的访问，所以是可以直接移动过来的。这种方法的好处就是避免了将代码写在头文件中，避免了通用引用带来的一些失败的case，避免出现一些莫名奇妙的编译错误。坏处自然就是多了一次字符串的拷贝，性能可能会有损失。
+&emsp; &emsp;在<strong>C++98</strong>中无论用户传递的是什么，上面的代码都避免不了一次字符串的拷贝过程，但是到了<strong>C++11</strong>则不然，如果传递的是左值，那么很自然是要进行拷贝的，如果传递的是右值会直接调用移动构造赋值操作符，这样就不会进行拷贝了。</p>
+<p>总结一下，函数的参数传递可以归为下面三种形式。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">// 第一种基于重载的</span>
+<span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+   <span class="kt">void</span> <span class="n">addName</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">newName</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">names</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">newName</span><span class="p">);</span>
+   <span class="p">}</span>
+   <span class="kt">void</span> <span class="n">addName</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;&amp;</span> <span class="n">newName</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">names</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">newName</span><span class="p">));</span>
+   <span class="p">}</span>
+<span class="p">........</span>
+<span class="p">}</span>
+
+<span class="c1">// 第二种基于通用引用的</span>
+<span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+   <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="o">&gt;</span>
+   <span class="kt">void</span> <span class="n">addName</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">newName</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">names</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">newNames</span><span class="p">));</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 第三种基于值拷贝的</span>
+<span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+   <span class="kt">void</span> <span class="n">addName</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">newName</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">names</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">newName</span><span class="p">));</span>   <span class="c1">// 避免一次拷贝，直接move过来</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>​&emsp; &emsp;前两种可以统称为基于引用的方法，因为它们都是通过引用来传递参数的，下面是一组函数传递的场景，值得好好研究一下：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">Widget</span> <span class="n">w</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="nf">name</span><span class="p">(</span><span class="s">&quot;Bart&quot;</span><span class="p">);</span>
+<span class="n">w</span><span class="p">.</span><span class="n">addName</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+<span class="n">w</span><span class="p">.</span><span class="n">addName</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot;Jenne&quot;</span><span class="p">);</span>
+</code></pre></div>
+</td></tr></table>
+<p>​&emsp; &emsp;现在我么来谈论一下上面这段代码的性能，首先忽略掉编译器对上面代码可能做的优化，因为这类优化都是和编译器相关的，有一定的上下文，我们分析性能的时候应该撇开这些干扰因素。</p>
+<ul>
+<li><strong>基于重载</strong> 这种参数传递方式对于传递的值来说，无论是左值还是右值都是可以传递的，对于上面两个场景来说几乎是没有开销的，前者基于引用传递，后者是直接移动构造。到了内部前者需要进行一次拷贝才能 放到容器中，后者是直接move进去的，所以总的来说对于左值需要一次拷贝，对于右值需要一次move。</li>
+<li><strong>基于通用引用</strong> 开销和基于重载的一致，对于左值需要一次拷贝，对于右值需要一次move，<code>std::forward</code>可以区分传入的是否是左值还是右值。但是如果用户传入的是<code>char*</code>并不是<strong>string</strong>的话，基于重载的方法开销会变得更大，因为<code>char*</code>需要进行临时构造为一个<strong>std::string</strong>对象，然后再进行一次内部拷贝，但是通用引用的这个版本不会导致这个问题(<a href="http://blog.csdn.net/zhangyifei216/article/details/53898473">Item25</a>对这个问题有了近一步讲解)。</li>
+<li><strong>传值</strong>  如果传递的是左值就需要进行一次拷贝构造，如果是右值则需要进行一次移动构造，无论左值还是右值在函数内部都需要进行一次<strong>move</strong>操作。总的来说就是对于左值是一次拷贝一次<code>move</code>，对于右值就是两次<code>move</code>。无论是左值还是右值传递相比于上面两种都多了一次额外的拷贝和移动。</li>
+</ul>
+<p>&emsp; &emsp;​让我们重新来看一下本篇文章的标题，<strong>Consider pass by value for conpyable parameters that are cheap to move and always copied</strong>，为何要这么说呢，有以下四点原因：</p>
+<ol>
+<li>
+<p>如果只考虑传值的话，那么就不会有多份代码，不用重载，也避免使用通用引用带来的问题，但是却带来了性能损耗，但是事实并不总是这样的。</p>
+</li>
+<li>
+<p>对于可拷贝的参数考虑使用传值的方式， 对于这种情况只有当参数是只能移动的时候才会失败。因为如果参数不是可拷贝的，那么就必须通过移动构造进行拷贝。所以当参数只能移动的时候只需要提供一个右值引用的版本来进行参数传递，例如<strong>std::unique_ptr</strong>这就是一个<code>move-only</code>的类型，所以当要传递<strong>std::unique_ptr</strong>的参数时，只需要提供右值引用的版本即可，代码如下：</p>
+</li>
+</ol>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+   <span class="kt">void</span> <span class="n">setPtr</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;&amp;</span> <span class="n">ptr</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">p</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span>
+   <span class="p">}</span>
+  <span class="k">private</span><span class="o">:</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">p</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Widget</span> <span class="n">w</span><span class="p">;</span>
+<span class="n">w</span><span class="p">.</span><span class="n">setPtr</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;Modern C++&quot;</span><span class="p">));</span>
+</code></pre></div>
+</td></tr></table>
+<p>&emsp; &emsp;上面的代码总共需要花费1次<strong>move</strong>的开销，如果上面的代码只提供了值传递的方式的话，会导致隐式的调用移动赋值操作符(因为<strong>std::unique_ptr</strong>是<strong>move-only</strong>类型的，所以不会调用拷贝构造)，然后内部再做一次move，所以总共需要花费2次move的开销。</p>
+<ol>
+<li>
+<p>只有当值拷贝比移动开销低的时候才选择使用传值方式。当move操作开销低的时候，即使多一次move动作也是可以接受的，但是当move操作开销大的时候，执行一次不必要的move操作和执行一次不必要的拷贝操作是类似的，都违反了<strong>C++98</strong>中避免值拷贝这一规则。</p>
+</li>
+<li>
+<p>只有当参数总是需要拷贝的时候才使用传值的方式，考虑一种情况，假设当我们拷贝一个参数到一个内部的容器时，我们可能会在此之前会对这个参数进行一些合法性检查，只有当满足条件的时候才会考虑添加到容器中，否则不添加，可以使用下面代码表示:</p>
+</li>
+</ol>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+   <span class="kt">void</span> <span class="n">addName</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">newName</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">if</span> <span class="p">((</span><span class="n">newName</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">minLen</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+         <span class="p">(</span><span class="n">newName</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">maxLen</span><span class="p">))</span> <span class="p">{</span>
+         <span class="n">names</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">newName</span><span class="p">));</span>
+     <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>&emsp; &emsp;上面的代码中，<strong>newName</strong>并不总会拷贝到内部容器中，如果添加的<strong>newName</strong>不符合条件就会被丢弃，就会造成<strong>newName</strong>的构造和析构的开销，这种情况下引用传递则会显得开销更小。</p>
+<p>&emsp; &emsp;即使当拷贝开销要比移动开销低的时候，某些情况下也不适合使用值传递的方式，这是因为函数拷贝参数有两种方式，一种是构造(拷贝构造或移动构造)，另外一种则是赋值(拷贝赋值或移动赋值)。上文中的<strong>addName</strong>使用的就是构造的方式，其参数<strong>newName</strong>通过拷贝构造创建了一个新的元素放在<strong>vector::push_back</strong>的尾部。文章的一开始就分析了这种情况，无论传递的是左值还是右值都会导致额外的一次<strong>move</strong>的开销。</p>
+<p>&emsp; &emsp;当参数传递使用赋值的方式，这种情况相比前者要复杂的多，例如有一个表示密码的类，因为密码可能会被改变，所以这个类提供了一个setter函数changeto，这个函数通过值传递的策略，下面是这个类的实现。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>  <span class="k">class</span> <span class="nc">Password</span> <span class="p">{</span>
+   <span class="k">public</span><span class="o">:</span>
+    <span class="k">explicit</span> <span class="n">Password</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">pwd</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">text</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">pwd</span><span class="p">))</span> <span class="p">{}</span>
+
+    <span class="kt">void</span> <span class="n">changeTo</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">newPwd</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">newPwd</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="p">....</span>
+   <span class="k">private</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">text</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">initPwd</span><span class="p">(</span><span class="s">&quot;Beware the Jabberwock&quot;</span><span class="p">);</span>
+  <span class="n">Password</span> <span class="nf">p</span><span class="p">(</span><span class="n">initPwd</span><span class="p">);</span>
+</code></pre></div>
+</td></tr></table>
+<p>&emsp; &emsp;上面的代码中，p.text通过构造函数进行了密码的初始化，通过之前的分析可知，这里使用的是值传递的方式，额外多了一次<strong>std::string</strong>的move构造的开销，如果使用完美转发的话可以省去这一开销。密码使用一段时间后，为了安全需要更改密码，于是使用下面这段代码进行更改：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">newPasswrd</span> <span class="o">=</span> <span class="s">&quot;test password&quot;</span><span class="p">;</span>
+<span class="n">p</span><span class="p">.</span><span class="n">changeTo</span><span class="p">(</span><span class="n">newPassword</span><span class="p">);</span>
+</code></pre></div>
+</td></tr></table>
+<p>&emsp; &emsp;<strong>changeTo</strong>中使用的是赋值构造，函数的参数使用的是值传递的方式，这种情况导致了程序有比较严重的性能问题。传递进来的参数<strong>newPwd</strong>是一个左值，因此当<strong>newPwd</strong>被构造的时候，<strong>std::string</strong>的拷贝构造函数会被调用，在这个构造函数中会进行内存的分配，等构造完成后内部会使用<strong>std::move</strong>进行移动赋值构造，这会导致p.text原来指向的内存被释放。整个更改密码的过程中涉及了两次内存的分配或释放。但是如果使用下面这段代码将有可能避免一次内存的分配或释放。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Password</span> <span class="p">{</span>
+ <span class="k">public</span><span class="o">:</span>
+    <span class="p">.....</span>
+    <span class="kt">void</span> <span class="n">changeTo</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">newPwd</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">text</span> <span class="o">=</span> <span class="n">newPwd</span><span class="p">;</span>
+    <span class="p">}</span>
+ <span class="k">private</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">text</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>&emsp; &emsp;上面的代码中使用的是赋值构造，因此当<strong>p.text</strong>的字符串长度大于<strong>newPwd</strong>的长度时会复用已经分配的内存，开销要比值传递的方式要小。但是如果<strong>p.text</strong>的字符串长度小于<strong>newPwd</strong>的长度，那么额外的内存分配和释放的开销是少不了的和值传递的方式一样。上文的这些分析没办法一概而论，只适用于值是保存在堆内存中的，需要动态分配内存的类型，不是所有的类型都适合上文的分析，<strong>std::string</strong>和<strong>std::vector</strong>是确定适用的。</p>
+<p>&emsp; &emsp;上文对赋值构造的分析只适用于参数传递的是左值的情况，如果传递的是右值，那么开销还是很低的，因为不需要进行拷贝构造了，没有拷贝构造时的内存分配开销了。</p>
+<p>&emsp; &emsp;总而言之，对于上文的赋值构造的分析，要考虑传递的是左值还是右值，考虑赋值的类型是什么，是否有动态内存分配，甚至还要考虑要赋值的类型的实现是什么样子的，例如: <strong>std::string</strong>，如果它使用了SSO优化进行实现，那么赋值的操作会将要赋值的内容放到<strong>SSO</strong>的<strong>buffer</strong>中，那么情况又不一样了。因此我说使用赋值的方式进行参数传递这种情况分析起来很复杂。因此通常情况最实际的做法是采用"有罪推定"的策略，也就是使用重载或者是引用的方式进行参数传递，除非在目标类型的情况下值传递被表明其开销要比前者更高效。</p>
+<p>&emsp; &emsp;现如今，软件要尽可能的快，所以值传递的方式可能不再是一个可行的策略，因为避免一次廉价的<strong>move</strong>开销也是很重要的，因为我们没办法知道一个操作会有多少次这样的<strong>move</strong>操作，例如<strong>Widget::addName</strong>通过值传递造成了一次额外的<strong>move</strong>操作，但是这个函数内部又调用了<strong>Widget::validateName</strong>，这个函数也是值传递的方式，这就又造成了一次额外的<strong>move</strong>开销，<strong>validateName</strong>内部如果再调用其他的函数，并且这个函数同样是值传递的方式呢?，这就造成了累加效应，如果使用 引用传递的话就不会有这样的累加效应了。</p>
+<p>&emsp; &emsp;在本文的最后我们来讨论一个与性能无关的话题，但是这个话题仍然值得我们记住。值传递不像引用传递，它容易受到切割问题的影响。如果你有一个函数被设计成接收一个基类或是任何一个派生类，你不应该将其声明为值传递的方式，因为这会造成类型切割的问题。例如下面这个例子:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Widget</span> <span class="p">{</span> <span class="p">...</span> <span class="p">};</span>
+<span class="k">class</span> <span class="nc">SpecialWidget</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Widget</span> <span class="p">{</span> <span class="p">...</span> <span class="p">};</span>
+<span class="kt">void</span> <span class="nf">processWidget</span><span class="p">(</span><span class="n">Widget</span> <span class="n">w</span><span class="p">);</span>
+<span class="n">SpecialWidget</span> <span class="n">sw</span><span class="p">;</span>
+<span class="n">processWidget</span><span class="p">(</span><span class="n">sw</span><span class="p">);</span>  <span class="c1">// 导致了类型切割的问题，processWidget看到的是Widget类型</span>
+</code></pre></div>
+</td></tr></table>
+                
+                  
+                
+              
+              
+                
+<script src="https://utteranc.es/client.js"
+        repo="zyfjeff/zyfjeff.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../item40/" class="md-footer__link md-footer__link--prev" aria-label="上一页: Item40 Use std::atomic for concurrency, volatile for specific memory" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              Item40 Use std::atomic for concurrency, volatile for specific memory
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../item42/" class="md-footer__link md-footer__link--next" aria-label="下一页: Item42 Consider emplacement instead of insertion" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              Item42 Consider emplacement instead of insertion
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2020 - 2021 程序员的Cookbook
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/zyfjeff" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.tabs", "navigation.instant", "toc.integrate"], "translations": {"clipboard.copy": "\u590d\u5236", "clipboard.copied": "\u5df2\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../../../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+      
+        <script src="../../../../../javascripts/config.js"></script>
+      
+    
+  </body>
+</html>

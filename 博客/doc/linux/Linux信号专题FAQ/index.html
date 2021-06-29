@@ -1,0 +1,4754 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="canonical" href="https://zyfjeff.github.io/%E5%8D%9A%E5%AE%A2/doc/linux/Linux%E4%BF%A1%E5%8F%B7%E4%B8%93%E9%A2%98FAQ/">
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>Linux 信号FAQ - 程序员的Cookbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#linux-faq" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="程序员的Cookbook" class="md-header__button md-logo" aria-label="程序员的Cookbook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            程序员的Cookbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Linux 信号FAQ
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/zyfjeff/zyfjeff.github.io/" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    zyfjeff/zyfjeff.github.io
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../../.." class="md-tabs__link">
+      About
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../basic/linux-debugger/" class="md-tabs__link md-tabs__link--active">
+        博客
+      </a>
+    </li>
+  
+
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/blog/" class="md-tabs__link">
+        学习笔记
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/bootstrap/" class="md-tabs__link">
+        开源项目
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/basic/" class="md-tabs__link">
+        编程语言
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/algorithm/" class="md-tabs__link">
+        计算机基础
+      </a>
+    </li>
+  
+
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="程序员的Cookbook" class="md-nav__button md-logo" aria-label="程序员的Cookbook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    程序员的Cookbook
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/zyfjeff/zyfjeff.github.io/" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    zyfjeff/zyfjeff.github.io
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      <label class="md-nav__link" for="__nav_2">
+        博客
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="博客" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          博客
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" checked>
+      
+      <label class="md-nav__link" for="__nav_2_1">
+        Doc
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Doc" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          Doc
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_1" type="checkbox" id="__nav_2_1_1" >
+      
+      <label class="md-nav__link" for="__nav_2_1_1">
+        Basic
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Basic" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Basic
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../basic/linux-debugger/" class="md-nav__link">
+        如何在Linux环境下实现一个调试器
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_2" type="checkbox" id="__nav_2_1_2" >
+      
+      <label class="md-nav__link" for="__nav_2_1_2">
+        Cpp
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cpp" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_2">
+          <span class="md-nav__icon md-icon"></span>
+          Cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cpp/%E5%A6%82%E4%BD%95mock%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/" class="md-nav__link">
+        如何mock系统调用
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_2_2" type="checkbox" id="__nav_2_1_2_2" >
+      
+      <label class="md-nav__link" for="__nav_2_1_2_2">
+        Effective Model Cpp
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Effective Model Cpp" data-md-level="4">
+        <label class="md-nav__title" for="__nav_2_1_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Effective Model Cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cpp/Effective-Model-Cpp/item1/" class="md-nav__link">
+        Item1
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cpp/Effective-Model-Cpp/item38/" class="md-nav__link">
+        Item38 Be aware of varying thread handle destructor behavior
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cpp/Effective-Model-Cpp/item39/" class="md-nav__link">
+        Item39 Consider void futures for one-shot event communication
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cpp/Effective-Model-Cpp/item40/" class="md-nav__link">
+        Item40 Use std::atomic for concurrency, volatile for specific memory
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cpp/Effective-Model-Cpp/item41/" class="md-nav__link">
+        Item41 Consider pass by value for copyable parameters that are cheap to move and always copied.
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cpp/Effective-Model-Cpp/item42/" class="md-nav__link">
+        Item42 Consider emplacement instead of insertion
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_3" type="checkbox" id="__nav_2_1_3" >
+      
+      <label class="md-nav__link" for="__nav_2_1_3">
+        Envoy
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Envoy" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          Envoy
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../envoy/dispatcher/" class="md-nav__link">
+        Envoy源码分析之Dispatcher
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../envoy/thread_local/" class="md-nav__link">
+        Envoy源码分析之ThreadLocal
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_4" type="checkbox" id="__nav_2_1_4" checked>
+      
+      <label class="md-nav__link" for="__nav_2_1_4">
+        Linux
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Linux" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          Linux
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linux%E4%B8%AD%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F%E6%9C%89%E4%BB%80%E4%B9%88%3F/" class="md-nav__link">
+        Linux中的可执行程序有什么?
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Linux 信号FAQ
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Linux 信号FAQ
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    可重入、线程安全以及异步信号安全的区别?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    信号的内部实现是怎么样的?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    如何查看一个进程当前等待的、阻塞的、忽略的、捕获的信号?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    信号的默认处理方式有哪些?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#signalsigaction" class="md-nav__link">
+    signal和sigaction区别?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kill" class="md-nav__link">
+    通过Kill来检查进程是否存在?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    如何打印信号枚举值对应的信号描述?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    信号集的内部实现？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    如何阻塞信号，阻塞的信号在解除阻塞后是否会投递?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    如何知道当前哪些信号被阻塞了?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    信号处理函数该怎么设计，需要注意什么?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    信号处理函数在执行过程中是否会被信号再次打断?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sig_atomic_t" class="md-nav__link">
+    sig_atomic_t数据类型的作用?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    终止信号处理器函数的方法有哪些?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    为什么系统调用会中断和重启?
+  </a>
+  
+    <nav class="md-nav" aria-label="为什么系统调用会中断和重启?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    信号备选栈是什么、如何使用?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    如何通过信号传递更多的信息?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    信号和核心转储文件的关系？
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sigkillsigstop" class="md-nav__link">
+    SIGKILL和SIGSTOP信号和其他信号不同的地方?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    信号的传递顺序是怎么样的?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    实时信号和标准信号的区别?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    如何主动等待信号到来?
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%85%B3%E4%BA%8E%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%E7%9A%84%E5%8E%9F%E5%AD%90%E6%80%A7%E8%AE%A8%E8%AE%BA/" class="md-nav__link">
+        关于文件写入的原子性讨论
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1_5" type="checkbox" id="__nav_2_1_5" >
+      
+      <label class="md-nav__link" for="__nav_2_1_5">
+        Rust
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Rust" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_1_5">
+          <span class="md-nav__icon md-icon"></span>
+          Rust
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/lifetime-error-cases/" class="md-nav__link">
+        常见的生命周期错误
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/macros/" class="md-nav__link">
+        Macros
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/match-pattern/" class="md-nav__link">
+        Match pattern
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/rust-error-handle/" class="md-nav__link">
+        Rust错误处理指南
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/rust-match/" class="md-nav__link">
+        Rust match
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/rust-misconceptions/" class="md-nav__link">
+        常见的生命周期概念错误
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/rust-module/" class="md-nav__link">
+        Rust module
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rust/rust-variance/" class="md-nav__link">
+        Rust variance
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        学习笔记
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="学习笔记" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          学习笔记
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" >
+      
+      <label class="md-nav__link" for="__nav_3_1">
+        Blog
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Blog" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Blog
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/blog/" class="md-nav__link">
+        Can Reordering of Release/Acquire Operations Introduce Deadlock?
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/blog/readling_list/" class="md-nav__link">
+        待阅读列表
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" type="checkbox" id="__nav_3_2" >
+      
+      <label class="md-nav__link" for="__nav_3_2">
+        Book
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Book" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Book
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/%20PracticalSystemProgrammingForRust/" class="md-nav__link">
+        Practical System Programing For Rust
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/ConcurrencyModernCpp/" class="md-nav__link">
+        Concurrency Modern C++
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/CppTemplate/" class="md-nav__link">
+        C++ Templates
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/KubernetesPrograming/" class="md-nav__link">
+        Programming Kubernetes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/LuaPrograming/" class="md-nav__link">
+        Lua Programing
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/MathematicsForComputerScience/" class="md-nav__link">
+        Mathematics For Computer Science
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/MuduoCpp/" class="md-nav__link">
+        Linux C++ 服务端编程
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/OS/" class="md-nav__link">
+        操作系统导论
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/book/ebpf/" class="md-nav__link">
+        ebpf
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3" type="checkbox" id="__nav_3_3" >
+      
+      <label class="md-nav__link" for="__nav_3_3">
+        Course
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Course" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          Course
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_1" type="checkbox" id="__nav_3_3_1" >
+      
+      <label class="md-nav__link" for="__nav_3_3_1">
+        6.824
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="6.824" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          6.824
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_1_1" type="checkbox" id="__nav_3_3_1_1" >
+      
+      <label class="md-nav__link" for="__nav_3_3_1_1">
+        Lecture1
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Lecture1" data-md-level="4">
+        <label class="md-nav__title" for="__nav_3_3_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          Lecture1
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/course/6.824/lecture1/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/course/6.824/lecture1/paper-note/" class="md-nav__link">
+        Paper note
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_2" type="checkbox" id="__nav_3_3_2" >
+      
+      <label class="md-nav__link" for="__nav_3_3_2">
+        Ultimate Go Programing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Ultimate Go Programing" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Ultimate Go Programing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/course/Ultimate_Go_Programing/" class="md-nav__link">
+        Ultimate Go Programing
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3_3" type="checkbox" id="__nav_3_3_3" >
+      
+      <label class="md-nav__link" for="__nav_3_3_3">
+        信息论
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="信息论" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          信息论
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/course/%E4%BF%A1%E6%81%AF%E8%AE%BA/note/" class="md-nav__link">
+        Note
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4" type="checkbox" id="__nav_3_4" >
+      
+      <label class="md-nav__link" for="__nav_3_4">
+        English
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="English" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_4">
+          <span class="md-nav__icon md-icon"></span>
+          English
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_1" type="checkbox" id="__nav_3_4_1" >
+      
+      <label class="md-nav__link" for="__nav_3_4_1">
+        Class1
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Class1" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Class1
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class1/READMEN/" class="md-nav__link">
+        READMEN
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class1/note/" class="md-nav__link">
+        Note
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class1/sentence/" class="md-nav__link">
+        Sentence
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_2" type="checkbox" id="__nav_3_4_2" >
+      
+      <label class="md-nav__link" for="__nav_3_4_2">
+        Class2
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Class2" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Class2
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class2/kk/" class="md-nav__link">
+        Kk
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class2/note/" class="md-nav__link">
+        Note
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/class2/sentence/" class="md-nav__link">
+        Sentence
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_3" type="checkbox" id="__nav_3_4_3" >
+      
+      <label class="md-nav__link" for="__nav_3_4_3">
+        Hearing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Hearing" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Hearing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/hearing/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_4" type="checkbox" id="__nav_3_4_4" >
+      
+      <label class="md-nav__link" for="__nav_3_4_4">
+        Open lan
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Open lan" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_4">
+          <span class="md-nav__icon md-icon"></span>
+          Open lan
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/open-lan/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_5" type="checkbox" id="__nav_3_4_5" >
+      
+      <label class="md-nav__link" for="__nav_3_4_5">
+        Syntax
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Syntax" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_5">
+          <span class="md-nav__icon md-icon"></span>
+          Syntax
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/syntax/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_6" type="checkbox" id="__nav_3_4_6" >
+      
+      <label class="md-nav__link" for="__nav_3_4_6">
+        Walk for us
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Walk for us" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_6">
+          <span class="md-nav__icon md-icon"></span>
+          Walk for us
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/walk_for_us/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4_7" type="checkbox" id="__nav_3_4_7" >
+      
+      <label class="md-nav__link" for="__nav_3_4_7">
+        Word list
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Word list" data-md-level="3">
+        <label class="md-nav__title" for="__nav_3_4_7">
+          <span class="md-nav__icon md-icon"></span>
+          Word list
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/english/word_list/word/" class="md-nav__link">
+        Word
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_5" type="checkbox" id="__nav_3_5" >
+      
+      <label class="md-nav__link" for="__nav_3_5">
+        Paper
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Paper" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_5">
+          <span class="md-nav__icon md-icon"></span>
+          Paper
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/paper/bitcask/" class="md-nav__link">
+        Bitcask
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        开源项目
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="开源项目" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          开源项目
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1" type="checkbox" id="__nav_4_1" >
+      
+      <label class="md-nav__link" for="__nav_4_1">
+        Envoy
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Envoy" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Envoy
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/bootstrap/" class="md-nav__link">
+        Bootstrap启动过程分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/cluster/" class="md-nav__link">
+        Cluster分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/cluster_manager/" class="md-nav__link">
+        Cluster Manager初始化
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/dpdk/" class="md-nav__link">
+        DPDK
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/drain_manager/" class="md-nav__link">
+        Drain manager分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/eds/" class="md-nav__link">
+        EDS更新过程分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/load_balancer/" class="md-nav__link">
+        Load Balancer分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/lua/" class="md-nav__link">
+        Lua filter实现分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/overload_manager/" class="md-nav__link">
+        Overload manager分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/proxy/" class="md-nav__link">
+        Envoy源码分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/stats_symbol/" class="md-nav__link">
+        Stats Symbol分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/subset_lb/" class="md-nav__link">
+        Subset Load Balancer分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/wasm/" class="md-nav__link">
+        Envoy Proxy Wasm分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/envoy/%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89Cluster/" class="md-nav__link">
+        如何实现自定义Cluster
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+      
+      <label class="md-nav__link" for="__nav_4_2">
+        Kubernetes
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Kubernetes" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Kubernetes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/kubernetes/" class="md-nav__link">
+        Helm
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/kubernetes/basic/" class="md-nav__link">
+        Basic
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/kubernetes/tips/" class="md-nav__link">
+        Tips
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_3" type="checkbox" id="__nav_4_3" >
+      
+      <label class="md-nav__link" for="__nav_4_3">
+        Leveldb
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Leveldb" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Leveldb
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/leveldb/leveldb/" class="md-nav__link">
+        Leveldb源码分析
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_4" type="checkbox" id="__nav_4_4" >
+      
+      <label class="md-nav__link" for="__nav_4_4">
+        Pilot
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Pilot" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_4">
+          <span class="md-nav__icon md-icon"></span>
+          Pilot
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/" class="md-nav__link">
+        WIP
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/ConfigUpdate/" class="md-nav__link">
+        配置更新分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/EnvoyFilter/" class="md-nav__link">
+        EnvoyFilter分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/PushContext/" class="md-nav__link">
+        PushContext分析
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/concept/" class="md-nav__link">
+        基本概念和接口
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/pilot/xds-process/" class="md-nav__link">
+        XDS处理流程分析
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        编程语言
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="编程语言" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          编程语言
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1" type="checkbox" id="__nav_5_1" >
+      
+      <label class="md-nav__link" for="__nav_5_1">
+        Cpp
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cpp" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          Cpp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/basic/" class="md-nav__link">
+        C++基础
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/cpp17/" class="md-nav__link">
+        C++17 In Details
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/cpp20/" class="md-nav__link">
+        C++20
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/design/" class="md-nav__link">
+        Design
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/guidelines/" class="md-nav__link">
+        Guidelines
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/libevent/" class="md-nav__link">
+        Libevent
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/memory_order/" class="md-nav__link">
+        C++ Memory Order
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1_8" type="checkbox" id="__nav_5_1_8" >
+      
+      <label class="md-nav__link" for="__nav_5_1_8">
+        Tips
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Tips" data-md-level="3">
+        <label class="md-nav__title" for="__nav_5_1_8">
+          <span class="md-nav__icon md-icon"></span>
+          Tips
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-1/" class="md-nav__link">
+        Tip of the Week #1: string_view
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-10/" class="md-nav__link">
+        Tip of the Week #10: Splitting Strings, not Hairs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-101/" class="md-nav__link">
+        Tip of the Week #101: Return Values, References, and Lifetimes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-103/" class="md-nav__link">
+        Tip of the Week #103: Flags Are Globals
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-107/" class="md-nav__link">
+        Tip of the Week #107: Reference Lifetime Extension
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-108/" class="md-nav__link">
+        Tip of the Week #108: Avoid std::bind
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-109/" class="md-nav__link">
+        Tip of the Week #109: Meaningful `const` in Function Declarations
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-11/" class="md-nav__link">
+        Tip of the Week #11: Return Policy
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-112/" class="md-nav__link">
+        Tip of the Week #112: emplace vs. push_back
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-117/" class="md-nav__link">
+        Tip of the Week #117: Copy Elision and Pass-by-value
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-119/" class="md-nav__link">
+        Tip of the Week #119: Using-declarations and namespace aliases
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-120/" class="md-nav__link">
+        Tip of the Week #120: Return Values are Untouchable
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-122/" class="md-nav__link">
+        Tip of the Week #122: Test Fixtures, Clarity, and Dataflow
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-123/" class="md-nav__link">
+        Tip of the Week #123: absl::optional and std::unique_ptr
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-126/" class="md-nav__link">
+        Tip of the Week #126: `make_unique` is the new `new`
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-24/" class="md-nav__link">
+        Tip of the Week #24: Copies, Abbrv
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-3/" class="md-nav__link">
+        Tip of the Week #3: String Concatenation and operator+ vs. StrCat()
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-36/" class="md-nav__link">
+        Tip of the Week #36: New Join API
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-42/" class="md-nav__link">
+        Tip of the Week #42: Prefer Factory Functions to Initializer Methods
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-45/" class="md-nav__link">
+        Tip of the Week #45: Avoid Flags, Especially in Library Code
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-49/" class="md-nav__link">
+        Tip of the Week #49: Argument-Dependent Lookup
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-55/" class="md-nav__link">
+        Tip of the Week #55: Name Counting and unique_ptr
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-59/" class="md-nav__link">
+        Tip of the Week #59: Joining Tuples
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-61/" class="md-nav__link">
+        Tip of the Week #61: Default Member Initializers
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-64/" class="md-nav__link">
+        Tip of the Week #64: Raw String Literals
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-65/" class="md-nav__link">
+        Tip of the Week #65: Putting Things in their Place
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-74/" class="md-nav__link">
+        Tip of the Week #74: Delegating and Inheriting Constructors
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-77/" class="md-nav__link">
+        Tip of the Week #77: Temporaries, Moves, and Copies
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-86/" class="md-nav__link">
+        Tip of the Week #86: Enumerating with Class
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-88/" class="md-nav__link">
+        Tip of the Week #88: Initialization: =, (), and {}
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-90/" class="md-nav__link">
+        Tip of the Week #90: Retired Flags
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-93/" class="md-nav__link">
+        Tip of the Week #93: using absl::Span
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-94/" class="md-nav__link">
+        Tip of the Week #94: Callsite Readability and bool Parameters
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cpp/tips/tips-99/" class="md-nav__link">
+        Tip of the Week #99: Nonmember Interface Etiquette
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_2" type="checkbox" id="__nav_5_2" >
+      
+      <label class="md-nav__link" for="__nav_5_2">
+        Golang
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Golang" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_2">
+          <span class="md-nav__icon md-icon"></span>
+          Golang
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/golang/note/" class="md-nav__link">
+        Go Tips
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_3" type="checkbox" id="__nav_5_3" >
+      
+      <label class="md-nav__link" for="__nav_5_3">
+        Lua
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Lua" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Lua
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/lua/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_4" type="checkbox" id="__nav_5_4" >
+      
+      <label class="md-nav__link" for="__nav_5_4">
+        Python
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Python" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_4">
+          <span class="md-nav__icon md-icon"></span>
+          Python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_5" type="checkbox" id="__nav_5_5" >
+      
+      <label class="md-nav__link" for="__nav_5_5">
+        Rust
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Rust" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_5">
+          <span class="md-nav__icon md-icon"></span>
+          Rust
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/rust/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/rust/Note/" class="md-nav__link">
+        Rust学习笔记
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_5_3" type="checkbox" id="__nav_5_5_3" >
+      
+      <label class="md-nav__link" for="__nav_5_5_3">
+        Library
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Library" data-md-level="3">
+        <label class="md-nav__title" for="__nav_5_5_3">
+          <span class="md-nav__icon md-icon"></span>
+          Library
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/rust/library/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      <label class="md-nav__link" for="__nav_6">
+        计算机基础
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="计算机基础" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          计算机基础
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_1" type="checkbox" id="__nav_6_1" >
+      
+      <label class="md-nav__link" for="__nav_6_1">
+        Algorithm
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Algorithm" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_1">
+          <span class="md-nav__icon md-icon"></span>
+          Algorithm
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/algorithm/" class="md-nav__link">
+        负载均衡算法
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/algorithm/skiplist/" class="md-nav__link">
+        跳表分析
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2" type="checkbox" id="__nav_6_2" >
+      
+      <label class="md-nav__link" for="__nav_6_2">
+        Basic
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Basic" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_2">
+          <span class="md-nav__icon md-icon"></span>
+          Basic
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/" class="md-nav__link">
+        OS基础
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/Reverse/" class="md-nav__link">
+        Reverse
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/compiler/" class="md-nav__link">
+        编译器
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/concurrency/" class="md-nav__link">
+        并发编程
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/gdb/" class="md-nav__link">
+        GDB Tips
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/review/" class="md-nav__link">
+        面试题
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/tls/" class="md-nav__link">
+        SSL
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_2_8" type="checkbox" id="__nav_6_2_8" >
+      
+      <label class="md-nav__link" for="__nav_6_2_8">
+        Bazel
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Bazel" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_2_8">
+          <span class="md-nav__icon md-icon"></span>
+          Bazel
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/basic/bazel/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_3" type="checkbox" id="__nav_6_3" >
+      
+      <label class="md-nav__link" for="__nav_6_3">
+        Design
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Design" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_3">
+          <span class="md-nav__icon md-icon"></span>
+          Design
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/design/" class="md-nav__link">
+        设计模式
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4" type="checkbox" id="__nav_6_4" >
+      
+      <label class="md-nav__link" for="__nav_6_4">
+        Linux
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Linux" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_4">
+          <span class="md-nav__icon md-icon"></span>
+          Linux
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/asm_syscall/" class="md-nav__link">
+        Linux: x86-64 syscall
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/linux_socket_balancing/" class="md-nav__link">
+        三种常见的socket balancing模式
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/linux_syscall/" class="md-nav__link">
+        Linux syscall
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/shell/" class="md-nav__link">
+        Shell
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_6" type="checkbox" id="__nav_6_4_6" >
+      
+      <label class="md-nav__link" for="__nav_6_4_6">
+        Bpf
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Bpf" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_6">
+          <span class="md-nav__icon md-icon"></span>
+          Bpf
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/bpf/READMME/" class="md-nav__link">
+        READMME
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/bpf/seccomp-bpf/" class="md-nav__link">
+        Seccomp bpf
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_7" type="checkbox" id="__nav_6_4_7" >
+      
+      <label class="md-nav__link" for="__nav_6_4_7">
+        Ftrace
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Ftrace" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_7">
+          <span class="md-nav__icon md-icon"></span>
+          Ftrace
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/ftrace/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_8" type="checkbox" id="__nav_6_4_8" >
+      
+      <label class="md-nav__link" for="__nav_6_4_8">
+        Fuse
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Fuse" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_8">
+          <span class="md-nav__icon md-icon"></span>
+          Fuse
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/fuse/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_9" type="checkbox" id="__nav_6_4_9" >
+      
+      <label class="md-nav__link" for="__nav_6_4_9">
+        Io
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Io" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_9">
+          <span class="md-nav__icon md-icon"></span>
+          Io
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/io/io_uring/" class="md-nav__link">
+        Io uring
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_10" type="checkbox" id="__nav_6_4_10" >
+      
+      <label class="md-nav__link" for="__nav_6_4_10">
+        Network
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Network" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_10">
+          <span class="md-nav__icon md-icon"></span>
+          Network
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/epoll/" class="md-nav__link">
+        Epoll
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/ip_transparent/" class="md-nav__link">
+        Ip transparent
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp-ip-program/" class="md-nav__link">
+        Tcp ip program
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp_back_log/" class="md-nav__link">
+        Tcp back log
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp_fast_open/" class="md-nav__link">
+        Tcp fast open
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/tcp_splicing/" class="md-nav__link">
+        SOCKMAP - TCP splicing of the future
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/time_wait/" class="md-nav__link">
+        Time wait
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/network/virtual-network/" class="md-nav__link">
+        Virtual network
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_11" type="checkbox" id="__nav_6_4_11" >
+      
+      <label class="md-nav__link" for="__nav_6_4_11">
+        Perf
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Perf" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_11">
+          <span class="md-nav__icon md-icon"></span>
+          Perf
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/perf/" class="md-nav__link">
+        性能优化基础
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_12" type="checkbox" id="__nav_6_4_12" >
+      
+      <label class="md-nav__link" for="__nav_6_4_12">
+        Synchronization
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Synchronization" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_12">
+          <span class="md-nav__icon md-icon"></span>
+          Synchronization
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/synchronization/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/synchronization/memory_order/" class="md-nav__link">
+        Memory order
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_4_13" type="checkbox" id="__nav_6_4_13" >
+      
+      <label class="md-nav__link" for="__nav_6_4_13">
+        System interface
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="System interface" data-md-level="3">
+        <label class="md-nav__title" for="__nav_6_4_13">
+          <span class="md-nav__icon md-icon"></span>
+          System interface
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/linux/system_interface/" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6_5" type="checkbox" id="__nav_6_5" >
+      
+      <label class="md-nav__link" for="__nav_6_5">
+        Why
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Why" data-md-level="2">
+        <label class="md-nav__title" for="__nav_6_5">
+          <span class="md-nav__icon md-icon"></span>
+          Why
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/why/" class="md-nav__link">
+        计算机基础百科
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/zyfjeff/zyfjeff.github.io/edit/master/docs/博客/doc/linux/Linux信号专题FAQ.md" title="编辑此页" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="linux-faq">Linux 信号FAQ</h1>
+<h2 id="_1">可重入、线程安全以及异步信号安全的区别?</h2>
+<p>​&emsp; &emsp;参考<a href="http://blog.csdn.net/zhangyifei216/article/details/50809079">可重入、线程安全和异步信号安全</a>，需要强调的是异步信号安全，这个概念知道的人不多，平常大家在编写代码的时候也很少考虑这个因素，也不清楚哪些函数是异步信号安全的，哪些不是，典型的像<code>printf</code>就不是异步信号安全的，内部会加锁，但是平时很多人都喜欢在信号处理函数中调用。大多数情况下都不会出现问题的，所以让使用者错误的认为这是正确的写法。第二个需要注意的是可重入的概念，Linux有很不少系统调用的实现都是不可重入的，会将结果保存在内部的静态数据存储中，同时这类系统调用也提供了可重入版本的实现，其函数名就是尾部添加<code>_r</code>来标识。</p>
+<h2 id="_2">信号的内部实现是怎么样的?</h2>
+<p><img alt="这里写图片描述" src="../img/signal.png" /></p>
+<blockquote>
+<p>​  如上图所示一个进程/线程就是一个task_struct结构，该结构包含了属于这个进程/线程的阻塞信号集、pending的信号等，所有投递到该进程/线程的信号都会通过双向链表组织在一起，链表的元素是sigqueue，所有的信号对应的信号处理函数存放在sighand_struct中的一个类型为k_sigaction数组，每次程序由核心态切换到用户态时，内核都会发起信号处理，执行信号处理程序的时候为了避免对内核产生影响，所以使用的是用户栈，还可以自定义信号处理的备用栈。</p>
+<p>​  信号处理函数是每次程序从核心态切换到用户态的时候，内核才会负责发起信号处理，也就是说信号处理的时机有以下两种:</p>
+<ul>
+<li>进程在当前时间片用完后，获得了新的时间片时(会发生内核态到用户态的切换)</li>
+<li>系统调用执行完成时(信号的传递可能会引起正在阻塞的系统调用过早完成)</li>
+</ul>
+</blockquote>
+<h2 id="_3">如何查看一个进程当前等待的、阻塞的、忽略的、捕获的信号?</h2>
+<p>​&emsp; &emsp;通过查看<code>/proc/PID/status</code>文件，该文件中有几个字端的值，这些值按照十六进制的形式显示，最低的有效位表示信号1，相邻的左边一位代表信号2，依次类推，例如下面这几个数值:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="nl">SigQ</span><span class="p">:</span>   <span class="mi">0</span><span class="o">/</span><span class="mi">3872</span>                <span class="mi">0</span><span class="err">是当前信号队列中的信号数，</span><span class="mi">3872</span><span class="err">是信号队列的最大长度</span>
+<span class="nl">SigPnd</span><span class="p">:</span> <span class="mo">0000000000000000</span>       <span class="err">当前</span><span class="n">pending的信号</span><span class="err">，也就是没有信号投递给线程</span>
+<span class="nl">ShdPnd</span><span class="p">:</span> <span class="mo">0000000000000000</span>       <span class="err">当前</span><span class="n">pengding的信号</span><span class="err">，也就是没有信号投递给进程</span>
+<span class="nl">SigBlk</span><span class="p">:</span> <span class="mi">7</span><span class="n">be3c0fe28014a03</span>       <span class="err">当前阻塞的信号</span>
+<span class="nl">SigIgn</span><span class="p">:</span> <span class="mo">0000000000001000</span>       <span class="err">当前被忽略的信号</span>
+<span class="nl">SigCgt</span><span class="p">:</span> <span class="mo">00000001</span><span class="mi">800004</span><span class="n">ec</span>       <span class="err">当前被捕获的信号</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="_4">信号的默认处理方式有哪些?</h2>
+<p>​&emsp; &emsp;当信号到达的时候，默认情况下信号有如下几种处理方式:</p>
+<ul>
+<li>忽略信号，内核直接将信号丢弃，不对进程产生任何影响</li>
+<li>终止进程，是一种异常的终止方式，和调用exit而发生的终止不同</li>
+<li>产生核心存储文件，同时进程终止</li>
+<li>停止进程，暂停进程的运行</li>
+<li>恢复之前暂停的进程</li>
+<li>执行用户自定义的信号处理器</li>
+</ul>
+<h2 id="signalsigaction">signal和sigaction区别?</h2>
+<p>​&emsp; &emsp;这两者都可以用来改变信号处置，<strong>signal</strong>很原始，提供的接口也比较简单，而<strong>sigaction</strong>提供了<strong>signal</strong>所不具备的功能。为了兼容，<strong>signal</strong>系统调用仍然保存，但是<strong>glibc</strong>是使用<strong>sigaction</strong>实现了<strong>signal</strong>的功能。<strong>sigaction</strong>同时支持两种形式的信号处理，通过不用的<strong>flags</strong>区分，通过设置不同的<strong>flags</strong>可以得到不同的功能。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">struct</span> <span class="nc">sigaction</span> <span class="p">{</span>
+  <span class="c1">// 两种handler，兼容老的signal对应的信号处理函数</span>
+    <span class="kt">void</span>     <span class="p">(</span><span class="o">*</span><span class="n">sa_handler</span><span class="p">)(</span><span class="kt">int</span><span class="p">);</span>
+    <span class="kt">void</span>     <span class="p">(</span><span class="o">*</span><span class="n">sa_sigaction</span><span class="p">)(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">siginfo_t</span> <span class="o">*</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">);</span>
+    <span class="kt">sigset_t</span>   <span class="n">sa_mask</span><span class="p">;</span>            <span class="c1">// 要屏蔽的信号集</span>
+    <span class="kt">int</span>        <span class="n">sa_flags</span><span class="p">;</span>
+    <span class="kt">void</span>     <span class="p">(</span><span class="o">*</span><span class="n">sa_restorer</span><span class="p">)(</span><span class="kt">void</span><span class="p">);</span> <span class="c1">// Not for application use</span>
+<span class="p">};</span>
+
+<span class="nl">sa_flags</span><span class="p">:</span>
+<span class="mf">1.</span> <span class="n">SA_NOCLDSTOP</span>  <span class="err">当接收一个信号而停止或恢复某一个子进程时，将不会产生</span><span class="n">SIGCHLD信号</span>
+<span class="mf">2.</span> <span class="n">SA_NOCLDWAIT</span>  <span class="err">子进程终止时不会将其转化为僵尸</span>
+<span class="mf">3.</span> <span class="n">SA_NODEFER</span>    <span class="err">捕获信号后，不会在执行信号处理器程序的时候自动将该信号添加到进程掩码中，也就是不会被这个</span>                <span class="err">信号再次打断，成为死循环。</span>
+<span class="mf">4.</span> <span class="n">SA_ONSTACK</span>    <span class="err">在执行信号处理函数时，使用</span><span class="n">sigaltstack安装的备选栈</span>
+<span class="mf">5.</span> <span class="n">SA_RESETHAND</span>  <span class="err">捕获信号后，会在调用处理器函数之前将信号处置为默认值</span>
+<span class="mf">6.</span> <span class="n">SA_RESTART</span>    <span class="err">自动重启由信号处理器程序中断的系统调用</span>
+<span class="mf">7.</span> <span class="n">SA_SIGINFO</span>    <span class="err">调用信号处理器程序时，携带额外的参数，也就是使用</span><span class="n">sa_sigaction类型的信号处理函数</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="kill">通过Kill来检查进程是否存在?</h2>
+<p>​&emsp; &emsp;<strong>kill</strong>系统调用可以用来向指定进程发送信号，如果指定的信号是0的时候，<strong>kill</strong>仅会进行错误的检查，查看是否可以想目标进程发送信号，而这一特点恰好可以用来检测特定进程ID所对应的进程是否存在，如果不存在那么<strong>kill</strong>调用失败，并且<strong>errno</strong>设置为<strong>ESRCH</strong></p>
+<h2 id="_5">如何打印信号枚举值对应的信号描述?</h2>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;signal: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">strsignal</span><span class="p">(</span><span class="n">SIGKILL</span><span class="p">));</span> <span class="c1">// 和strerror等同</span>
+  <span class="n">psignal</span><span class="p">(</span><span class="n">SIGKILL</span><span class="p">,</span> <span class="s">&quot;signal&quot;</span><span class="p">);</span>                <span class="c1">// 和perror等同</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="_6">信号集的内部实现？</h2>
+<p>​&emsp; &emsp;信号集是一种用来表示一系列信号集合的数据结构，使用<strong>sigset_t</strong>来表示，它的底层存储类型其实只是一个<strong>unsigned long</strong>类型，如下:</p>
+<p><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">typedef</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">sigset_t</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+​&emsp; &emsp;<strong>unsigned long</strong>一共是八个字节，总共是64位，每一位表示一个信号的话，最多可以表示64个信号，这个和信号的最大值是吻合的。信号集也提供了一系列用来操作信号集的方法，<strong>sigemptyset</strong>、<strong>sigfillset</strong>、<strong>sigaddset</strong>、<strong>sigdelset</strong>、<strong>sigismember</strong>、<strong>sigisemptyset</strong>等</p>
+<h2 id="_7">如何阻塞信号，阻塞的信号在解除阻塞后是否会投递?</h2>
+<p>​&emsp; &emsp;阻塞信号的实现不难，通过上文中对信号内部实现的分析可知，通过将要阻塞的信号放到<strong>task_struct</strong>结构中的<strong>blocked</strong>成员中，那么在信号的投递时会先查看下要投递的信号是否在阻塞信号集中，如果在就停止投递，否则就触发对应的信号处理，通过sigprocmask可以设置当前进程的阻塞信号集，对应到内核的实现如下:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kt">int</span> <span class="nf">sigprocmask</span><span class="p">(</span><span class="kt">int</span> <span class="n">how</span><span class="p">,</span> <span class="kt">sigset_t</span> <span class="o">*</span><span class="n">set</span><span class="p">,</span> <span class="kt">sigset_t</span> <span class="o">*</span><span class="n">oldset</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">struct</span> <span class="nc">task_struct</span> <span class="o">*</span><span class="n">tsk</span> <span class="o">=</span> <span class="n">current</span><span class="p">;</span>
+    <span class="kt">sigset_t</span> <span class="n">newset</span><span class="p">;</span>
+
+    <span class="cm">/* Lockless, only current can change -&gt;blocked, never from irq */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">oldset</span><span class="p">)</span>
+        <span class="o">*</span><span class="n">oldset</span> <span class="o">=</span> <span class="n">tsk</span><span class="o">-&gt;</span><span class="n">blocked</span><span class="p">;</span>
+
+    <span class="k">switch</span> <span class="p">(</span><span class="n">how</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="nl">SIG_BLOCK</span><span class="p">:</span>
+        <span class="n">sigorsets</span><span class="p">(</span><span class="o">&amp;</span><span class="n">newset</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tsk</span><span class="o">-&gt;</span><span class="n">blocked</span><span class="p">,</span> <span class="n">set</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="nl">SIG_UNBLOCK</span><span class="p">:</span>
+        <span class="n">sigandnsets</span><span class="p">(</span><span class="o">&amp;</span><span class="n">newset</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tsk</span><span class="o">-&gt;</span><span class="n">blocked</span><span class="p">,</span> <span class="n">set</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="nl">SIG_SETMASK</span><span class="p">:</span>
+        <span class="n">newset</span> <span class="o">=</span> <span class="o">*</span><span class="n">set</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">default</span><span class="o">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">EINVAL</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">__set_current_blocked</span><span class="p">(</span><span class="o">&amp;</span><span class="n">newset</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>​&emsp; &emsp;通过<strong>sigprocmask</strong>设置阻塞的信号集存在一个竞态，如果想在设置信号处理函数的同时再设置阻塞的信号集，那么这需要先调用<strong>signal/sigaction</strong>，然后再调用<strong>sigprocmask</strong>，在设置信号处理函数和调用<strong>sigprocmask</strong>之间存在一个间隙，如果在这个间隙期间后信号投递，那么就没有起到阻塞信号的作用了。为此<strong>sigaction</strong>的<strong>sa_mask</strong>成员可以用来设置阻塞信号集，这使得设置信号处理函数的同时就可以设置阻塞信号集。</p>
+<p>​&emsp; &emsp;另外一个问题就是被阻塞的信号在等待解除阻塞后是否会投递到进程进行处理？信号被阻塞后就会变成待决信号，并通过链表链接起来，<strong>task_struct</strong>结构中的<strong>pending</strong>成员就是链表头，如果一个信号发送多次，linux是不保证投递相同次数的，只会保存一次，也就是非实时，不对信号排队。其中<strong>SIGKILL</strong>和<strong>SIGSTOP</strong>是不能被阻塞的。</p>
+<h2 id="_8">如何知道当前哪些信号被阻塞了?</h2>
+<p>​&emsp; &emsp;说白了这里就是去查询待决信号的链表也就是<strong>task_struct</strong>结构中的<strong>pending</strong>成员，将里面的信号放到信号集中返回即可。对应到内核实现如下:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">static</span> <span class="kt">int</span> <span class="nf">do_sigpending</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">set</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">sigsetsize</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">sigsetsize</span> <span class="o">&gt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">sigset_t</span><span class="p">))</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">EINVAL</span><span class="p">;</span>
+
+    <span class="n">spin_lock_irq</span><span class="p">(</span><span class="o">&amp;</span><span class="n">current</span><span class="o">-&gt;</span><span class="n">sighand</span><span class="o">-&gt;</span><span class="n">siglock</span><span class="p">);</span>  <span class="c1">//加锁</span>
+    <span class="n">sigorsets</span><span class="p">(</span><span class="n">set</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">current</span><span class="o">-&gt;</span><span class="n">pending</span><span class="p">.</span><span class="n">signal</span><span class="p">,</span>    <span class="c1">// 将pengding和signal-&gt;shared_pending中的信号区取并集</span>
+          <span class="o">&amp;</span><span class="n">current</span><span class="o">-&gt;</span><span class="n">signal</span><span class="o">-&gt;</span><span class="n">shared_pending</span><span class="p">.</span><span class="n">signal</span><span class="p">);</span>
+    <span class="n">spin_unlock_irq</span><span class="p">(</span><span class="o">&amp;</span><span class="n">current</span><span class="o">-&gt;</span><span class="n">sighand</span><span class="o">-&gt;</span><span class="n">siglock</span><span class="p">);</span>
+
+    <span class="cm">/* Outside the lock because only this thread touches it.  */</span>
+    <span class="n">sigandsets</span><span class="p">(</span><span class="n">set</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">current</span><span class="o">-&gt;</span><span class="n">blocked</span><span class="p">,</span> <span class="n">set</span><span class="p">);</span>    <span class="c1">//最后将待决信号和阻塞的信号取交集，因为待决信号并不一定是阻塞的，有可能是还没来得及投递的，所以这里要取交集</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>​&emsp; &emsp;在用户态通过<strong>sigpending</strong>函数就可以查询当前哪些被阻塞的信号是未决的(也就是已经投递到进程了，但是因为被屏蔽了还没有被处理，也就是保存在进程的<strong>pending</strong>成员中)</p>
+<h2 id="_9">信号处理函数该怎么设计，需要注意什么?</h2>
+<p>​&emsp; &emsp;信号处理函数和普通函数是有一些区别的，因为这个函数是异步被执行的，所以需要考虑异步信号安全的问题，在这个函数中没办法使用一些非异步信号安全的函数，为此编写信号处理函数一般要遵从一些设计，两种常见的设计如下:</p>
+<ol>
+<li>信号处理函数设置全局性变量并退出，主程序周期性检查，一旦置位就立即采取动作,或者信号处理函数通过忘管道中写    入一个字节来通知主程序。</li>
+<li>信号处理器函数执行某种类型的清理动作，然后终止进程或者执行非本地跳转，将栈解开并将控制权返回到主程序的预定位置。</li>
+</ol>
+<h2 id="_10">信号处理函数在执行过程中是否会被信号再次打断?</h2>
+<p>​&emsp; &emsp;一个信号到达后会触发信号处理函数，在信号处理函数执行过程中，如果该信号再次产生是不会打断当前信号处理函数的，但是如果有其他信号进行了投递这个会打断当前信号处理函数的。<strong>sigaction</strong>的<strong>sa_flags</strong>成员有一个值就是用来控制这个行为的，如果值为<strong>SA_NODEFER</strong>(参考上文中对<strong>sa_flags</strong>的解释)表明在执行信号处理函数时是可以被相同信号打断的。这很容易造成递归死循环。</p>
+<h2 id="sig_atomic_t">sig_atomic_t数据类型的作用?</h2>
+<p>​&emsp; &emsp;信号处理函数一般要遵从上文中提到的设计，处理函数中只对一些全局变量进行处理，然后主程序周期性的检查，那么这个全局变量的类型需要考量两点:</p>
+<ol>
+<li>
+<p>编译器一般会对变量的读写进行缓存，将刚写入的变量值放在寄存器中，下次读的时候直接从寄存器中读取，这个设计适用于gcc可以理解代码的上下文，但是信号处理函数是任何时候都有可能触发的，gcc没办法知道什么时候触发信号处理函数，如果某一时刻主程序对全局变量发生了写入，但是写入的值还没来得及回写内存，然后触发信号处理函数，编译器并不知道要从寄存器中读该全局变量的值(因为没上下文)，所以会直接从内存中读，这样读到的值就是一个脏值了。为了避免这个优化，在定义全局变量的时候会加上<strong>volatile</strong>关键字。</p>
+</li>
+<li>
+<p>全局变量的读写可能不止一条机器指令，如果在操作全局变量的中途被打断，那么在信号处理函数中再次操作这个全局变量就很有可能造成该全局变量最终值是一个未定义的值。所以<strong>sig_atomic_t</strong>的类型其实就是一个原子类型，通过阅读源码，发现这个数据类型其实就是一个int类型，代码如下，主要原因是因为在x86_64架构的CPU下，对于8、16、32、64这样的对齐大小对齐的数据类型，其参考是原子的，所以<strong>sig_atomic_t</strong>就是一个对int类型的别名。</p>
+</li>
+</ol>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">typedef</span> <span class="kt">int</span> <span class="n">__sig_atomic_t</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="n">__sig_atomic_t</span> <span class="kt">sig_atomic_t</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+<p>​</p>
+<h2 id="_11">终止信号处理器函数的方法有哪些?</h2>
+<p>​&emsp; &emsp;大多数情况下信号处理函数都是处理完一些事情后就回到了主程序继续执行，或者是做一些资源的释放和清理，接着就退出了程序， 除此之外其实还有更多的选择。</p>
+<ol>
+<li>使用_exit终止进程，处理器函数可以事先做一些清理工作，但是这里注意不能使用exit来终止，因为它不在异步信号安全函数的列表中。</li>
+<li>使用kill发送信号来杀掉进程</li>
+<li>在信号处理函数中执行非本地跳转</li>
+<li>使用abort终止进程，并产生核心转储</li>
+</ol>
+<p>​&emsp; &emsp;对于1、2、4我觉得都是可以理解的，问题不大，重点是第三个，非本地跳转，跳转到另外一个地方后，栈会解旋转，但是有一些点还需要探讨，比如说默认情况下当一个信号开始触发信号处理函数时，默认会讲该信号加入到阻塞的信号集中，这样信号处理函数就不会被相同信号打断了，如果使用非本地跳转的化，带来的问题就是这个阻塞的信号集需要被恢复，早期的<strong>BSD</strong>实现时会将阻塞的信号恢复的，但是Linux是遵循<strong>System V</strong>的实现，是不会将阻塞的信号进行恢复的，鉴于这个行为在不通的平台其实现不同，这将有损于可移植性，<strong>POSIX</strong>通过定义了一堆新的函数来规范非本地跳转的行为，<strong>sigsetjmp</strong>和<strong>siglongjmp</strong>，其函数原型如下:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;setjmp.h&gt;</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">sigsetjmp</span><span class="p">(</span><span class="n">sigjmp_buf</span> <span class="n">env</span><span class="p">,</span> <span class="kt">int</span> <span class="n">savesigs</span><span class="p">);</span>    <span class="c1">// savesigs非0时，会将当前的信号掩码保存</span>
+<span class="kt">void</span> <span class="nf">siglongjmp</span><span class="p">(</span><span class="n">sigjmp_buf</span> <span class="n">env</span><span class="p">,</span> <span class="kt">int</span> <span class="n">val</span><span class="p">);</span>       <span class="c1">// 恢复sigsetjmp保存的信号掩码</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="_12">为什么系统调用会中断和重启?</h2>
+<p>​&emsp; &emsp;这个问题可能大多数人都只是知道要怎么去处理，但是却不知道为什么会发生中断? 如果一个系统调用在执行的时候，一个信号到来，这个时候需要切换到信号处理函数中执行，但是系统调用是在内核态中执行的，如果现在执行以内核态来运行用户态编写的信号处理函数，这会给内核带来安全风险，所以理论上这里应该要切换运行态岛用户态，既然要切换那么久需要保存当前的状态，但是这就涉及到一个问题就是中间状态，这个时候执行信号处理函数可能看到一个中间的无效状态，导致程序行为时未定义的，还有锁的问题，资源占用等问题。所以这种切换状态的方式是不可行的，linux使用了一种更加灵活的方式来处理，当系统调用在执行的过程中有信号到来则中断当前的系统调用，然后返回-1，并设置错误码为<strong>EINTR</strong>，交给用户来重新再运行该系统调用，更多的细节见<a href="https://unix.stackexchange.com/questions/16455/interruption-of-system-calls-when-a-signal-is-caught">Interruption of system calls when a signal is caught </a><strong>chromium</strong>的基础库中就提供了一种比较方便的重启系统调用的宏。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="cp">#define HANDLE_EINTR(x) ({ \</span>
+<span class="cp">  decltype(x) eintr_wrapper_result; \</span>
+<span class="cp">  do { \</span>
+<span class="cp">    eintr_wrapper_result = (x); \</span>
+<span class="cp">  } while (eintr_wrapper_result == -1 &amp;&amp; errno == EINTR); \</span>
+<span class="cp">  eintr_wrapper_result; \</span>
+<span class="cp">})</span>
+</code></pre></div>
+</td></tr></table>
+<p>​&emsp; &emsp;除了上面这个<strong>HANDLE_EINTR</strong>外，<strong>GNU C</strong>库还提供了一个非标准的宏，<strong>TEMP_FAILURE_RETRY</strong>，需要定义特性测试宏<strong>_GNU_SOURCE</strong>，在<strong>unistd</strong>头文件中还有另外一个宏可以起到相同的作用<strong>NO_EINTR</strong>，最后一个方法就是使用<strong>sigaction</strong>中的<strong>SA_RESTART</strong>标志，通过设置该标志后，但是很不幸的是这个标志并不能处理所有系统调用的自重启的问题。</p>
+<h3 id="_13">信号备选栈是什么、如何使用?</h3>
+<p>​&emsp; &emsp;我们都知道进程的栈空间大小是有限制的，如果某一时刻栈空间增长到最大值，然后触发了信号处理函数，但是栈已经达到了最大值了，无法为信号处理函数创建栈帧，也就没有办法调用信号处理函数了，为此可以借助信号备选栈来创建一个额外的堆栈，用于执行信号处理函数，信号备选栈的创建过程如下 ：</p>
+<ol>
+<li>分配一块被称为<strong>"备选信号栈"</strong>的内存区域，作为信号处理函数的栈帧</li>
+<li>调用<strong>sigaltstack</strong>，告之内核备选栈的存在(也可以将已创建的备选信号栈的相关信息返回)</li>
+<li>在创建信号处理函数时指定SA_ONSTACK，也就是通知内核在备选信号栈上为处理器函数创建栈帧。</li>
+</ol>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">sigaltstack</span><span class="p">(</span><span class="k">const</span> <span class="n">stack_t</span> <span class="o">*</span><span class="n">ss</span><span class="p">,</span> <span class="n">stack_t</span> <span class="o">*</span><span class="n">oss</span><span class="p">);</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+  <span class="kt">void</span>  <span class="o">*</span><span class="n">ss_sp</span><span class="p">;</span>     <span class="cm">/* Base address of stack */</span>
+  <span class="kt">int</span>    <span class="n">ss_flags</span><span class="p">;</span>  <span class="cm">/* Flags */</span>
+  <span class="kt">size_t</span> <span class="n">ss_size</span><span class="p">;</span>   <span class="cm">/* Number of bytes in stack */</span>
+<span class="p">}</span> <span class="n">stack_t</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+<p>​&emsp; &emsp;大多数情况下这个信号备选栈的用途还是比较有限的，只要重度依赖信号处理函数，对信号处理函数的执行成功与否比较敏感的程序才会考虑使用备选栈，比如说<strong>google</strong>的<strong>breakpad</strong>，重度依赖信号处理函数的，它通过注册新号处理函数的方式将要程序的<strong>coredump</strong>行为捕获，然后产生<strong>minidump</strong>，为了保证信号处理函数成功被执行，<strong>breakpad</strong>就使用了信号备选栈的方式来执行。下面通过模拟堆栈溢出，然后通过备选栈的方式顺利执行信号处理函数，代码如下:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="kt">void</span> <span class="nf">handler</span><span class="p">(</span><span class="kt">int</span> <span class="n">sig</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">write</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;stack overflow</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">);</span>
+    <span class="n">_exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">unsigned</span> <span class="nf">infinite_recursion</span><span class="p">(</span><span class="kt">unsigned</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">infinite_recursion</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="kt">char</span> <span class="n">stack</span><span class="p">[</span><span class="n">SIGSTKSZ</span><span class="p">];</span>
+    <span class="n">stack_t</span> <span class="n">ss</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">ss_size</span> <span class="o">=</span> <span class="n">SIGSTKSZ</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">ss_sp</span> <span class="o">=</span> <span class="n">stack</span><span class="p">,</span>
+    <span class="p">};</span>
+    <span class="k">struct</span> <span class="nc">sigaction</span> <span class="n">sa</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">sa_handler</span> <span class="o">=</span> <span class="n">handler</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">sa_flags</span> <span class="o">=</span> <span class="n">SA_ONSTACK</span>
+    <span class="p">};</span>
+    <span class="n">sigaltstack</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ss</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">sigfillset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sa</span><span class="p">.</span><span class="n">sa_mask</span><span class="p">);</span>
+    <span class="n">sigaction</span><span class="p">(</span><span class="n">SIGSEGV</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sa</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">infinite_recursion</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="_14">如何通过信号传递更多的信息?</h2>
+<p>​&emsp; &emsp;传统的信号处理函数只会传递一个信号值，也不能自定义传递参数，通过设置<strong>sigaction</strong>的<strong>sa_flags</strong>为<strong>SA_SIGINFO</strong>就可以获取到信号的一些附加信息，设置了<strong>SA_SIGINFO</strong>后，信号处理函数的原型就变成了如下：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="kt">void</span>     <span class="p">(</span><span class="o">*</span><span class="n">sa_sigaction</span><span class="p">)(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">siginfo_t</span> <span class="o">*</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">);</span>
+
+<span class="kt">siginfo_t</span> <span class="p">{</span>
+    <span class="kt">int</span>      <span class="n">si_signo</span><span class="p">;</span>    <span class="cm">/* Signal number */</span>
+    <span class="kt">int</span>      <span class="n">si_errno</span><span class="p">;</span>    <span class="cm">/* An errno value */</span>
+    <span class="kt">int</span>      <span class="n">si_code</span><span class="p">;</span>     <span class="cm">/* Signal code */</span>
+    <span class="kt">int</span>      <span class="n">si_trapno</span><span class="p">;</span>   <span class="cm">/* Trap number that caused hardware-generated signal (unused on most                              architectures) */</span>
+    <span class="kt">pid_t</span>    <span class="n">si_pid</span><span class="p">;</span>      <span class="cm">/* Sending process ID */</span>
+    <span class="kt">uid_t</span>    <span class="n">si_uid</span><span class="p">;</span>      <span class="cm">/* Real user ID of sending process */</span>
+    <span class="kt">int</span>      <span class="n">si_status</span><span class="p">;</span>   <span class="cm">/* Exit value or signal */</span>
+    <span class="kt">clock_t</span>  <span class="n">si_utime</span><span class="p">;</span>    <span class="cm">/* User time consumed */</span>
+    <span class="kt">clock_t</span>  <span class="n">si_stime</span><span class="p">;</span>    <span class="cm">/* System time consumed */</span>
+    <span class="kt">sigval_t</span> <span class="n">si_value</span><span class="p">;</span>    <span class="cm">/* Signal value */</span>
+    <span class="kt">int</span>      <span class="n">si_int</span><span class="p">;</span>      <span class="cm">/* POSIX.1b signal */</span>
+    <span class="kt">void</span>    <span class="o">*</span><span class="n">si_ptr</span><span class="p">;</span>      <span class="cm">/* POSIX.1b signal */</span>
+    <span class="kt">int</span>      <span class="n">si_overrun</span><span class="p">;</span>  <span class="cm">/* Timer overrun count; POSIX.1b timers */</span>
+    <span class="kt">int</span>      <span class="n">si_timerid</span><span class="p">;</span>  <span class="cm">/* Timer ID; POSIX.1b timers */</span>
+    <span class="kt">void</span>    <span class="o">*</span><span class="n">si_addr</span><span class="p">;</span>     <span class="cm">/* Memory location which caused fault */</span>
+    <span class="kt">long</span>     <span class="n">si_band</span><span class="p">;</span>     <span class="cm">/* Band event (was int in glibc 2.3.2 and earlier) */</span>
+    <span class="kt">int</span>      <span class="n">si_fd</span><span class="p">;</span>       <span class="cm">/* File descriptor */</span>
+    <span class="kt">short</span>    <span class="n">si_addr_lsb</span><span class="p">;</span> <span class="cm">/* Least significant bit of address (since Linux 2.6.32) */</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>​&emsp; &emsp;使用了新的信号处理函数后，带来了几点变化，第一个就是可以传递一个<strong>siginfo_t</strong>的结构，该结构可以携带更多的信息，第二个是一个<strong>void</strong><em> 参数，是一个指向</em><em>ucontext_t</em><em>类型的结构，该结构提供了所谓的上下文信息，用来描述调用信号处理器函数前的进程上下文(可以用来实现协程，目前在信号处理函数中没有使用，对应的设置和获取进程上下文的函数</em><em>getcontext</em><em>和</em><em>setcontext</em>*因为可移植性问题已经从POSIX中废弃)</p>
+<h2 id="_15">信号和核心转储文件的关系？</h2>
+<p>​&emsp; &emsp;一些信号的默认处理方式就是让进程产生<strong>coredump</strong>文件，该文件就是进程运行时的内存镜像，除了可以通过信号来产生外，还有通过执行<strong>gcore</strong>命令产生，默认情况下会将全部的内存映射区域都写入到核心存储文件中，通过<strong>/proc/PID/coredump_filter</strong>可以控制对哪些内存映射区域写入，更详细的内容可以<strong>man core</strong>来查询，最后就是核心存储文件产生的条件，下面列出了不会产生核心转储文件的情况：</p>
+<ol>
+<li>进程对核心转储文件没有写权限</li>
+<li>存在一个同名、可写的普通文件，但是指向该文件的(硬)链接数超过一个(也就是无法删除)</li>
+<li>将要创建的核心转储文件所在目录并不存在</li>
+<li>进程的核心存储文件大小限制为0</li>
+<li>对进程正在执行的二进制可执行文件没有读权限</li>
+<li>磁盘空间满了、inode资源耗尽了、达到磁盘配额限制、当前目录是只读挂载的文件系统</li>
+<li><strong>Set-user-ID</strong>程序在由非文件属主(或属组)执行时，不会产生核心转储文件(通过<strong>prctl</strong>和<strong>PR_SET_DUMPABLE</strong>可以控制这个行为，还可以通过<strong>/proc/sys/fs/suid_dumpable</strong>进行系统级的控制)</li>
+</ol>
+<p>产生的core文件其名称还可以通过<strong>/proc/sys/kernel/core_pattern</strong>进行控制。</p>
+<h2 id="sigkillsigstop">SIGKILL和SIGSTOP信号和其他信号不同的地方?</h2>
+<p>​&emsp; &emsp;<strong>SIGKILL</strong>可以用来终止一个进程，<strong>SIGSTOP</strong>则是可以停止一个进程，二者的默认行为都是无法被改变的，一个停止的进程通过发送<strong>SIGCONT</strong>可以使得该信号恢复执行，这两个信号在大多数情况下都可以立即终止一个进程或者是停止一个进程，但是有一种情况除外，就是内核处于<strong>TASK_UNINTERRUPTIBLE</strong> 状态时，也就是睡眠状态，Linux上有两类睡眠状态，一类就是<strong>TASK_INTERRUPTIBLE</strong>，这个状态下进程时可以被中断的，处于这个状态下的进程一般时等待终端输入、等待数据写入当前的空管道等，通过PS查询的时候，显示为S。另外一种就是上文说道的<strong>TASK_UNINTERRUPTIBLE</strong>，不可中断的睡眠，这类进程一般都是在等待某些特定类型的事件，比如磁盘IO的完成，处于这类状态的进程时无法被信号终止的，通过PS查询的时候，显示为D，极端情况下这类进程可能会因为磁盘故障等原因，永远无法被终止，这个时候就只能通过重启机器来消灭这类进程了，在<strong>linux 2.6.25</strong>开始Linux加入了第三种状态<strong>TASK_KILLABLE</strong>，这个状态和<strong>TASK_UNINTERRUPTIBLE</strong>类似，但是却可以被致命信号唤醒。通过使用该状态可以避免因为进程挂起处于<strong>TASK_UNINTERRUPTIBLE</strong>状态而重启系统的情况。</p>
+<h2 id="_16">信号的传递顺序是怎么样的?</h2>
+<p>​&emsp; &emsp;当痛过<strong>sigprocmask</strong>阻塞信号的时候，在此期间产生的信号都会变成待决信号，一旦阻塞信号被恢复，那么所有的待决信号都会被投递，而投递的顺序则取决于具体的实现。下面这个例子演示了信号的投递顺序。<strong>TODO</strong></p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="kt">void</span> <span class="nf">handler</span><span class="p">(</span><span class="kt">int</span> <span class="n">sig</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;signal: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">sig</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="kt">sigset_t</span> <span class="n">set</span><span class="p">;</span>
+  <span class="n">sigemptyset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">set</span><span class="p">);</span>
+  <span class="n">sigaddset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">set</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="n">sigaddset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">set</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="n">sigaddset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">set</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+  <span class="n">sigaddset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">set</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+
+  <span class="k">struct</span> <span class="nc">sigaction</span> <span class="n">sa</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+  <span class="n">sa</span><span class="p">.</span><span class="n">sa_handler</span> <span class="o">=</span> <span class="n">handler</span><span class="p">;</span>
+  <span class="n">sigaction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sa</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+  <span class="n">sigaction</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sa</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+  <span class="n">sigaction</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sa</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+  <span class="n">sigaction</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sa</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+  <span class="n">sigprocmask</span><span class="p">(</span><span class="n">SIG_BLOCK</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">set</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+  <span class="n">sleep</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
+
+  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;remove block signal</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="n">sigprocmask</span><span class="p">(</span><span class="n">SIG_UNBLOCK</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">set</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+  <span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="err">开启另外一个终端，使用</span><span class="n">kill向该进程发送多个信号</span><span class="err">，</span>
+</code></pre></div>
+</td></tr></table>
+<h2 id="_17">实时信号和标准信号的区别?</h2>
+<p>​&emsp; &emsp;实时信号是为了弥补标准信号的投递顺序未定义、信号不排队会丢失等问题的，相比于标准信号，实时信号具备如下优势：</p>
+<ol>
+<li>实时信号的信号范围有所扩大，可供应用程序自定义的目的，而标准信号中用于自定义的只有<strong>SIGUSER1</strong>和<strong>SIGUSER2</strong>。</li>
+<li>实时信号采取的是队列化管理，如果某一个信号多次发送给一个进程，那么该进程会多次收到这个信号，而标准信号才会丢失，只会接收到一次信号(不过队列是有大小限制的)。</li>
+<li>当发送一个实时信号时，可为信号指定伴随数据，供接收进程的信号处理器使用(标准信号目前也是可以的)。</li>
+<li>不同的实时信号的传递顺序是有保障的，信号的编号越小优先级越高，而标准信号这个行为是未定义的，取决于具体的实现。</li>
+</ol>
+<blockquote>
+<p>对于排队的信号，是有一个上限的，这个上限值可以通过查看RLIMIT_SIGPENDING资源限制的值，至于等待某一个进程的实时信号数量，可以从Linux专有文件夹/proc/PID/status中的SigQ字段读取</p>
+<p>通sigqueue可以给实时信号发送伴随数据</p>
+</blockquote>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">// 发送端</span>
+<span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+  <span class="k">union</span> <span class="nc">sigval</span> <span class="n">sa</span><span class="p">;</span>
+  <span class="n">sa</span><span class="p">.</span><span class="n">sival_int</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">stoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+  <span class="n">sigqueue</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">stoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">34</span><span class="p">,</span> <span class="n">sa</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 消费端</span>
+<span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">void</span> <span class="nf">handler_real_signal</span><span class="p">(</span><span class="kt">int</span> <span class="n">signum</span><span class="p">,</span> <span class="kt">siginfo_t</span><span class="o">*</span> <span class="n">v</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">ucontext</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">si_value</span><span class="p">.</span><span class="n">sival_int</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">struct</span> <span class="nc">sigaction</span> <span class="n">sa</span><span class="p">;</span>
+  <span class="n">sa</span><span class="p">.</span><span class="n">sa_sigaction</span> <span class="o">=</span> <span class="n">handler_real_signal</span><span class="p">;</span>
+  <span class="n">sigemptyset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sa</span><span class="p">.</span><span class="n">sa_mask</span><span class="p">);</span>
+  <span class="n">sa</span><span class="p">.</span><span class="n">sa_flags</span> <span class="o">=</span> <span class="n">SA_SIGINFO</span><span class="p">;</span>
+
+  <span class="n">sigaction</span><span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sa</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
+
+  <span class="n">sleep</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>​&emsp; &emsp;实时信号的编号是从32~63，<strong>RTSIG_MAX</strong>常量代表了实时信号的数量，<strong>SIGRTMIN</strong>和<strong>SIGRTMAX</strong>则表示的是实时信号的最小值和最大值。</p>
+<h2 id="_18">如何主动等待信号到来?</h2>
+<p>​&emsp; &emsp;我们都知道信号是异步到来的，程序在运行的过程中时刻都有可能被信号打断，对于一些在运行关键任务的程序来说这可能是一个噩梦，通过<strong>sigprocmask</strong>或者是<strong>sigaction</strong>的<strong>sa_mask</strong>可以屏蔽信号。等关键任务执行完成后可能需要等待信号到来，然后开始处理信号，对于这样的场景可以通过<strong>sigprocmask</strong>解除屏蔽信号后，接着调用<strong>pause</strong>来等待信号到来。代码如下:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+
+<span class="kt">void</span> <span class="nf">handler</span><span class="p">(</span><span class="kt">int</span> <span class="n">signum</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello World</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">sigset_t</span> <span class="n">prevMask</span><span class="p">,</span> <span class="n">intMask</span><span class="p">;</span>
+  <span class="k">struct</span> <span class="nc">sigaction</span> <span class="n">sa</span><span class="p">;</span>
+  <span class="n">sigemptyset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">intMask</span><span class="p">);</span>
+  <span class="n">sigaddset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">intMask</span><span class="p">,</span> <span class="n">SIGINT</span><span class="p">);</span>
+  <span class="n">sigemptyset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sa</span><span class="p">.</span><span class="n">sa_mask</span><span class="p">);</span>
+  <span class="n">sa</span><span class="p">.</span><span class="n">sa_flags</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">sa</span><span class="p">.</span><span class="n">sa_handler</span> <span class="o">=</span> <span class="n">handler</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">sigaction</span><span class="p">(</span><span class="n">SIGINT</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sa</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">-1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">perror</span><span class="p">(</span><span class="s">&quot;sigaction:&quot;</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">sigprocmask</span><span class="p">(</span><span class="n">SIG_BLOCK</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">intMask</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">prevMask</span><span class="p">)</span> <span class="o">==</span> <span class="mi">-1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">perror</span><span class="p">(</span><span class="s">&quot;sigprocmask:&quot;</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c1">// deal with critical section</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">sigprocmask</span><span class="p">(</span><span class="n">SIG_SETMASK</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">prevMask</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">-1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">perror</span><span class="p">(</span><span class="s">&quot;sigprocmask:&quot;</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="c1">// 信号如果在此刻到来，这就会导致bug</span>
+  <span class="n">pause</span><span class="p">();</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>​&emsp; &emsp;很显然<strong>sigprocmask</strong>解除信号屏蔽和<strong>pause</strong>等待信号这两步并不是原子的，所以可能会导致潜在的<strong>bug</strong>，信号可能在<strong>pause</strong>之前达到，导致<strong>pause</strong>一致在等待信号。为了解决这个问题Linux提供了<strong>sigsuspend</strong>，将解除信号屏蔽和等待信号变成了原子的，代码如下:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="p">(</span><span class="n">sigprocmask</span><span class="p">(</span><span class="n">SIG_SETMASK</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">prevMask</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">-1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">perror</span><span class="p">(</span><span class="s">&quot;sigprocmask:&quot;</span><span class="p">);</span>
+  <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// 信号如果在此刻到来，这就会导致bug</span>
+<span class="n">pause</span><span class="p">();</span>
+<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="err">替换成如下</span><span class="o">:</span>
+<span class="n">sigsuspend</span><span class="p">(</span><span class="o">&amp;</span><span class="n">prevMask</span><span class="p">);</span>
+</code></pre></div>
+</td></tr></table>
+<p>​&emsp; &emsp;到此为止我介绍了两种等待信号的方式，一种就是<strong>pause</strong>，另外一种就是<strong>sigsuspend</strong>，但是这两种等待信号的方式都很原始，只是知道有信号到来了，具体是什么信号是不知道的，还需要依靠信号处理函数去处理发生的信号。如果把信号比做一种消息的话，我希望可以同步的等待接收这个消息，然后同步的去处理这个消息，而不是靠信号处理函数打断当前执行流异步的处理。Linux提供了<strong>sigwaitinfo</strong>相应的还有一个<strong>sigtimedwait</strong>，前者是永久的等待信号，后者是带有超时功能的等待。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">sigset_t</span> <span class="n">set</span><span class="p">;</span>
+  <span class="n">sigemptyset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">set</span><span class="p">);</span>
+  <span class="n">sigaddset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">set</span><span class="p">,</span> <span class="n">SIGINT</span><span class="p">);</span>
+
+  <span class="n">sigprocmask</span><span class="p">(</span><span class="n">SIG_BLOCK</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">set</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">);</span>
+  <span class="kt">siginfo_t</span> <span class="n">sv</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">signum</span> <span class="o">=</span> <span class="n">sigwaitinfo</span><span class="p">(</span><span class="o">&amp;</span><span class="n">set</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sv</span><span class="p">);</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;signal number:%d pid: %d, uid: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">signum</span><span class="p">,</span> <span class="n">sv</span><span class="p">.</span><span class="n">si_pid</span><span class="p">,</span> <span class="n">sv</span><span class="p">.</span><span class="n">si_uid</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+<p>​&emsp; &emsp;通过<strong>sigwaitinfo</strong>来等待信号已经基本算满足了需求，但是对于一个网络程序来说，信号、网络IO、定时器等都属于事件，理想情况下应该将这些事件统一来处理，使用fd来管理这些事件这个在Linux下算是一种共识了，网络IO自然不用说，定时器可以通过<strong>timerfd_create</strong>来创建一个fd然后和一个定时器关联即可。而信号的化早期的做法是创建一个管道fd，然后在信号处理函数中往这个fd写入信号值，这样所有的事件就都可以使用fd来统一管理了，在Linux 2.6.27的时候提供了一个原生的解决方案就是<strong>signalfd</strong>，下面是一个简单的示例代码:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;sys/signalfd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#define handle_error(msg) \</span>
+<span class="cp">  do { perror(msg); exit(EXIT_FAILURE); } while (0)</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+  <span class="kt">sigset_t</span> <span class="n">mask</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">sfd</span><span class="p">;</span>
+  <span class="k">struct</span> <span class="nc">signalfd_siginfo</span> <span class="n">fdsi</span><span class="p">;</span>
+  <span class="kt">ssize_t</span> <span class="n">s</span><span class="p">;</span>
+
+  <span class="n">sigemptyset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mask</span><span class="p">);</span>
+  <span class="n">sigaddset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mask</span><span class="p">,</span> <span class="n">SIGINT</span><span class="p">);</span>
+  <span class="n">sigaddset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mask</span><span class="p">,</span> <span class="n">SIGQUIT</span><span class="p">);</span>
+
+  <span class="cm">/* Block signals so that they aren&#39;t handled</span>
+<span class="cm">     according to their default dispositions */</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">sigprocmask</span><span class="p">(</span><span class="n">SIG_BLOCK</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mask</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="o">==</span> <span class="mi">-1</span><span class="p">)</span>
+    <span class="n">handle_error</span><span class="p">(</span><span class="s">&quot;sigprocmask&quot;</span><span class="p">);</span>
+
+  <span class="n">sfd</span> <span class="o">=</span> <span class="n">signalfd</span><span class="p">(</span><span class="mi">-1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mask</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">sfd</span> <span class="o">==</span> <span class="mi">-1</span><span class="p">)</span>
+    <span class="n">handle_error</span><span class="p">(</span><span class="s">&quot;signalfd&quot;</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">sfd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">fdsi</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="nc">signalfd_siginfo</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="nc">signalfd_siginfo</span><span class="p">))</span>
+      <span class="n">handle_error</span><span class="p">(</span><span class="s">&quot;read&quot;</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">fdsi</span><span class="p">.</span><span class="n">ssi_signo</span> <span class="o">==</span> <span class="n">SIGINT</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Got SIGINT</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">fdsi</span><span class="p">.</span><span class="n">ssi_signo</span> <span class="o">==</span> <span class="n">SIGQUIT</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Got SIGQUIT</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+      <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_SUCCESS</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Read unexpected signal</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+                
+                  
+                
+              
+              
+                
+<script src="https://utteranc.es/client.js"
+        repo="zyfjeff/zyfjeff.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../Linux%E4%B8%AD%E7%9A%84%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F%E6%9C%89%E4%BB%80%E4%B9%88%3F/" class="md-footer__link md-footer__link--prev" aria-label="上一页: Linux中的可执行程序有什么?" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              Linux中的可执行程序有什么?
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../%E5%85%B3%E4%BA%8E%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5%E7%9A%84%E5%8E%9F%E5%AD%90%E6%80%A7%E8%AE%A8%E8%AE%BA/" class="md-footer__link md-footer__link--next" aria-label="下一页: 关于文件写入的原子性讨论" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              关于文件写入的原子性讨论
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2020 - 2021 程序员的Cookbook
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/zyfjeff" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.tabs", "navigation.instant", "toc.integrate"], "translations": {"clipboard.copy": "\u590d\u5236", "clipboard.copied": "\u5df2\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+      
+        <script src="../../../../javascripts/config.js"></script>
+      
+    
+  </body>
+</html>
